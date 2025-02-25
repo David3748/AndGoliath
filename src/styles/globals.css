@@ -1,0 +1,218 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Merriweather:wght@400;700&display=swap');
+
+:root {
+  --foreground-rgb: 51, 51, 51;
+  --background-rgb: 255, 255, 255;
+  --primary-color: 0, 116, 217; /* Cerulean blue */
+  --secondary-color: 0, 31, 63; /* Navy blue */
+  --slingshot-wood: 0, 116, 217; /* Cerulean blue */
+  --slingshot-leather: 0, 91, 181; /* Darker cerulean */
+  --slingshot-stone: 17, 17, 17; /* Near black */
+  --slingshot-elastic: 127, 179, 213; /* Light cerulean */
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --foreground-rgb: 229, 231, 235;
+    --background-rgb: 31, 41, 55;
+  }
+}
+
+body {
+  color: rgb(var(--foreground-rgb));
+  background: rgb(var(--background-rgb));
+  font-family: 'Inter', sans-serif;
+  line-height: 1.6;
+  letter-spacing: -0.011em;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Merriweather', serif;
+  letter-spacing: -0.021em;
+}
+
+.section-heading {
+  @apply text-2xl font-serif mb-6 text-gray-800 border-b border-gray-200 pb-2;
+}
+
+.favorite-item {
+  @apply transition-all duration-300;
+  position: relative;
+}
+
+.favorite-item:hover {
+  @apply text-primary;
+}
+
+.favorite-list {
+  @apply space-y-2 list-inside;
+  list-style-type: none;
+}
+
+/* Slingshot themed button */
+.slingshot-btn {
+  @apply px-6 py-3 border border-primary text-primary hover:bg-primary hover:text-white transition-colors rounded-none;
+}
+
+.slingshot-btn:hover {
+  transform: translateY(-2px);
+}
+
+.slingshot-btn:active {
+  transform: translateY(0);
+}
+
+/* Stone animation */
+.stone-bounce {
+  animation: stone-ready 2s ease-in-out infinite;
+}
+
+/* Elastic animation */
+.elastic-pull {
+  animation: slingshot-pull 1.5s ease-in-out infinite;
+}
+
+/* Wheel container */
+.wheel-container {
+  perspective: 1500px;
+  perspective-origin: 50% 40%;
+  width: 100%;
+  height: 700px;
+  position: relative;
+  overflow: hidden;
+  background: radial-gradient(circle at center, rgba(0, 116, 217, 0.03) 0%, rgba(255, 255, 255, 0) 70%);
+}
+
+/* Wheel */
+.wheel {
+  transform-style: preserve-3d;
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  transform: translateZ(-200px);
+  transition: transform 1s ease;
+}
+
+/* Wheel item */
+.wheel-item {
+  position: absolute;
+  width: 100%;
+  max-width: 450px;
+  height: auto;
+  left: 50%;
+  top: 40%;
+  backface-visibility: hidden;
+  transform-origin: center center;
+  transition: all 0.5s ease;
+  cursor: pointer;
+}
+
+/* Glow effect for active wheel item */
+.wheel-item.active {
+  z-index: 10;
+}
+
+/* Custom scrollbar for the wheel */
+.wheel-container::-webkit-scrollbar {
+  width: 4px;
+}
+
+.wheel-container::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+}
+
+.wheel-container::-webkit-scrollbar-thumb {
+  background: rgba(0, 116, 217, 0.5);
+  border-radius: 10px;
+}
+
+.wheel-container::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 116, 217, 0.8);
+}
+
+/* Custom scrollbar for favorite items list */
+.custom-scrollbar::-webkit-scrollbar {
+  width: 4px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.05);
+  border-radius: 10px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: rgba(0, 116, 217, 0.3);
+  border-radius: 10px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 116, 217, 0.5);
+}
+
+@keyframes stone-ready {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-5px);
+  }
+}
+
+@keyframes slingshot-pull {
+  0%, 100% {
+    transform: scaleY(1);
+  }
+  50% {
+    transform: scaleY(1.1);
+  }
+}
+
+@keyframes clockRotate {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes clockTick {
+  0%, 100% {
+    opacity: 0.3;
+  }
+  50% {
+    opacity: 0.8;
+  }
+}
+
+/* Clock hand animation */
+.clock-hand {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 1px;
+  height: 120px;
+  background: linear-gradient(to top, rgba(0, 116, 217, 0.8), rgba(0, 116, 217, 0.2));
+  transform-origin: bottom center;
+  animation: clockTick 2s infinite ease-in-out;
+  z-index: 5;
+}
+
+/* Clock center dot */
+.clock-center {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 8px;
+  height: 8px;
+  background: rgba(0, 116, 217, 0.8);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  box-shadow: 0 0 5px rgba(0, 116, 217, 0.3);
+  z-index: 6;
+} 
