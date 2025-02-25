@@ -4,6 +4,8 @@ import Layout from '../components/Layout';
 import { favorites, FavoriteItem } from '../data/favorites';
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
+import SlingshotAnimation from '../components/musicNote';
+import VideoSlingshotAnimation from '../components/Slingshot Music Video Animation';
 
 const getRandomFavorites = (allFavorites: typeof favorites, count: number = 5): (FavoriteItem & { category: string })[] => {
   // Flatten all items from all categories into a single array
@@ -26,6 +28,40 @@ const Favorites: NextPage = () => {
     setRandomFavorites(getRandomFavorites(favorites));
   }, []);
 
+  const openRandomSong = () => {
+    const songsArtistsCategory = favorites.find(category => category.id === 'songs-artists');
+    if (songsArtistsCategory && songsArtistsCategory.items.length > 0) {
+      const songWithUrls = songsArtistsCategory.items.filter(item => item.url);
+      console.log('Available songs with URLs:', songWithUrls);
+      if (songWithUrls.length > 0) {
+        const randomSong = songWithUrls[Math.floor(Math.random() * songWithUrls.length)];
+        console.log('Selected song:', randomSong);
+        window.open(randomSong.url, '_blank');
+      } else {
+        console.error('No songs with URLs available.');
+      }
+    } else {
+      console.error('No songs available in favorites.');
+    }
+  };
+
+  const openRandomVideo = () => {
+    const videosCategory = favorites.find(category => category.id === 'videos');
+    if (videosCategory && videosCategory.items.length > 0) {
+      const videosWithUrls = videosCategory.items.filter(item => item.url);
+      console.log('Available videos with URLs:', videosWithUrls);
+      if (videosWithUrls.length > 0) {
+        const randomVideo = videosWithUrls[Math.floor(Math.random() * videosWithUrls.length)];
+        console.log('Selected video:', randomVideo);
+        window.open(randomVideo.url, '_blank');
+      } else {
+        console.error('No videos with URLs available.');
+      }
+    } else {
+      console.error('No videos available in favorites.');
+    }
+  };
+
   return (
     <Layout title="&Goliath | My Favorite Things">
       <motion.div
@@ -33,13 +69,27 @@ const Favorites: NextPage = () => {
         animate={{ opacity: 1 }}
         transition={{ duration: 0.8 }}
       >
-        <h1 className="text-2xl md:text-3xl font-serif mb-4 md:mb-6 text-foreground border-b border-current-line pb-2">
+        <div className="mt-12 md:mt-16 flex justify-center space-x-8">
+          <div className="text-center">
+            <p className="text-sm text-primary mb-2">Random Song</p>
+            <SlingshotAnimation 
+              className="w-16 h-16" 
+              onLaunch={openRandomSong}
+            />
+          </div>
+          
+          <div className="text-center">
+            <p className="text-sm text-primary mb-2">Random Video</p>
+            <VideoSlingshotAnimation 
+              className="w-16 h-16" 
+              onLaunch={openRandomVideo}
+            />
+          </div>
+        </div>
+        
+        <h1 className="text-2xl md:text-3xl font-serif mb-4 md:mb-6 text-foreground border-b border-current-line pb-2 mt-8">
           Random Favorites
         </h1>
-        
-        <p className="text-comment mb-6 md:mb-10 leading-relaxed text-sm md:text-base">
-          These are a few of my favorite things
-        </p>
         
         <div className="space-y-6">
           {randomFavorites.map((item) => (
@@ -60,9 +110,6 @@ const Favorites: NextPage = () => {
                   item.name
                 )}
               </h3>
-              {item.description && (
-                <p className="text-comment text-sm mt-1">{item.description}</p>
-              )}
             </motion.div>
           ))}
         </div>

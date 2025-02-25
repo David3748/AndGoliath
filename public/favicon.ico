@@ -1,1 +1,11 @@
- 
+This is a placeholder for the favicon.ico file.
+
+To generate the actual favicon.ico from the favicon.svg:
+1. Open the favicon.svg in a browser
+2. Take a screenshot or save as PNG
+3. Use an online converter like https://favicon.io/favicon-converter/ to convert the PNG to ICO
+4. Replace this file with the generated ICO file
+
+Alternatively, you can use a tool like ImageMagick:
+```
+convert favicon.svg -background none -define icon:auto-resize=16,32,48,64 favicon.ico 

@@ -85,7 +85,8 @@ export const favorites: FavoriteCategory[] = [
       { id: "4", name: "Sherlock" },
       { id: "5", name: "Looking For Alaska" },
       { id: "6", name: "Severance" },
-      { id: "7", name: "Ted Lasso" }
+      { id: "7", name: "Ted Lasso" },
+      {id: "8", name: "Pantheon" }
     ]
   },
   {
@@ -106,7 +107,8 @@ export const favorites: FavoriteCategory[] = [
     items: [
       { id: "1", name: "\"Shia LaBeouf\" Live - Rob Cantor", url: "https://www.youtube.com/watch?v=o0u4M6vppCI" },
       { id: "2", name: "Kawhi Trade Game of Zones", url: "https://www.youtube.com/watch?v=cTU8iRdwfGc" },
-      { id: "3", name: "The Broccoli Tree: A Parable", url: "https://youtu.be/ESyJop31cmY?si=dVQvONjm4rlarbvQ" }
+      { id: "3", name: "The Broccoli Tree: A Parable", url: "https://youtu.be/ESyJop31cmY?si=dVQvONjm4rlarbvQ" },
+      {id: "4", name:"William Belden Noble Lecture Series: John Green", url:"https://youtube.com/live/EQ3DakqVrvo?feature=share"}
     ]
   },
   {
@@ -117,7 +119,9 @@ export const favorites: FavoriteCategory[] = [
       { id: "1", name: "Looking for Alice -henrik karlsson", url: "https://www.henrikkarlsson.xyz/p/looking-for-alice"},
       { id: "2", name: "The Haves and the Have Yachts", url: "https://www.newyorker.com/magazine/2022/07/25/the-haves-and-the-have-yachts" },
       { id: "3", name: "Notes on Nigeria- Matt Lakeman ", url: "https://mattlakeman.org/2023/05/09/notes-on-nigeria/" },
-      { id: "4", name: "The Copenhagen Interpretation of Ethics", url: "https://forum.effectivealtruism.org/posts/QXpxioWSQcNuNnNTy/the-copenhagen-interpretation-of-ethics" }
+      { id: "4", name: "The Copenhagen Interpretation of Ethics", url: "https://forum.effectivealtruism.org/posts/QXpxioWSQcNuNnNTy/the-copenhagen-interpretation-of-ethics" },
+      { id: "5", name: "Does My Son Know You?", url: "https://www.theringer.com/2022/3/3/22956353/fatherhood-cancer-jonathan-tjarks" },
+      {id: "6", name: "…And I Show You How Deep The Rabbit Hole Goes", url: "https://slatestarcodex.com/2015/06/02/and-i-show-you-how-deep-the-rabbit-hole-goes/" }
     ]
   },
   {

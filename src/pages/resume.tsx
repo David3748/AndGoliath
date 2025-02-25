@@ -1,10 +1,229 @@
 import type { NextPage } from 'next';
 import { motion } from 'framer-motion';
+import React, { useState } from 'react';
 import Layout from '../components/Layout';
 import { resumeData } from '../data/resume';
-import { FaDownload, FaLinkedin, FaEnvelope, FaMapMarkerAlt, FaPhone } from 'react-icons/fa';
+import { FaLinkedin, FaEnvelope, FaMapMarkerAlt, FaPhone } from 'react-icons/fa';
+
+// Document Slingshot Animation Component
+const DocumentSlingshotAnimation: React.FC<{ onLaunch?: () => void }> = ({ onLaunch }) => {
+  const [isLaunched, setIsLaunched] = useState(false);
+
+  const handleLaunch = () => {
+    if (isLaunched) return;
+    
+    setIsLaunched(true);
+    
+    if (onLaunch) {
+      setTimeout(() => {
+        onLaunch();
+      }, 300);
+    }
+    
+    setTimeout(() => {
+      setIsLaunched(false);
+    }, 1500);
+  };
+
+  const docVariants = {
+    idle: {
+      y: 0,
+      x: 0,
+      scale: 1,
+      rotate: 0,
+      opacity: 1,
+      transition: {
+        type: "spring",
+        stiffness: 300,
+        damping: 20
+      }
+    },
+    pulled: {
+      y: 20,
+      x: 0,
+      scale: 1.2,
+      rotate: 0,
+      opacity: 1,
+      transition: {
+        type: "spring",
+        stiffness: 300,
+        damping: 10
+      }
+    },
+    launched: {
+      y: -200,
+      x: 0,
+      scale: 0.8,
+      rotate: 360,
+      opacity: 1,
+      transition: {
+        type: "spring",
+        stiffness: 200,
+        damping: 15,
+        duration: 0.5
+      }
+    }
+  };
+
+  const elasticVariants = {
+    idle: {
+      scaleY: 1,
+      y: 0
+    },
+    pulled: {
+      scaleY: 1.5,
+      y: 10,
+      transition: {
+        type: "spring",
+        stiffness: 300,
+        damping: 10
+      }
+    },
+    launched: {
+      scaleY: 0.8,
+      y: -5,
+      transition: {
+        type: "spring",
+        stiffness: 300,
+        damping: 10
+      }
+    }
+  };
+
+  // Colors that match the site theme
+  const frameColor = '#F59E0B'; // Using primary color
+  const elastic = '#FFFFFF';
+  const docColor = '#F59E0B'; // Primary color
+  const docLinesColor = '#FFFFFF'; // White lines for document
+
+  return (
+    <div className="relative inline-flex items-center justify-center">
+      <motion.div
+        className="cursor-pointer"
+        onClick={handleLaunch}
+        whileHover={{ scale: 1.05 }}
+        whileTap={{ scale: 0.95 }}
+      >
+        <svg width="60" height="60" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+          {/* Slingshot Y-shaped handle */}
+          <motion.path
+            d="M100 160 L60 80 L40 40 M100 160 L140 80 L160 40"
+            stroke={frameColor}
+            strokeWidth="10"
+            strokeLinecap="round"
+          />
+          
+          {/* Elastic bands */}
+          <motion.path
+            d="M40 40 L100 70 M160 40 L100 70"
+            stroke={elastic}
+            strokeWidth="6"
+            strokeLinecap="round"
+            variants={elasticVariants}
+            animate={isLaunched ? "launched" : "idle"}
+            initial="idle"
+          />
+          
+          {/* Document/Page shape */}
+          <motion.g
+            variants={docVariants}
+            animate={isLaunched ? "launched" : "idle"}
+            initial="idle"
+            whileHover="pulled"
+          >
+            {/* Document base */}
+            <rect
+              x="88"
+              y="55"
+              width="24"
+              height="30"
+              rx="2"
+              fill={docColor}
+            />
+            
+            {/* Document fold */}
+            <path
+              d="M112 55 L106 61 L88 61"
+              stroke={docColor}
+              strokeWidth="2"
+              fill={docColor}
+            />
+            
+            {/* Document lines */}
+            <line
+              x1="93"
+              y1="67"
+              x2="107"
+              y2="67"
+              stroke={docLinesColor}
+              strokeWidth="1"
+            />
+            <line
+              x1="93"
+              y1="72"
+              x2="107"
+              y2="72"
+              stroke={docLinesColor}
+              strokeWidth="1"
+            />
+            <line
+              x1="93"
+              y1="77"
+              x2="107"
+              y2="77"
+              stroke={docLinesColor}
+              strokeWidth="1"
+            />
+          </motion.g>
+        </svg>
+      </motion.div>
+      
+      {/* Impact effect - document/page emojis */}
+      {isLaunched && (
+        <>
+          <motion.div 
+            className="absolute text-4xl"
+            initial={{ opacity: 0, scale: 0, x: -100, y: -300 }}
+            animate={{ 
+              opacity: [0, 1, 0],
+              scale: [0, 1.5, 0],
+              x: [-100, -150, -200],
+              y: [-300, -350, -300]
+            }}
+            transition={{ duration: 1, delay: 0.5 }}
+          >
+            📄
+          </motion.div>
+          <motion.div 
+            className="absolute text-3xl"
+            initial={{ opacity: 0, scale: 0, x: -80, y: -280 }}
+            animate={{ 
+              opacity: [0, 1, 0],
+              scale: [0, 1.3, 0],
+              x: [-80, -100, -120],
+              y: [-280, -320, -360]
+            }}
+            transition={{ duration: 0.8, delay: 0.6 }}
+          >
+            📝
+          </motion.div>
+        </>
+      )}
+    </div>
+  );
+};
 
 const Resume: NextPage = () => {
+  const downloadResume = () => {
+    // Create a link element
+    const link = document.createElement('a');
+    link.href = '/David Lieman Resume Feb 2025.pdf';
+    link.download = 'David Lieman Resume.pdf';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  };
+
   return (
     <Layout title="&Goliath | Resume">
       <motion.div
@@ -145,18 +364,13 @@ const Resume: NextPage = () => {
           </section>
         )}
 
-        {/* Download Button */}
-        <div className="flex justify-center pt-4">
-          <motion.a
-            href="/David Lieman Resume Feb 2025.pdf"
-            download="David Lieman Resume.pdf"
-            className="inline-flex items-center space-x-2 px-4 py-2 bg-primary text-white rounded-md hover:bg-primary-dark transition-colors"
-            whileHover={{ y: -2 }}
-            whileTap={{ y: 0 }}
-          >
-            <FaDownload />
-            <span>Download Resume</span>
-          </motion.a>
+        {/* Download Button with Slingshot */}
+        <div className="flex flex-col items-center pt-4 space-y-2">
+          <div className="flex items-center">
+            <DocumentSlingshotAnimation onLaunch={downloadResume} />
+            <span className="ml-2 text-gray-300">Download Resume</span>
+          </div>
+          <p className="text-sm text-gray-400">Click the slingshot to download</p>
         </div>
       </motion.div>
     </Layout>
