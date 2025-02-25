@@ -11,15 +11,15 @@ const DocumentSlingshotAnimation: React.FC<{ onLaunch?: () => void }> = ({ onLau
 
   const handleLaunch = () => {
     if (isLaunched) return;
-    
+
     setIsLaunched(true);
-    
+
     if (onLaunch) {
       setTimeout(() => {
         onLaunch();
       }, 300);
     }
-    
+
     setTimeout(() => {
       setIsLaunched(false);
     }, 1500);
@@ -112,7 +112,7 @@ const DocumentSlingshotAnimation: React.FC<{ onLaunch?: () => void }> = ({ onLau
             strokeWidth="10"
             strokeLinecap="round"
           />
-          
+
           {/* Elastic bands */}
           <motion.path
             d="M40 40 L100 70 M160 40 L100 70"
@@ -123,7 +123,7 @@ const DocumentSlingshotAnimation: React.FC<{ onLaunch?: () => void }> = ({ onLau
             animate={isLaunched ? "launched" : "idle"}
             initial="idle"
           />
-          
+
           {/* Document/Page shape */}
           <motion.g
             variants={docVariants}
@@ -140,7 +140,7 @@ const DocumentSlingshotAnimation: React.FC<{ onLaunch?: () => void }> = ({ onLau
               rx="2"
               fill={docColor}
             />
-            
+
             {/* Document fold */}
             <path
               d="M112 55 L106 61 L88 61"
@@ -148,7 +148,7 @@ const DocumentSlingshotAnimation: React.FC<{ onLaunch?: () => void }> = ({ onLau
               strokeWidth="2"
               fill={docColor}
             />
-            
+
             {/* Document lines */}
             <line
               x1="93"
@@ -177,14 +177,14 @@ const DocumentSlingshotAnimation: React.FC<{ onLaunch?: () => void }> = ({ onLau
           </motion.g>
         </svg>
       </motion.div>
-      
+
       {/* Impact effect - document/page emojis */}
       {isLaunched && (
         <>
-          <motion.div 
+          <motion.div
             className="absolute text-4xl"
             initial={{ opacity: 0, scale: 0, x: -100, y: -300 }}
-            animate={{ 
+            animate={{
               opacity: [0, 1, 0],
               scale: [0, 1.5, 0],
               x: [-100, -150, -200],
@@ -194,10 +194,10 @@ const DocumentSlingshotAnimation: React.FC<{ onLaunch?: () => void }> = ({ onLau
           >
             📄
           </motion.div>
-          <motion.div 
+          <motion.div
             className="absolute text-3xl"
             initial={{ opacity: 0, scale: 0, x: -80, y: -280 }}
-            animate={{ 
+            animate={{
               opacity: [0, 1, 0],
               scale: [0, 1.3, 0],
               x: [-80, -100, -120],
@@ -226,10 +226,7 @@ const Resume: NextPage = () => {
 
   return (
     <Layout title="&Goliath | Resume">
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 0.8 }}
+      <motion.div //  <---- ADD BACK motion.div HERE to wrap the whole content
         className="space-y-8 max-w-4xl mx-auto"
       >
         {/* Header Section */}
@@ -264,12 +261,22 @@ const Resume: NextPage = () => {
         </div>
 
         {/* Summary */}
-        <section className="bg-gray-800 rounded-lg p-6 shadow-lg">
+        <motion.section
+          initial={{ opacity: 0, y: -50 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, ease: "easeOut" }}
+          className="bg-gray-800 rounded-lg p-6 shadow-lg"
+        >
           <p className="text-gray-300">{resumeData.summary}</p>
-        </section>
+        </motion.section>
 
         {/* Skills Section */}
-        <section className="bg-gray-800 rounded-lg p-6 shadow-lg">
+        <motion.section
+          initial={{ opacity: 0, y: -50 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.2, ease: "easeOut" }}
+          className="bg-gray-800 rounded-lg p-6 shadow-lg"
+        >
           <h2 className="text-xl font-serif text-primary mb-4">Skills</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {Object.entries(resumeData.skills).map(([category, items]) => (
@@ -288,10 +295,15 @@ const Resume: NextPage = () => {
               </div>
             ))}
           </div>
-        </section>
+        </motion.section>
 
         {/* Experience Section */}
-        <section className="space-y-6">
+        <motion.section
+          initial={{ opacity: 0, y: -50 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.4, ease: "easeOut" }}
+          className="space-y-6"
+        >
           <h2 className="text-xl font-serif text-primary">Experience</h2>
           {resumeData.experience.map((exp, index) => (
             <motion.div
@@ -317,10 +329,15 @@ const Resume: NextPage = () => {
               )}
             </motion.div>
           ))}
-        </section>
+        </motion.section>
 
         {/* Education Section */}
-        <section className="space-y-6">
+        <motion.section
+          initial={{ opacity: 0, y: -50 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: 0.6, ease: "easeOut" }}
+          className="space-y-6"
+        >
           <h2 className="text-xl font-serif text-primary">Education</h2>
           {resumeData.education.map((edu, index) => (
             <motion.div
@@ -350,18 +367,23 @@ const Resume: NextPage = () => {
               </ul>
             </motion.div>
           ))}
-        </section>
+        </motion.section>
 
         {/* Achievements Section */}
         {resumeData.achievements && (
-          <section className="bg-gray-800 rounded-lg p-6 shadow-lg">
+          <motion.section
+            initial={{ opacity: 0, y: -50 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.8, ease: "easeOut" }}
+            className="bg-gray-800 rounded-lg p-6 shadow-lg"
+          >
             <h2 className="text-xl font-serif text-primary mb-4">Achievements</h2>
             <ul className="list-disc list-inside space-y-2 text-gray-300">
               {resumeData.achievements.map((achievement, index) => (
                 <li key={index}>{achievement}</li>
               ))}
             </ul>
-          </section>
+          </motion.section>
         )}
 
         {/* Download Button with Slingshot */}

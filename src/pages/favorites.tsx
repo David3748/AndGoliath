@@ -9,13 +9,13 @@ import VideoSlingshotAnimation from '../components/Slingshot Music Video Animati
 
 const getRandomFavorites = (allFavorites: typeof favorites, count: number = 5): (FavoriteItem & { category: string })[] => {
   // Flatten all items from all categories into a single array
-  const allItems = allFavorites.flatMap(category => 
+  const allItems = allFavorites.flatMap(category =>
     category.items.map(item => ({
       ...item,
       category: category.title
     }))
   );
-  
+
   // Shuffle array and take first 5 items
   const shuffled = [...allItems].sort(() => Math.random() - 0.5);
   return shuffled.slice(0, count);
@@ -72,40 +72,45 @@ const Favorites: NextPage = () => {
         <div className="mt-12 md:mt-16 flex justify-center space-x-8">
           <div className="text-center">
             <p className="text-sm text-primary mb-2">Random Song</p>
-            <SlingshotAnimation 
-              className="w-16 h-16" 
+            <SlingshotAnimation
+              className="w-16 h-16"
               onLaunch={openRandomSong}
             />
           </div>
-          
+
           <div className="text-center">
             <p className="text-sm text-primary mb-2">Random Video</p>
-            <VideoSlingshotAnimation 
-              className="w-16 h-16" 
+            <VideoSlingshotAnimation
+              className="w-16 h-16"
               onLaunch={openRandomVideo}
             />
           </div>
         </div>
-        
+
         <h1 className="text-2xl md:text-3xl font-serif mb-4 md:mb-6 text-foreground border-b border-current-line pb-2 mt-8">
           Random Favorites
         </h1>
-        
+
         <div className="space-y-6">
-          {randomFavorites.map((item) => (
+          {randomFavorites.map((item, index) => (
             <motion.div
               key={`${item.category}-${item.id}`}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
+              initial={{ opacity: 0, x: -50 }} // Slide in from left
+              animate={{ opacity: 1, x: 0 }}
+              transition={{
+                duration: 0.5,
+                delay: index * 0.1, // Staggered delay for each item
+                ease: "easeOut"
+              }}
               className="p-4 bg-current-line rounded-lg shadow-sm border border-current-line hover:shadow-md transition-shadow"
             >
               <div className="text-sm text-primary mb-1">{item.category}</div>
               <h3 className="text-lg font-medium text-foreground">
                 {item.url ? (
-                  <a href={item.url} target="_blank" rel="noopener noreferrer" 
+                  <Link href={item.url} target="_blank" rel="noopener noreferrer"
                      className="hover:text-primary transition-colors">
                     {item.name}
-                  </a>
+                  </Link>
                 ) : (
                   item.name
                 )}
@@ -113,7 +118,7 @@ const Favorites: NextPage = () => {
             </motion.div>
           ))}
         </div>
-        
+
         <div className="mt-12 md:mt-16 text-center">
           <button
             onClick={() => setRandomFavorites(getRandomFavorites(favorites))}
@@ -121,7 +126,7 @@ const Favorites: NextPage = () => {
           >
             But wait, there's more
           </button>
-          
+
           <div>
             <Link href="/">
               <motion.div
