@@ -203,12 +203,12 @@ const SlingshotAnimation: React.FC<SlingshotAnimationProps> = ({ className = '' 
               
               <div className="flex justify-between items-center mt-6 pt-4 border-t border-gray-700">
                 <a 
-                  href={randomPoem.url} 
+                  href={'https://www.poetryfoundation.org/poets/emily-dickinson'} 
                   target="_blank" 
                   rel="noopener noreferrer"
                   className="text-primary text-sm hover:underline"
                 >
-                  View on Poetry Foundation
+                  Emily Dickinson
                 </a>
                 
                 <button

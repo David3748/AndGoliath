@@ -38,11 +38,6 @@ const Home: NextPage = () => {
           <h2 className="text-xl md:text-2xl font-serif mb-3 md:mb-4 text-gray-100">
             Favorite Things
           </h2>
-          
-          <p className="text-gray-300 mb-4 md:mb-6 text-sm md:text-base">
-            Stuff I like
-          </p>
-          
           <Link href="/favorites">
             <motion.div
               className="inline-block px-4 py-2 md:px-5 md:py-2 border border-primary text-primary hover:bg-primary hover:text-white transition-colors text-sm md:text-base"
@@ -64,9 +59,6 @@ const Home: NextPage = () => {
             Resume
           </h2>
           
-          <p className="text-gray-300 mb-4 md:mb-6 text-sm md:text-base">
-            You know what a resume is
-          </p>
           
           <Link href="/resume">
             <motion.div
