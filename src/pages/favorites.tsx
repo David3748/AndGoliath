@@ -38,7 +38,7 @@ const Favorites: NextPage = () => {
         </h1>
         
         <p className="text-comment mb-6 md:mb-10 leading-relaxed text-sm md:text-base">
-          Here are 5 random favorites from my collection. Refresh to see different ones!
+          These are a few of my favorite things
         </p>
         
         <div className="space-y-6">

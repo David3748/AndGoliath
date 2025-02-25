@@ -40,7 +40,7 @@ const Home: NextPage = () => {
           </h2>
           
           <p className="text-gray-300 mb-4 md:mb-6 text-sm md:text-base">
-            Explore my curated collection of books, music, art, and ideas that have influenced me over the years.
+            Stuff I like
           </p>
           
           <Link href="/favorites">
@@ -65,7 +65,7 @@ const Home: NextPage = () => {
           </h2>
           
           <p className="text-gray-300 mb-4 md:mb-6 text-sm md:text-base">
-            View my professional experience, skills, and education in an interactive resume format.
+            You know what a resume is
           </p>
           
           <Link href="/resume">
