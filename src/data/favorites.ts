@@ -101,9 +101,9 @@ export const favorites: FavoriteCategory[] = [
     title: "Videos",
     createdAt: "November 18, 2023 8:02 PM",
     items: [
-      { id: "1", name: "\"Shia LaBeouf\" Live - Rob Cantor" },
-      { id: "2", name: "Kawhi Trade Game of Zones" },
-      { id: "3", name: "The Broccoli Tree: A Parable" }
+      { id: "1", name: "\"Shia LaBeouf\" Live - Rob Cantor", url: "https://www.youtube.com/watch?v=o0u4M6vppCI" },
+      { id: "2", name: "Kawhi Trade Game of Zones", url: "https://www.youtube.com/watch?v=cTU8iRdwfGc" },
+      { id: "3", name: "The Broccoli Tree: A Parable", url: "https://youtu.be/ESyJop31cmY?si=dVQvONjm4rlarbvQ" }
     ]
   },
   {
@@ -111,10 +111,10 @@ export const favorites: FavoriteCategory[] = [
     title: "Articles",
     createdAt: "February 20, 2024 10:11 PM",
     items: [
-      { id: "1", name: "Looking for Alice -henrik karlsson" },
-      { id: "2", name: "The Haves and the Have Yachts" },
-      { id: "3", name: "Notes on Nigeria/El Salvador - Matt Lakeman " },
-      { id: "4", name: "The Copenhagen interpretation of ethics" }
+      { id: "1", name: "Looking for Alice -henrik karlsson", url: "https://www.henrikkarlsson.xyz/p/looking-for-alice"},
+      { id: "2", name: "The Haves and the Have Yachts", url: "https://www.newyorker.com/magazine/2022/07/25/the-haves-and-the-have-yachts" },
+      { id: "3", name: "Notes on Nigeria/El Salvador - Matt Lakeman ", url: "https://mattlakeman.org/2023/05/09/notes-on-nigeria/" },
+      { id: "4", name: "The Copenhagen interpretation of ethics", url: "https://forum.effectivealtruism.org/posts/QXpxioWSQcNuNnNTy/the-copenhagen-interpretation-of-ethics" }
     ]
   },
   {
