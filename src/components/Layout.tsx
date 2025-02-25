@@ -1,7 +1,7 @@
 import React, { ReactNode, useState } from 'react';
 import Head from 'next/head';
 import { motion } from 'framer-motion';
-import { FaGithub, FaTwitter, FaLinkedin, FaBars, FaTimes } from 'react-icons/fa';
+import { FaGithub, FaLinkedin, FaBars, FaTimes, FaCalendar } from 'react-icons/fa';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 
@@ -10,18 +10,18 @@ interface LayoutProps {
   title?: string;
 }
 
-const Layout: React.FC<LayoutProps> = ({ children, title = 'And Goliath' }) => {
+const Layout: React.FC<LayoutProps> = ({ children, title = '&Goliath' }) => {
   const router = useRouter();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  
+
   const isActive = (path: string) => {
     return router.pathname === path;
   };
-  
+
   const toggleMobileMenu = () => {
     setMobileMenuOpen(!mobileMenuOpen);
   };
-  
+
   return (
     <div className="min-h-screen flex flex-col bg-background text-foreground">
       <Head>
@@ -34,8 +34,8 @@ const Layout: React.FC<LayoutProps> = ({ children, title = 'And Goliath' }) => {
       <header className="py-6 md:py-8 border-b border-current-line">
         <div className="container mx-auto px-4 max-w-3xl">
           <div className="flex justify-between items-center">
-            <Link 
-              href="/" 
+            <Link
+              href="/"
               className="flex items-center space-x-2"
               style={{ textDecoration: 'none' }}
             >
@@ -48,7 +48,7 @@ const Layout: React.FC<LayoutProps> = ({ children, title = 'And Goliath' }) => {
                 </h1>
               </motion.div>
             </Link>
-            
+
             {/* Desktop Navigation */}
             <nav className="hidden md:flex items-center space-x-8">
               <Link
@@ -70,9 +70,9 @@ const Layout: React.FC<LayoutProps> = ({ children, title = 'And Goliath' }) => {
                 Resume
               </Link>
             </nav>
-            
+
             {/* Mobile Menu Button */}
-            <button 
+            <button
               className="md:hidden text-foreground hover:text-primary transition-colors"
               onClick={toggleMobileMenu}
               aria-label="Toggle menu"
@@ -80,10 +80,10 @@ const Layout: React.FC<LayoutProps> = ({ children, title = 'And Goliath' }) => {
               {mobileMenuOpen ? <FaTimes size={24} /> : <FaBars size={24} />}
             </button>
           </div>
-          
+
           {/* Mobile Navigation */}
           {mobileMenuOpen && (
-            <motion.nav 
+            <motion.nav
               initial={{ opacity: 0, y: -20 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -20 }}
@@ -128,15 +128,26 @@ const Layout: React.FC<LayoutProps> = ({ children, title = 'And Goliath' }) => {
               href="https://github.com/David3748"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-comment hover:text-primary transition-colors"
+              className="text-foreground hover:text-primary transition-colors"
+              aria-label="GitHub"
             >
               <FaGithub size={24} />
+            </a>
+            <a
+              href="https://calendly.com/lieman/30min"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-foreground hover:text-primary transition-colors"
+              aria-label="Calendly"
+            >
+              <FaCalendar size={24} />
             </a>
             <a
               href="https://www.linkedin.com/in/david-lieman/"
               target="_blank"
               rel="noopener noreferrer"
-              className="text-comment hover:text-primary transition-colors"
+              className="text-foreground hover:text-primary transition-colors"
+              aria-label="LinkedIn"
             >
               <FaLinkedin size={24} />
             </a>
@@ -147,4 +158,4 @@ const Layout: React.FC<LayoutProps> = ({ children, title = 'And Goliath' }) => {
   );
 };
 
-export default Layout; 
+export default Layout;

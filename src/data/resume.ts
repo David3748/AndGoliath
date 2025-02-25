@@ -10,9 +10,9 @@ export const resumeData = {
   summary: "Computer Science and Math student at University of Maryland with experience in software development and data analysis.",
   skills: {
     languages: ["C++", "Java", "Python", "MATLAB", "SQL", "x86-64 assembly", "C"],
-    frameworks: ["Pandas", "NumPy"],
-    tools: ["Git", "Linux", "CMake", "Unix command line tools"],
-    concepts: ["Software Development", "Concurrency", "Problem-solving", "Debugging", "Communication", "Agile/Scrum"]
+    tools: ["Git", "Linux", "CMake", "Unix command line tools", "Pandas", "NumPy", "Jupyter"],
+    concepts: ["Software Development", "Concurrency", "Problem-solving", "Debugging", "Communication", "Agile/Scrum"],
+    frontend: ["Next.js", "React", "TypeScript", "Tailwind CSS", "Framer Motion"]
   },
   experience: [
     {
