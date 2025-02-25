@@ -27,7 +27,7 @@ const Layout: React.FC<LayoutProps> = ({ children, title = '&Goliath' }) => {
       <Head>
         <title>{title}</title>
         <meta name="description" content="A personal website showcasing my favorite things" />
-        <link rel="icon" href="/favicon.ico" />
+        <link rel="icon" href="/favicon.svg" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
       </Head>
 
