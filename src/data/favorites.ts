@@ -2,6 +2,7 @@ export interface FavoriteItem {
   id: string;
   name: string;
   url?: string;
+  description?: string;
 }
 
 export interface FavoriteCategory {
@@ -145,7 +146,7 @@ export const favorites: FavoriteCategory[] = [
     title: "Just random shit",
     createdAt: "February 21, 2025 9:42 PM",
     items: [
-      { id: "1", name: "North Cape by Moonth" },
+      { id: "1", name: "North Cape By Moonlight" },
       { id: "2", name: "Among the Sierra Nevada" }
     ]
   }
