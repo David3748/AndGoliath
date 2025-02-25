@@ -24,30 +24,7 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 
 ## Features
 
-- Responsive design
-- Dark mode support
-- Animated transitions
-- Interactive slingshot animations
-- Slingshot-themed styling throughout
-- Showcases favorite:
-  - Books (Fiction & Non-Fiction)
-  - Songs & Artists
-  - Movies
-  - TV Shows
-  - Words
-  - Videos
-  - Articles
-  - Poems
-  - And more!
-
-## Slingshot Theme
-
-The website features a cohesive slingshot theme inspired by the David and Goliath story:
-
-- **Color Palette**: Earthy tones reminiscent of wood, leather, and stone
-- **Animations**: Interactive slingshot with stone launching animation
-- **UI Elements**: Stone indicators, elastic animations, and slingshot icons
-- **Interactions**: Hover and click effects that mimic slingshot mechanics
+- **Color Palette**: Dracula inspired
 
 ## Technologies Used
 
