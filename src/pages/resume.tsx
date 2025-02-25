@@ -140,7 +140,6 @@ const DocumentSlingshotAnimation: React.FC<{ onLaunch?: () => void }> = ({ onLau
               rx="2"
               fill={docColor}
             />
-
             {/* Document fold */}
             <path
               d="M112 55 L106 61 L88 61"
@@ -148,7 +147,6 @@ const DocumentSlingshotAnimation: React.FC<{ onLaunch?: () => void }> = ({ onLau
               strokeWidth="2"
               fill={docColor}
             />
-
             {/* Document lines */}
             <line
               x1="93"
@@ -265,7 +263,7 @@ const Resume: NextPage = () => {
           initial={{ opacity: 0, y: -50 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, ease: "easeOut" }}
-          className="bg-gray-800 rounded-lg p-6 shadow-lg"
+          className="bg-current-line rounded-lg p-6 shadow-sm border border-current-line hover:shadow-md transition-shadow"
         >
           <p className="text-gray-300">{resumeData.summary}</p>
         </motion.section>
@@ -275,7 +273,7 @@ const Resume: NextPage = () => {
           initial={{ opacity: 0, y: -50 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.2, ease: "easeOut" }}
-          className="bg-gray-800 rounded-lg p-6 shadow-lg"
+          className="bg-current-line rounded-lg p-6 shadow-sm border border-current-line hover:shadow-md transition-shadow"
         >
           <h2 className="text-xl font-serif text-primary mb-4">Skills</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -299,9 +297,6 @@ const Resume: NextPage = () => {
 
         {/* Experience Section */}
         <motion.section
-          initial={{ opacity: 0, y: -50 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.4, ease: "easeOut" }}
           className="space-y-6"
         >
           <h2 className="text-xl font-serif text-primary">Experience</h2>
@@ -311,7 +306,7 @@ const Resume: NextPage = () => {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: index * 0.1 }}
-              className="bg-gray-800 rounded-lg p-6 shadow-lg"
+              className="bg-current-line rounded-lg p-6 shadow-sm border border-current-line hover:shadow-md transition-shadow"
             >
               <div className="flex justify-between items-start mb-2">
                 <div>
@@ -333,9 +328,6 @@ const Resume: NextPage = () => {
 
         {/* Education Section */}
         <motion.section
-          initial={{ opacity: 0, y: -50 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5, delay: 0.6, ease: "easeOut" }}
           className="space-y-6"
         >
           <h2 className="text-xl font-serif text-primary">Education</h2>
@@ -345,7 +337,7 @@ const Resume: NextPage = () => {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: index * 0.1 }}
-              className="bg-gray-800 rounded-lg p-6 shadow-lg"
+              className="bg-current-line rounded-lg p-6 shadow-sm border border-current-line hover:shadow-md transition-shadow"
             >
               <div className="flex justify-between items-start mb-2">
                 <div>
@@ -375,7 +367,7 @@ const Resume: NextPage = () => {
             initial={{ opacity: 0, y: -50 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.8, ease: "easeOut" }}
-            className="bg-gray-800 rounded-lg p-6 shadow-lg"
+            className="bg-current-line rounded-lg p-6 shadow-sm border border-current-line hover:shadow-md transition-shadow"
           >
             <h2 className="text-xl font-serif text-primary mb-4">Achievements</h2>
             <ul className="list-disc list-inside space-y-2 text-gray-300">

@@ -21,7 +21,7 @@ const Home: NextPage = () => {
             {/* Slingshot next to name */}
             <SlingshotAnimation className="w-16 h-16" />
           </div>
-          
+
           <p className="text-gray-300 mb-4 md:mb-6 leading-relaxed text-base md:text-lg">
             We're here <Link href="/because" className="text-primary hover:underline">because</Link>
           </p>
@@ -33,7 +33,7 @@ const Home: NextPage = () => {
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.2 }}
-          className="bg-gray-900 p-6 md:p-8 border border-gray-800 shadow-sm hover:shadow-md transition-shadow"
+          className="bg-gray-900 p-6 md:p-8 border border-gray-800 shadow-sm hover:shadow-md transition-shadow rounded-md"
         >
           <h2 className="text-xl md:text-2xl font-serif mb-3 md:mb-4 text-gray-100">
             Favorite Things
@@ -48,18 +48,18 @@ const Home: NextPage = () => {
             </motion.div>
           </Link>
         </motion.div>
-        
+
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8, delay: 0.3 }}
-          className="bg-gray-900 p-6 md:p-8 border border-gray-800 shadow-sm hover:shadow-md transition-shadow"
+          className="bg-gray-900 p-6 md:p-8 border border-gray-800 shadow-sm hover:shadow-md transition-shadow rounded-md"
         >
           <h2 className="text-xl md:text-2xl font-serif mb-3 md:mb-4 text-gray-100">
             Resume
           </h2>
-          
-          
+
+
           <Link href="/resume">
             <motion.div
               className="inline-block px-4 py-2 md:px-5 md:py-2 border border-primary text-primary hover:bg-primary hover:text-white transition-colors text-sm md:text-base"
@@ -75,4 +75,4 @@ const Home: NextPage = () => {
   );
 };
 
-export default Home; 
+export default Home;
