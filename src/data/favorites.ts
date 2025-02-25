@@ -18,13 +18,13 @@ export const favorites: FavoriteCategory[] = [
     title: "Fiction",
     createdAt: "September 1, 2023 10:10 PM",
     items: [
-      { id: "1", name: "HPMOR" },
+      { id: "1", name: "Harry Potter and the Methods of Rationality" },
       { id: "2", name: "Name of The Wind" },
-      { id: "3", name: "Wintersteel" },
+      { id: "3", name: "Red Rising Saga" },
       { id: "4", name: "Licanius Trilogy" },
-      { id: "5", name: "A Memory of Light" },
-      { id: "6", name: "Worm" },
-      { id: "7", name: "Wheel of time" }
+      { id: "5", name: "Worm" },
+      { id: "6", name: "The Wheel of Time" },
+      { id: "7", name: "East of Eden" },
     ]
   },
   {
@@ -34,7 +34,8 @@ export const favorites: FavoriteCategory[] = [
     items: [
       { id: "1", name: "The Years of Lyndon Johnson(series)" },
       { id: "2", name: "Replacing Guilt" },
-      { id: "3", name: "Strangers Drowning" }
+      { id: "3", name: "Strangers Drowning" },
+      { id: "4", name: "The Myth of Sisyphus" },
     ]
   },
   {
@@ -149,6 +150,8 @@ export const favorites: FavoriteCategory[] = [
     items: [
       {id: "1", name: "weather"},
       {id: "2", name: "getting lost"},
+      {id: "3", name: "Mosh Pits"},
+      {id: "4", name: "Weird conversation starters"}
     ]
   }
 ];

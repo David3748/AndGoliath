@@ -16,7 +16,7 @@ const Home: NextPage = () => {
         >
           <div className="flex items-center mb-4 md:mb-6">
             <h1 className="text-3xl md:text-4xl font-serif text-gray-100 mr-4">
-              Hello, I'm <span className="text-primary">David</span>.
+              Hi! I'm <span className="text-primary">David</span>
             </h1>
             {/* Slingshot next to name */}
             <SlingshotAnimation className="w-16 h-16" />
