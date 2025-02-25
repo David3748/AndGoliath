@@ -42,20 +42,22 @@ export const favorites: FavoriteCategory[] = [
     title: "Songs/Artists",
     createdAt: "September 1, 2023 10:10 PM",
     items: [
-      { id: "1", name: "Hallelujah - Buckley" },
-      { id: "2", name: "Vienna - Joel" },
-      { id: "3", name: "Joy /vertigo- time for three" },
-      { id: "4", name: "Forget Her - Buckley" },
-      { id: "5", name: "Sweet child o' mine /November Rain- Guns n Roses" },
-      { id: "6", name: "She used to be mine/Gravity- Sara bareilles" },
-      { id: "7", name: "Take me to Church - Hozier" },
-      { id: "8", name: "Iris - goo goo dolls" },
-      { id: "9", name: "Come Downstairs and Say Hello - Guster" },
-      { id: "10", name: "She's always a women - Billy Joel" },
-      { id: "11", name: "Could have been me - The Struts" },
-      { id: "12", name: "Under Pressure - Queen/ Bowie" },
-      { id: "13", name: "Am I Dreaming Metro Booming" },
-      { id: "14", name: "Rolling in the Deep - Adele" }
+      { id: "1", name: "Hallelujah - Jeff Buckley", url: "https://www.youtube.com/watch?v=y8AWFf7EAc4" },
+      { id: "2", name: "Vienna - Billy Joel", url: "https://www.youtube.com/watch?v=wccRif2DaGs" },
+      { id: "3", name: "Joy - Time for Three", url: "https://www.youtube.com/watch?v=c5YqMggpdE8" },
+      { id: "4", name: "Forget Her - Jeff Buckley", url: "https://www.youtube.com/watch?v=HO0svGjVEP8" },
+      { id: "5", name: "Sweet Child o' Mine - Guns N' Roses", url: "https://www.youtube.com/watch?v=1w7OgIMMRc4" },
+      { id: "6", name: "November Rain - Guns N' Roses", url: "https://www.youtube.com/watch?v=8SbUC-UaAxE" },
+      { id: "7", name: "She Used to Be Mine - Sara Bareilles", url: "https://www.youtube.com/watch?v=53GIADHxVzM" },
+      { id: "8", name: "Gravity - Sara Bareilles", url: "https://www.youtube.com/watch?v=rEXhAMtbaec" },
+      { id: "9", name: "Take Me to Church - Hozier", url: "https://www.youtube.com/watch?v=PVjiKRfKpPI" },
+      { id: "10", name: "Iris - Goo Goo Dolls", url: "https://www.youtube.com/watch?v=NdYWuo9OFAw" },
+      { id: "11", name: "Come Downstairs and Say Hello - Guster", url: "https://www.youtube.com/watch?v=LhJrQ444spg" },
+      { id: "12", name: "She's Always a Woman - Billy Joel", url: "https://www.youtube.com/watch?v=Cx3QmqV2pHg" },
+      { id: "13", name: "Could Have Been Me - The Struts", url: "https://www.youtube.com/watch?v=ARhk9K_mviE" },
+      { id: "14", name: "Under Pressure - Queen & David Bowie", url: "https://www.youtube.com/watch?v=a01QQZyl-_I" },
+      { id: "15", name: "Am I Dreaming - Metro Boomin", url: "https://www.youtube.com/watch?v=7aUZtDaxS60" },
+      { id: "16", name: "Rolling in the Deep - Adele", url: "https://www.youtube.com/watch?v=rYEDA3JcQqw" }
     ]
   },
   {
@@ -136,9 +138,8 @@ export const favorites: FavoriteCategory[] = [
     title: "Paintings",
     createdAt: "December 8, 2024 12:26 AM",
     items: [
-      { id: "1", name: "Starry Night - Van Gogh" },
-      { id: "2", name: "The Persistence of Memory - Salvador Dalí" },
-      { id: "3", name: "The Scream - Edvard Munch" }
+      { id: "1", name: "North Cape By Moonlight" },
+      { id: "2", name: "Among the Sierra Nevada" }
     ]
   },
   {
@@ -146,8 +147,6 @@ export const favorites: FavoriteCategory[] = [
     title: "Just random shit",
     createdAt: "February 21, 2025 9:42 PM",
     items: [
-      { id: "1", name: "North Cape By Moonlight" },
-      { id: "2", name: "Among the Sierra Nevada" }
     ]
   }
 ];
