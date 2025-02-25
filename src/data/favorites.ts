@@ -124,13 +124,13 @@ export const favorites: FavoriteCategory[] = [
     title: "Poems",
     createdAt: "April 13, 2024 5:24 PM",
     items: [
-      { id: "1", name: "Mountain Dew Commercial Disguised as a Love Poem" },
-      { id: "2", name: "Those Dying Then" },
-      { id: "3", name: "Do Not Go Gentle Into That Good Night" },
-      { id: "4", name: "Best Witchcraft is Geometry - Emily Dickinson" },
-      { id: "5", name: "I took my Power in my Hand - Emily Dickinson" },
-      { id: "6", name: "Silence is all we dread - Emily Dickinson" },
-      { id: "7", name: "Paradise is that old mansion - Emily Dickinson" }
+      { id: "1", name: "Mountain Dew Commercial Disguised as a Love Poem", url: "https://onbeing.org/poetry/mountain-dew-commercial-disguised-as-a-love-poem/" },
+      { id: "2", name: "Those Dying Then", url: "https://hellopoetry.com/poem/3762/thosedying-then/" },
+      { id: "3", name: "Do Not Go Gentle Into That Good Night", url: "https://www.poetryfoundation.org/poems/46569/do-not-go-gentle-into-that-good-night" },
+      { id: "4", name: "Best Witchcraft is Geometry - Emily Dickinson", url: "https://hellopoetry.com/poem/2433/best-witchcraft-is-geometry/" },
+      { id: "5", name: "I took my Power in my Hand - Emily Dickinson", url: "https://hellopoetry.com/poem/2973/i-took-my-power-in-my-hand/" },
+      { id: "6", name: "Silence is all we dread - Emily Dickinson", url: "https://hellopoetry.com/poem/3531/silence-is-all-we-dread/" },
+      { id: "7", name: "Paradise is that old mansion - Emily Dickinson", url: "https://hellopoetry.com/poem/3407/paradise-is-that-old-mansion/" }
     ]
   },
   {
@@ -138,8 +138,8 @@ export const favorites: FavoriteCategory[] = [
     title: "Paintings",
     createdAt: "December 8, 2024 12:26 AM",
     items: [
-      { id: "1", name: "North Cape By Moonlight" },
-      { id: "2", name: "Among the Sierra Nevada" }
+      { id: "1", name: "North Cape By Moonlight", url: "https://www.metmuseum.org/art/collection/search/441379" },
+      { id: "2", name: "Among the Sierra Nevada", url: "https://americanart.si.edu/artwork/among-sierra-nevada-california-2059" }
     ]
   },
   {
@@ -147,6 +147,8 @@ export const favorites: FavoriteCategory[] = [
     title: "Just random shit",
     createdAt: "February 21, 2025 9:42 PM",
     items: [
+      {id: "1", name: "weather"},
+      {id: "2", name: "getting lost"},
     ]
   }
 ];
