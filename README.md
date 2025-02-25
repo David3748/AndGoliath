@@ -1,6 +1,6 @@
 # And Goliath
 
-A personal website showcasing my favorite things, including books, music, movies, TV shows, and more. The site features a slingshot theme inspired by the David and Goliath story.
+A personal website
 
 ## Getting Started
 
