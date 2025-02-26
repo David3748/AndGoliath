@@ -19,7 +19,9 @@ const NewspaperSlingshotAnimation: React.FC<NewspaperSlingshotAnimationProps> = 
       const randomArticle = articles[randomIndex];
 
       // Navigate to the random article's page
-      window.location.href = `/writing/${randomArticle.slug}`;
+      setTimeout(() => {
+        window.location.href = `/writing/${randomArticle.slug}`;
+      }, 300);
     }
 
     setIsLaunched(true);
