@@ -1,38 +1,47 @@
-import React, { ReactNode, useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Head from 'next/head';
-import { motion } from 'framer-motion';
-import { FaGithub, FaLinkedin, FaBars, FaTimes, FaCalendar } from 'react-icons/fa';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
+import { motion, AnimatePresence } from 'framer-motion';
+import { FaGithub, FaTwitter, FaLinkedin, FaBars, FaTimes, FaCalendar } from 'react-icons/fa';
+import SlingshotAnimation from './SlingshotAnimation';
 
 interface LayoutProps {
-  children: ReactNode;
+  children: React.ReactNode;
   title?: string;
+  isSimple?: boolean;
 }
 
-const Layout: React.FC<LayoutProps> = ({ children, title = '&Goliath' }) => {
+const Layout: React.FC<LayoutProps> = ({ children, title = '&Goliath', isSimple = false }) => {
   const router = useRouter();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-
-  const isActive = (path: string) => {
-    return router.pathname === path;
-  };
 
   const toggleMobileMenu = () => {
     setMobileMenuOpen(!mobileMenuOpen);
   };
 
+  const closeMobileMenu = () => {
+    setMobileMenuOpen(false);
+  };
+
+  // Close mobile menu when route changes
+  useEffect(() => {
+    closeMobileMenu();
+  }, [router.pathname]);
+
+  const isActive = (pathname: string) => {
+    return router.pathname === pathname;
+  };
+
   return (
-    <div className="min-h-screen flex flex-col bg-background text-foreground">
+    <div className="flex flex-col min-h-screen bg-gray-950 text-foreground">
       <Head>
         <title>{title}</title>
-        <meta name="description" content="A personal website showcasing my favorite things" />
-        <link rel="icon" href="/favicon.svg" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <header className="py-6 md:py-8 border-b border-current-line">
-        <div className="container mx-auto px-4 max-w-3xl">
+      <header className="bg-gray-900 border-b border-gray-800 sticky top-0 z-10">
+        <div className="container mx-auto px-4 py-3 md:py-4">
           <div className="flex justify-between items-center">
             <Link
               href="/"
@@ -52,12 +61,6 @@ const Layout: React.FC<LayoutProps> = ({ children, title = '&Goliath' }) => {
             {/* Desktop Navigation */}
             <nav className="hidden md:flex items-center space-x-8">
               <Link
-                href="/"
-                className={`text-${isActive('/') ? 'primary' : 'foreground'} hover:text-primary transition-colors`}
-              >
-                Home
-              </Link>
-              <Link
                 href="/favorites"
                 className={`text-${isActive('/favorites') ? 'primary' : 'foreground'} hover:text-primary transition-colors`}
               >
@@ -69,89 +72,83 @@ const Layout: React.FC<LayoutProps> = ({ children, title = '&Goliath' }) => {
               >
                 Resume
               </Link>
+              <Link
+                href="/writing"
+                className={`text-${isActive('/writing') ? 'primary' : 'foreground'} hover:text-primary transition-colors`}
+              >
+                Writing
+              </Link>
+              <Link
+                href="/projects"
+                className={`text-${isActive('/projects') ? 'primary' : 'foreground'} hover:text-primary transition-colors`}
+              >
+                Projects
+              </Link>
             </nav>
 
             {/* Mobile Menu Button */}
             <button
               className="md:hidden text-foreground hover:text-primary transition-colors"
               onClick={toggleMobileMenu}
-              aria-label="Toggle menu"
+              aria-label="Mobile Menu"
             >
               {mobileMenuOpen ? <FaTimes size={24} /> : <FaBars size={24} />}
             </button>
           </div>
+        </div>
 
-          {/* Mobile Navigation */}
+        {/* Mobile menu */}
+        <AnimatePresence>
           {mobileMenuOpen && (
             <motion.nav
-              initial={{ opacity: 0, y: -20 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -20 }}
-              className="md:hidden mt-4 py-4 border-t border-current-line"
+              initial={{ height: 0, opacity: 0 }}
+              animate={{ height: 'auto', opacity: 1 }}
+              exit={{ height: 0, opacity: 0 }}
+              transition={{ duration: 0.3, ease: "easeInOut" }}
+              className="md:hidden overflow-hidden mt-2"
             >
               <div className="flex flex-col space-y-4">
-                <Link
-                  href="/"
-                  className={`text-${isActive('/') ? 'primary' : 'foreground'} hover:text-primary transition-colors`}
-                  onClick={() => setMobileMenuOpen(false)}
-                >
-                  Home
-                </Link>
-                <Link
-                  href="/favorites"
-                  className={`text-${isActive('/favorites') ? 'primary' : 'foreground'} hover:text-primary transition-colors`}
-                  onClick={() => setMobileMenuOpen(false)}
-                >
-                  Favorites
-                </Link>
-                <Link
-                  href="/resume"
-                  className={`text-${isActive('/resume') ? 'primary' : 'foreground'} hover:text-primary transition-colors`}
-                  onClick={() => setMobileMenuOpen(false)}
-                >
-                  Resume
-                </Link>
+                  <Link
+                    href="/favorites"
+                    className={`text-${isActive('/favorites') ? 'primary' : 'foreground'} hover:text-primary transition-colors`}
+                    onClick={() => setMobileMenuOpen(false)}
+                  >
+                    Favorites
+                  </Link>
+                  <Link
+                    href="/resume"
+                    className={`text-${isActive('/resume') ? 'primary' : 'foreground'} hover:text-primary transition-colors`}
+                    onClick={() => setMobileMenuOpen(false)}
+                  >
+                    Resume
+                  </Link>
+                  <Link
+                    href="/writing"
+                    className={`text-${isActive('/writing') ? 'primary' : 'foreground'} hover:text-primary transition-colors`}
+                    onClick={() => setMobileMenuOpen(false)}
+                  >
+                    Writing
+                  </Link>
+                  <Link
+                    href="/projects"
+                    className={`text-${isActive('/projects') ? 'primary' : 'foreground'} hover:text-primary transition-colors`}
+                    onClick={() => setMobileMenuOpen(false)}
+                  >
+                    Projects
+                  </Link>
               </div>
             </motion.nav>
           )}
-        </div>
+        </AnimatePresence>
       </header>
 
-      <main className="flex-grow container mx-auto px-4 py-8 md:py-12 max-w-3xl">
+      <main className={`flex-grow ${isSimple ? 'container mx-auto px-4 py-8' : 'container mx-auto px-4 py-8 md:py-10'}`}>
         {children}
       </main>
 
-      <footer className="py-6 md:py-8 border-t border-current-line">
-        <div className="container mx-auto px-4 max-w-3xl">
-          <div className="flex justify-center space-x-6">
-            <a
-              href="https://github.com/David3748"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-foreground hover:text-primary transition-colors"
-              aria-label="GitHub"
-            >
-              <FaGithub size={24} />
-            </a>
-            <a
-              href="https://calendly.com/lieman/30min"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-foreground hover:text-primary transition-colors"
-              aria-label="Calendly"
-            >
-              <FaCalendar size={24} />
-            </a>
-            <a
-              href="https://www.linkedin.com/in/david-lieman/"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-foreground hover:text-primary transition-colors"
-              aria-label="LinkedIn"
-            >
-              <FaLinkedin size={24} />
-            </a>
-          </div>
+      <footer className="bg-gray-900 border-t border-gray-800 py-6 md:py-8">
+        <div className="container mx-auto px-4 text-center text-gray-500 text-sm">
+          &copy; {new Date().getFullYear()} &Goliath. All rights reserved.
         </div>
       </footer>
     </div>
