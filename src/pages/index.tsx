@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 import Layout from '../components/Layout';
 import SlingshotAnimation from '../components/SlingshotAnimation';
 import Link from 'next/link';
+import { FaMapPin } from 'react-icons/fa'; // Import FaMapPin icon
 
 const Home: NextPage = () => {
   return (
@@ -20,6 +21,11 @@ const Home: NextPage = () => {
             </h1>
             {/* Slingshot next to name */}
             <SlingshotAnimation className="w-16 h-16" />
+          </div>
+
+          <div className="flex items-center text-gray-400 mb-4 md:mb-6">
+            <FaMapPin className="mr-2" /> {/* Pin icon */}
+            College Park, Maryland
           </div>
 
           <p className="text-gray-300 mb-4 md:mb-6 leading-relaxed text-base md:text-lg">
@@ -58,8 +64,6 @@ const Home: NextPage = () => {
           <h2 className="text-xl md:text-2xl font-serif mb-3 md:mb-4 text-gray-100">
             Resume
           </h2>
-
-
           <Link href="/resume">
             <motion.div
               className="inline-block px-4 py-2 md:px-5 md:py-2 border border-primary text-primary hover:bg-primary hover:text-white transition-colors text-sm md:text-base"
