@@ -1,8 +1,9 @@
 import type { NextPage } from 'next';
 import Layout from '../components/Layout';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import Link from 'next/link';
 import { useState, useEffect } from 'react';
+import { useSwipeable } from 'react-swipeable';
 
 interface Project {
   title: string;
@@ -15,31 +16,54 @@ interface ProjectsPageProps {
   projects: Project[];
 }
 
+// Variants for sliding animation based on navigation direction
+const slideVariants = {
+  initial: (direction: number) => ({
+    x: direction > 0 ? 100 : -100,
+    opacity: 0,
+  }),
+  animate: {
+    x: 0,
+    opacity: 1,
+  },
+  exit: (direction: number) => ({
+    x: direction > 0 ? -100 : 100,
+    opacity: 0,
+  }),
+};
+
 const Projects: NextPage<ProjectsPageProps> = ({ projects }) => {
   const [activeIndex, setActiveIndex] = useState(0);
   const [basePosition, setBasePosition] = useState(0);
+  const [direction, setDirection] = useState(0);
 
-  // Set base position for navigation cards on mount
   useEffect(() => {
     if (typeof window !== 'undefined') {
-      setBasePosition(window.innerWidth / 2 - 60);
+      setBasePosition(window.innerWidth / 2 - 60); // Adjust as needed
     }
   }, []);
 
-  // Enable keyboard navigation with arrow keys
+  const handleChangeIndex = (newIndex: number) => {
+    if (newIndex > activeIndex) {
+      setDirection(1);
+    } else if (newIndex < activeIndex) {
+      setDirection(-1);
+    }
+    setActiveIndex(newIndex);
+  };
+
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === 'ArrowRight') {
-        setActiveIndex((prev) => (prev + 1) % projects.length);
+        handleChangeIndex((activeIndex + 1) % projects.length);
       } else if (e.key === 'ArrowLeft') {
-        setActiveIndex((prev) => (prev - 1 + projects.length) % projects.length);
+        handleChangeIndex((activeIndex - 1 + projects.length) % projects.length);
       }
     };
     window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [projects.length]);
+  }, [activeIndex, projects.length]);
 
-  // Calculate styles for navigation cards
   const getNavigationCardStyle = (index: number) => {
     const isActive = activeIndex === index;
     const totalProjects = projects.length;
@@ -59,105 +83,88 @@ const Projects: NextPage<ProjectsPageProps> = ({ projects }) => {
         ? `translateY(${selectedOffset}px) scale(1.1)`
         : `translateY(0) scale(${1 - distance * 0.05})`,
       width: `${cardWidth}px`,
-      filter: isActive ? 'brightness(1.1)' : 'brightness(0.9)'
+      filter: isActive ? 'brightness(1.1)' : 'brightness(0.9)',
     };
   };
 
+  const swipeHandlers = useSwipeable({
+    onSwipedLeft: () => handleChangeIndex((activeIndex + 1) % projects.length),
+    onSwipedRight: () => handleChangeIndex((activeIndex - 1 + projects.length) % projects.length),
+    trackMouse: true,
+  });
+
   return (
     <Layout title="&Goliath | Projects">
-      <motion.div
-        initial={{ opacity: 0.2 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 1, delay: 0.2 }}
-        className="min-h-screen"
-      >
+      <div className="flex flex-col min-h-screen">
         <h1 className="text-2xl md:text-3xl font-serif text-foreground border-b border-current-line pb-2 mt-8 mb-12">
           Projects
         </h1>
 
-        {/* Main project display area with swipe support */}
-        <div className="mb-16">
-          <motion.div
-            key={activeIndex}
-            drag="x"
-            dragConstraints={{ left: 0, right: 0 }}
-            onDragEnd={(event, info) => {
-              const threshold = 50;
-              if (info.offset.x < -threshold && activeIndex < projects.length - 1) {
-                setActiveIndex(activeIndex + 1);
-              } else if (info.offset.x > threshold && activeIndex > 0) {
-                setActiveIndex(activeIndex - 1);
-              }
-            }}
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -20 }}
-            transition={{ duration: 0.5 }}
-            className="bg-gray-900 p-6 rounded-lg border border-gray-800 shadow-lg"
-            role="region"
-            aria-label={`Project details for ${projects[activeIndex].title}`}
-          >
-            <div className="flex justify-between items-start mb-4">
-              <Link
-                href={projects[activeIndex].githubUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="block hover:underline"
-              >
-                <h2 className="text-xl md:text-2xl font-medium text-gray-100 hover:text-primary transition-colors">
-                  <span className="text-primary">
-                    {projects[activeIndex].title.charAt(0)}
-                  </span>
-                  {projects[activeIndex].title.slice(1)}
-                </h2>
-              </Link>
-              <span className="bg-gray-800 text-xs px-2 py-1 rounded-full text-gray-400">
-                {activeIndex + 1} / {projects.length}
-              </span>
-            </div>
-
-            <p className="text-gray-400 mb-6 text-lg">
-              {projects[activeIndex].subtitle}
-            </p>
-
-            <ul className="flex flex-wrap mb-6">
-              {projects[activeIndex].technologies.map((tech, techIndex) => (
-                <li
-                  key={techIndex}
-                  className="bg-gray-800 text-primary rounded-full px-3 py-1 mr-2 mb-2 text-sm"
+        {/* Main project display area with fixed height to prevent overlap */}
+        <div className="relative" style={{ height: '300px' }} {...swipeHandlers}>
+          <AnimatePresence initial={false} custom={direction}>
+            <motion.div
+              key={activeIndex}
+              custom={direction}
+              variants={slideVariants}
+              initial="initial"
+              animate="animate"
+              exit="exit"
+              transition={{ type: 'spring', stiffness: 100, damping: 20 }}
+              className="bg-gray-900 p-6 rounded-lg border border-gray-800 shadow-lg absolute w-full"
+            >
+              {/* Project content (same as before) */}
+              <div className="flex justify-between items-start mb-4">
+                <Link
+                  href={projects[activeIndex].githubUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="block hover:underline"
                 >
-                  {tech}
-                </li>
-              ))}
-            </ul>
-
-            {/* View project button */}
-            <div className="mt-6 flex justify-end">
-              <a
-                href={projects[activeIndex].githubUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="bg-gray-800 hover:bg-gray-700 text-gray-300 px-4 py-2 rounded-md text-sm transition-colors"
-                aria-label={`View project: ${projects[activeIndex].title}`}
-              >
-                View Project →
-              </a>
-            </div>
-          </motion.div>
+                  <h2 className="text-xl md:text-2xl font-medium text-gray-100 hover:text-primary transition-colors">
+                    <span className="text-primary">{projects[activeIndex].title.charAt(0)}</span>
+                    {projects[activeIndex].title.slice(1)}
+                  </h2>
+                </Link>
+                <span className="bg-gray-800 text-xs px-2 py-1 rounded-full text-gray-400">
+                  {activeIndex + 1} / {projects.length}
+                </span>
+              </div>
+              <p className="text-gray-400 mb-6 text-lg">{projects[activeIndex].subtitle}</p>
+              <ul className="flex flex-wrap mb-6">
+                {projects[activeIndex].technologies.map((tech, techIndex) => (
+                  <li
+                    key={techIndex}
+                    className="bg-gray-800 text-primary rounded-full px-3 py-1 mr-2 mb-2 text-sm"
+                  >
+                    {tech}
+                  </li>
+                ))}
+              </ul>
+              <div className="mt-6 flex justify-end">
+                <a
+                  href={projects[activeIndex].githubUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="bg-gray-800 hover:bg-gray-700 text-gray-300 px-4 py-2 rounded-md text-sm transition-colors"
+                >
+                  View Project →
+                </a>
+              </div>
+            </motion.div>
+          </AnimatePresence>
         </div>
 
-        {/* Horizontal deck navigation */}
-        <div className="relative h-32 mt-8 mb-4">
+        {/* Navigation Bar - positioned below the card display */}
+        <div className="relative h-20 mt-2">
           <div className="absolute left-1/2 transform -translate-x-1/2 w-full">
             {projects.map((project, index) => (
               <motion.div
                 key={index}
                 className="absolute top-0 h-20 bg-gray-900 rounded-md border border-gray-800 cursor-pointer transition-all duration-300 ease-out flex items-center justify-center shadow-md hover:shadow-lg"
                 style={getNavigationCardStyle(index)}
-                onClick={() => setActiveIndex(index)}
+                onClick={() => handleChangeIndex(index)}
                 whileHover={{ y: -5 }}
-                role="button"
-                aria-label={`Go to project: ${project.title}`}
               >
                 <div className="p-2 text-center">
                   <span className="block font-medium text-gray-200 truncate px-2">
@@ -168,11 +175,7 @@ const Projects: NextPage<ProjectsPageProps> = ({ projects }) => {
             ))}
           </div>
         </div>
-
-        <div className="text-center text-gray-500 text-sm mt-6">
-          Click on the cards above or use arrow keys/swipe to navigate between projects
-        </div>
-      </motion.div>
+      </div>
     </Layout>
   );
 };
