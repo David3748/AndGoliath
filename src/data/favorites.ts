@@ -57,7 +57,14 @@ export const favorites: FavoriteCategory[] = [
       { id: "12", name: "She's Always a Woman - Billy Joel", url: "https://www.youtube.com/watch?v=Cx3QmqV2pHg" },
       { id: "13", name: "Under Pressure - Queen & David Bowie", url: "https://www.youtube.com/watch?v=a01QQZyl-_I" },
       { id: "14", name: "Am I Dreaming - Metro Boomin", url: "https://www.youtube.com/watch?v=7aUZtDaxS60" },
-      { id: "15", name: "Rolling in the Deep - Adele", url: "https://www.youtube.com/watch?v=rYEDA3JcQqw" }
+      { id: "15", name: "Rolling in the Deep - Adele", url: "https://www.youtube.com/watch?v=rYEDA3JcQqw" },
+      { id: "16", name: "Fast Car - Tracy Chapman", url: "https://www.youtube.com/watch?v=yvGfVdx-gNo" },
+      { id: "17", name: "Paul Revere- Noah Kahan", url: "https://www.youtube.com/watch?v=4NJ-q6myFFI" },
+      {id: "18", name: "What Could Have Been - Sting", url:"https://www.youtube.com/watch?v=liPu1_aPH5k"},
+      {id: "19", name: "Forget Her - Jeff Buckley", url: "https://www.youtube.com/watch?v=K4J6xYIyC3Q"},
+      {id: "20", name: "Seventeen - Heathers", url: "https://www.youtube.com/watch?v=9h80Sr15n4M"},
+      {id: "21", name: "Vertigo - Time for Three", url: "https://www.youtube.com/watch?v=oIxNzElm1K4"},
+      
     ]
   },
   {
