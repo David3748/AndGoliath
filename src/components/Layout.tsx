@@ -34,7 +34,7 @@ const Layout: React.FC<LayoutProps> = ({ children, title = '&Goliath', isSimple 
   };
 
   return (
-    <div className="flex flex-col min-h-screen bg-gray-950 text-foreground">
+    <div className="flex flex-col min-h-screen bg-gray-950 text-foreground w-full">
       <Head>
         <title>{title}</title>
         <link rel="icon" href="/favicon.ico" />
