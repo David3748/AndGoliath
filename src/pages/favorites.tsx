@@ -88,7 +88,8 @@ const Favorites: NextPage = () => {
         </div>
 
         <h1 className="text-2xl md:text-3xl font-serif mb-4 md:mb-6 text-foreground border-b border-current-line pb-2 mt-8">
-          Random Favorites
+          These are a few of my favorite things
+
         </h1>
 
         <div className="space-y-6">
