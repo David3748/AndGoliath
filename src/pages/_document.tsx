@@ -10,6 +10,7 @@ class MyDocument extends Document {
     return (
       <Html lang="en">
         <Head>
+          <link rel="icon" href="/favicon.ico" />
           <link rel="preconnect" href="https://fonts.googleapis.com" />
           <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
           <link
@@ -26,4 +27,4 @@ class MyDocument extends Document {
   }
 }
 
-export default MyDocument; 
+export default MyDocument;
