@@ -89,7 +89,6 @@ const Favorites: NextPage = () => {
 
         <h1 className="text-2xl md:text-3xl font-serif mb-4 md:mb-6 text-foreground border-b border-current-line pb-2 mt-8">
           These are a few of my favorite things
-
         </h1>
 
         <div className="space-y-6">
@@ -127,18 +126,6 @@ const Favorites: NextPage = () => {
           >
             But wait, there's more
           </button>
-
-          <div>
-            <Link href="/">
-              <motion.div
-                className="inline-block px-4 py-2 md:px-6 md:py-3 border border-primary text-primary hover:bg-primary hover:text-background transition-colors text-sm md:text-base"
-                whileHover={{ y: -2 }}
-                whileTap={{ y: 0 }}
-              >
-                Back to Home
-              </motion.div>
-            </Link>
-          </div>
         </div>
       </motion.div>
     </Layout>
