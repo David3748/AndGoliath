@@ -91,17 +91,17 @@ const Projects: NextPage<ProjectsPageProps> = ({ projects }) => {
     onSwipedLeft: () => handleChangeIndex((activeIndex + 1) % projects.length),
     onSwipedRight: () => handleChangeIndex((activeIndex - 1 + projects.length) % projects.length),
     trackMouse: true,
-    });
+  });
 
   return (
     <Layout title="&Goliath | Projects">
-      <div className="flex flex-col min-h-[calc(100vh-350px)]"> {/* Modified min-h-screen */}
+      <div className="flex flex-col min-h-screen">
         <h1 className="text-2xl md:text-3xl font-serif text-foreground border-b border-current-line pb-2 mt-8 mb-12">
           Projects
         </h1>
 
-        {/* Main project display area - Removed mb-16 and added a wrapper div */}
-        <div className="relative" style={{ height: 'auto' }} {...swipeHandlers}>
+        {/* Main project display area with fixed height to prevent overlap */}
+        <div className="relative" style={{ height: '300px' }} {...swipeHandlers}>
           <AnimatePresence initial={false} custom={direction}>
             <motion.div
               key={activeIndex}
@@ -154,8 +154,9 @@ const Projects: NextPage<ProjectsPageProps> = ({ projects }) => {
             </motion.div>
           </AnimatePresence>
         </div>
-        {/* Navigation Bar - Stacking with absolute positioning */}
-        <div className="mt-auto relative h-24 mb-0">
+
+        {/* Navigation Bar - positioned below the card display */}
+        <div className="relative h-20 mt-2">
           <div className="absolute left-1/2 transform -translate-x-1/2 w-full">
             {projects.map((project, index) => (
               <motion.div
