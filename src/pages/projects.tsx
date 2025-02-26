@@ -22,13 +22,14 @@ const Projects: NextPage<ProjectsPageProps> = ({ projects }) => {
   const getNavigationCardStyle = (index: number) => {
     const isActive = activeIndex === index;
     const totalProjects = projects.length;
-    const cardWidth = 80; // Width of each navigation card
+    const cardWidth = 120; // Increased width for project names
     const selectedOffset = -20; // How much the selected card moves up
     
     // Calculate horizontal position
-    const basePosition = 50; // Starting x position of the first card
-    const offset = (index - activeIndex) * 40; // Horizontal spacing
+    const basePosition = typeof window !== 'undefined' ? window.innerWidth / 2 - 60 : 0; // Starting x position of the first card, changed to center
+    const offset = (index - activeIndex) * 60; // Increased horizontal spacing
     const centerPosition = basePosition + offset;
+    
     
     // Calculate z-index to determine stacking order
     const distance = Math.abs(index - activeIndex);
@@ -109,8 +110,8 @@ const Projects: NextPage<ProjectsPageProps> = ({ projects }) => {
 
         {/* Horizontal deck navigation */}
         <div className="relative h-32 mt-8 mb-4">
-          <div className="absolute left-1/2 transform -translate-x-1/2 w-full">
-            {projects.map((project, index) => (
+        <div className="absolute left-1/2 transform -translate-x-1/2 w-full">
+        {projects.map((project, index) => (
               <motion.div
                 key={index}
                 className="absolute top-0 h-20 bg-gray-900 rounded-md border border-gray-800 cursor-pointer transition-all duration-300 ease-out flex items-center justify-center shadow-md hover:shadow-lg"
@@ -119,8 +120,9 @@ const Projects: NextPage<ProjectsPageProps> = ({ projects }) => {
                 whileHover={{ y: -5 }}
               >
                 <div className="p-2 text-center">
-                  <span className="block text-xs text-gray-400">Project</span>
-                  <span className="block font-medium text-gray-200">{index + 1}</span>
+                  <span className="block font-medium text-gray-200 truncate px-2">
+                    {project.title}
+                  </span>
                 </div>
               </motion.div>
             ))}
@@ -147,21 +149,21 @@ export const getStaticProps = async () => {
     },
     {
       title: 'Project Two',
-      subtitle: 'Another interesting project.',
-      technologies: ['Vue.js', 'Firebase'],
-      githubUrl: 'https://github.com/your-username/project-two',
+      subtitle: 'TBD',
+      technologies: [],
+      githubUrl: '',
     },
     {
       title: 'Project Three',
-      subtitle: 'This project is about solving a complex problem.',
-      technologies: ['Python', 'Django', 'PostgreSQL'],
-      githubUrl: 'https://github.com/your-username/project-three',
+      subtitle: 'TBD',
+      technologies: [],
+      githubUrl: '',
     },
     {
       title: 'Project Four',
-      subtitle: 'A mobile application for iOS and Android.',
-      technologies: ['React Native', 'Firebase'],
-      githubUrl: 'https://github.com/your-username/project-four',
+      subtitle: 'TBD',
+      technologies: [],
+      githubUrl: '',
     },
     // Add more projects here
   ];
