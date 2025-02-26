@@ -154,12 +154,6 @@ const Projects: NextPage<ProjectsPageProps> = ({ projects }) => {
             </motion.div>
           </AnimatePresence>
         </div>
-
-        {/* Helper Text - Removed mt-6 */}
-        <div className="text-center text-gray-500 text-sm">
-          Click on the cards or use arrow keys to navigate between projects
-        </div>
-
         {/* Navigation Bar - Stacking with absolute positioning */}
         <div className="mt-auto relative h-24 mb-0">
           <div className="absolute left-1/2 transform -translate-x-1/2 w-full">
