@@ -146,9 +146,37 @@ const Layout: React.FC<LayoutProps> = ({ children, title = '&Goliath', isSimple 
         {children}
       </main>
 
-      <footer className="bg-gray-900 border-t border-gray-800 py-6 md:py-8">
-        <div className="container mx-auto px-4 text-center text-gray-500 text-sm">
-          &copy; {new Date().getFullYear()} &Goliath. All rights reserved.
+      <footer className="py-6 md:py-8 border-t border-current-line">
+        <div className="container mx-auto px-4 max-w-3xl">
+          <div className="flex justify-center space-x-6">
+            <a
+              href="https://github.com/David3748"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-foreground hover:text-primary transition-colors"
+              aria-label="GitHub"
+            >
+              <FaGithub size={24} />
+            </a>
+            <a
+              href="https://calendly.com/lieman/30min"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-foreground hover:text-primary transition-colors"
+              aria-label="Calendly"
+            >
+              <FaCalendar size={24} />
+            </a>
+            <a
+              href="https://www.linkedin.com/in/david-lieman/"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-foreground hover:text-primary transition-colors"
+              aria-label="LinkedIn"
+            >
+              <FaLinkedin size={24} />
+            </a>
+          </div>
         </div>
       </footer>
     </div>
