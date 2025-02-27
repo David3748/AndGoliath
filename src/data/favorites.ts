@@ -127,7 +127,12 @@ export const favorites: FavoriteCategory[] = [
       { id: "3", name: "Notes on Nigeria- Matt Lakeman ", url: "https://mattlakeman.org/2023/05/09/notes-on-nigeria/" },
       { id: "4", name: "The Copenhagen Interpretation of Ethics", url: "https://forum.effectivealtruism.org/posts/QXpxioWSQcNuNnNTy/the-copenhagen-interpretation-of-ethics" },
       { id: "5", name: "Does My Son Know You?", url: "https://www.theringer.com/2022/3/3/22956353/fatherhood-cancer-jonathan-tjarks" },
-      {id: "6", name: "…And I Show You How Deep The Rabbit Hole Goes", url: "https://slatestarcodex.com/2015/06/02/and-i-show-you-how-deep-the-rabbit-hole-goes/" }
+      {id: "6", name: "…And I Show You How Deep The Rabbit Hole Goes", url: "https://slatestarcodex.com/2015/06/02/and-i-show-you-how-deep-the-rabbit-hole-goes/" },
+      {id: "7", name: "Our Business Is Killing", url: "https://slate.com/human-interest/2023/02/veterinarians-euthanasia-mental-health-dogs-cats.html"},
+      {id: "8", name: "Dentists are bad", url: "https://www.slowboring.com/p/dentists-are-bad"},
+      {id: "9", name: "Forgetting Taylor Swift", url: "https://thelampmagazine.com/issues/issue-25/forgetting-taylor-swift"},
+      {id:"10", name: "Do the Real Thing" , url: "https://www.scotthyoung.com/blog/2020/05/04/do-the-real-thing/"}
+
     ]
   },
   {
