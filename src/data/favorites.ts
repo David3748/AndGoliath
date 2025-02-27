@@ -74,10 +74,9 @@ export const favorites: FavoriteCategory[] = [
     items: [
       { id: "1", name: "The Shawshank Redemption" },
       { id: "2", name: "Godfather Part 2" },
-      { id: "3", name: "Across the Spider Verse" },
-      { id: "4", name: "Dune 2" },
-      { id: "5", name: "Into the Spider Verse" },
-      { id: "6", name: "A Man Called Otto" }
+      { id: "3", name: "Dune 2" },
+      { id: "4", name: "Into the Spider Verse" },
+      { id: "5", name: "A Man Called Otto" }
     ]
   },
   {
