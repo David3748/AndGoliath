@@ -51,13 +51,52 @@ const getRandomFavoritesFromDifferentCategories = (
 const Favorites: NextPage = () => {
   const [randomFavorites, setRandomFavorites] = useState<SelectedItem[]>([]);
   const [excludedByCategory, setExcludedByCategory] = useState<ExcludedByCategory>({});
+  const [viewportHeight, setViewportHeight] = useState(0);
+
+  // Calculate how many items are needed to fill the screen
+  const calculateItemsNeeded = () => {
+    if (viewportHeight === 0) return 5; // Default fallback
+    
+    // Approximate space taken by other elements (header, buttons, margins, etc.)
+    // Increased to ensure "But wait, there's more" button is visible
+    const otherElementsHeight = 450; // Adjusted to reserve space for the button
+    const availableHeight = viewportHeight - otherElementsHeight;
+    
+    // Approximate height of each favorite item including margins
+    const itemHeight = 120; // Adjust based on actual item height
+    
+    // Calculate how many items would fit, ensuring we don't completely fill the viewport
+    const itemsNeeded = Math.max(3, Math.ceil(availableHeight / itemHeight));
+    
+    // Limit to available categories if needed
+    return Math.min(itemsNeeded, favorites.length);
+  };
 
   useEffect(() => {
-    // Initial selection from different categories.
-    const { selectedItems, updatedExcluded } = getRandomFavoritesFromDifferentCategories(favorites);
-    setRandomFavorites(selectedItems);
-    setExcludedByCategory(updatedExcluded);
+    // Get initial viewport height
+    setViewportHeight(window.innerHeight);
+    
+    // Update on window resize
+    const handleResize = () => {
+      setViewportHeight(window.innerHeight);
+    };
+    
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
   }, []);
+
+  useEffect(() => {
+    // Only generate favorites when we have viewport height
+    if (viewportHeight > 0) {
+      const itemCount = calculateItemsNeeded();
+      const { selectedItems, updatedExcluded } = getRandomFavoritesFromDifferentCategories(
+        favorites, 
+        itemCount
+      );
+      setRandomFavorites(selectedItems);
+      setExcludedByCategory(updatedExcluded);
+    }
+  }, [viewportHeight]);
 
   const openRandomSong = () => {
     const songsArtistsCategory = favorites.find(category => category.id === 'songs-artists');
@@ -90,10 +129,10 @@ const Favorites: NextPage = () => {
   };
 
   const handleMoreFavorites = () => {
-    // Each click selects one random item per category, using existing per‑category exclusions.
+    const itemCount = calculateItemsNeeded();
     const { selectedItems, updatedExcluded } = getRandomFavoritesFromDifferentCategories(
       favorites,
-      5,
+      itemCount,
       excludedByCategory
     );
     setRandomFavorites(selectedItems);
@@ -103,21 +142,21 @@ const Favorites: NextPage = () => {
   return (
     <Layout title="&Goliath | My Favorite Things">
       <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.8 }}>
-        <div className="mt-12 md:mt-16 flex justify-center space-x-8">
-          <div className="text-center">
-            <p className="text-sm text-primary mb-2">Random Song</p>
-            <SlingshotAnimation className="w-16 h-16" onLaunch={openRandomSong} />
-          </div>
+        <div className="flex flex-col md:flex-row md:items-end justify-between mb-6">
+          <h1 className="text-2xl md:text-3xl font-serif text-foreground border-b border-current-line pb-2 mt-8">
+            These are a few of my favorite things
+          </h1>
+          
+          <div className="flex justify-center space-x-8 mb-4 md:mb-0">
+            <div className="text-center">
+              <SlingshotAnimation className="w-12 h-12 md:w-16 md:h-16" onLaunch={openRandomSong} />
+            </div>
 
-          <div className="text-center">
-            <p className="text-sm text-primary mb-2">Random Video</p>
-            <VideoSlingshotAnimation className="w-16 h-16" onLaunch={openRandomVideo} />
+            <div className="text-center">
+              <VideoSlingshotAnimation className="w-12 h-12 md:w-16 md:h-16" onLaunch={openRandomVideo} />
+            </div>
           </div>
         </div>
-
-        <h1 className="text-2xl md:text-3xl font-serif mb-4 md:mb-6 text-foreground border-b border-current-line pb-2 mt-8">
-          These are a few of my favorite things
-        </h1>
 
         <div className="space-y-6">
           {randomFavorites.map((item, index) => (

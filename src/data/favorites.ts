@@ -132,7 +132,6 @@ export const favorites: FavoriteCategory[] = [
       {id: "8", name: "Dentists are bad", url: "https://www.slowboring.com/p/dentists-are-bad"},
       {id: "9", name: "Forgetting Taylor Swift", url: "https://thelampmagazine.com/issues/issue-25/forgetting-taylor-swift"},
       {id:"10", name: "Do the Real Thing" , url: "https://www.scotthyoung.com/blog/2020/05/04/do-the-real-thing/"}
-
     ]
   },
   {

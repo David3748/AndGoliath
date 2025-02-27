@@ -34,14 +34,7 @@ const slideVariants = {
 
 const Projects: NextPage<ProjectsPageProps> = ({ projects }) => {
   const [activeIndex, setActiveIndex] = useState(0);
-  const [basePosition, setBasePosition] = useState(0);
   const [direction, setDirection] = useState(0);
-
-  useEffect(() => {
-    if (typeof window !== 'undefined') {
-      setBasePosition(window.innerWidth / 2 - 60); // Adjust as needed
-    }
-  }, []);
 
   const handleChangeIndex = (newIndex: number) => {
     if (newIndex > activeIndex) {
@@ -69,14 +62,12 @@ const Projects: NextPage<ProjectsPageProps> = ({ projects }) => {
     const totalProjects = projects.length;
     const cardWidth = 120;
     const selectedOffset = -20;
-    const basePositionValue = basePosition;
     const offset = (index - activeIndex) * 60;
-    const centerPosition = basePositionValue + offset;
     const distance = Math.abs(index - activeIndex);
     const zIndex = totalProjects - distance;
 
     return {
-      left: `${centerPosition}px`,
+      left: `calc(50% + ${offset}px - ${cardWidth / 2}px)`,
       zIndex: zIndex,
       opacity: isActive ? 1 : 0.7 - distance * 0.1,
       transform: isActive
@@ -95,8 +86,8 @@ const Projects: NextPage<ProjectsPageProps> = ({ projects }) => {
 
   return (
     <Layout title="&Goliath | Projects">
-      <div className="flex flex-col min-h-screen">
-        <h1 className="text-2xl md:text-3xl font-serif text-foreground border-b border-current-line pb-2 mt-8 mb-12">
+      <div className="flex flex-col pb-12">
+        <h1 className="text-2xl md:text-3xl font-serif text-foreground border-b border-current-line pb-2 mt-6 mb-8">
           Projects
         </h1>
 
@@ -157,7 +148,7 @@ const Projects: NextPage<ProjectsPageProps> = ({ projects }) => {
 
         {/* Navigation Bar - positioned below the card display */}
         <div className="relative h-20 mt-2">
-          <div className="absolute left-1/2 transform -translate-x-1/2 w-full">
+          <div className="absolute w-full">
             {projects.map((project, index) => (
               <motion.div
                 key={index}
