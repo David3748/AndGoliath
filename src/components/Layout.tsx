@@ -178,6 +178,9 @@ const Layout: React.FC<LayoutProps> = ({ children, title = '&Goliath', isSimple 
             </a>
           </div>
         </div>
+        <div className="py-6 text-center text-gray-400 text-sm">
+          &copy; {new Date().getFullYear()} David Lieman. All rights reserved.
+        </div>
       </footer>
     </div>
   );
