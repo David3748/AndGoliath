@@ -6,6 +6,7 @@ import Link from 'next/link';
 import { useEffect, useState } from 'react';
 import SlingshotAnimation from '../components/musicNote';
 import VideoSlingshotAnimation from '../components/Slingshot Music Video Animation';
+import { TypeAnimation } from 'react-type-animation'; // Import TypeAnimation
 
 interface SelectedItem extends FavoriteItem {
   category: string;
@@ -56,18 +57,18 @@ const Favorites: NextPage = () => {
   // Calculate how many items are needed to fill the screen
   const calculateItemsNeeded = () => {
     if (viewportHeight === 0) return 5; // Default fallback
-    
+
     // Approximate space taken by other elements (header, buttons, margins, etc.)
     // Increased to ensure "But wait, there's more" button is visible
     const otherElementsHeight = 450; // Adjusted to reserve space for the button
     const availableHeight = viewportHeight - otherElementsHeight;
-    
+
     // Approximate height of each favorite item including margins
     const itemHeight = 120; // Adjust based on actual item height
-    
+
     // Calculate how many items would fit, ensuring we don't completely fill the viewport
     const itemsNeeded = Math.max(3, Math.ceil(availableHeight / itemHeight));
-    
+
     // Limit to available categories if needed
     return Math.min(itemsNeeded, favorites.length);
   };
@@ -75,12 +76,12 @@ const Favorites: NextPage = () => {
   useEffect(() => {
     // Get initial viewport height
     setViewportHeight(window.innerHeight);
-    
+
     // Update on window resize
     const handleResize = () => {
       setViewportHeight(window.innerHeight);
     };
-    
+
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
   }, []);
@@ -90,7 +91,7 @@ const Favorites: NextPage = () => {
     if (viewportHeight > 0) {
       const itemCount = calculateItemsNeeded();
       const { selectedItems, updatedExcluded } = getRandomFavoritesFromDifferentCategories(
-        favorites, 
+        favorites,
         itemCount
       );
       setRandomFavorites(selectedItems);
@@ -144,9 +145,34 @@ const Favorites: NextPage = () => {
       <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.8 }}>
         <div className="flex flex-col md:flex-row md:items-end justify-between mb-6">
           <h1 className="text-2xl md:text-3xl font-serif text-foreground border-b border-current-line pb-2 mt-8">
-            These are a few of my favorite things
+            <TypeAnimation
+              sequence={[
+                'Raindrops on roses and whiskers on kittens',
+                200, // Wait 1s
+                'Bright copper kettles and warm woolen mittens',
+                200, // Wait 1s
+                'Brown paper packages tied up with strings',
+                200, // Wait 1s
+                'These are a few of my favorite things',
+                () => {
+                  // Replace with the final text without animation
+                  setTimeout(() => {
+                    const heading = document.querySelector('h1.text-2xl.md\\:text-3xl.font-serif.text-foreground.border-b.border-current-line.pb-2.mt-8');
+                    if (heading) {
+                      heading.textContent = 'These are a few of my favorite things';
+                    }
+                  }, 0);
+                }
+              ]}
+              speed={50}
+              deletionSpeed={50}
+              repeat={0}
+              cursor={false}
+              wrapper="span"
+              style={{ display: 'inline-block' }} // To ensure inline behavior
+            />
           </h1>
-          
+
           <div className="flex justify-center space-x-8 mb-4 md:mb-0">
             <div className="text-center">
               <SlingshotAnimation className="w-12 h-12 md:w-16 md:h-16" onLaunch={openRandomSong} />
