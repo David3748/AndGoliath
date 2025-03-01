@@ -147,8 +147,8 @@ const Layout: React.FC<LayoutProps> = ({ children, title = '&Goliath', isSimple 
       </main>
 
       <footer className="py-6 md:py-8 border-t border-current-line">
-        <div className="container mx-auto px-4 max-w-3xl flex justify-between items-center">
-          <div className="flex-grow flex justify-center space-x-6">
+        <div className="container mx-auto px-4 max-w-3xl flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
+          <div className="flex justify-center space-x-6">
             <a
               href="https://github.com/David3748"
               target="_blank"
@@ -177,7 +177,7 @@ const Layout: React.FC<LayoutProps> = ({ children, title = '&Goliath', isSimple 
               <FaLinkedin size={24} />
             </a>
           </div>
-          <div className="absolute bottom-0 right-0 text-gray-400 text-xs">
+          <div className="text-gray-400 text-xs">
             &copy; {new Date().getFullYear()} David Lieman.
           </div>
         </div>
