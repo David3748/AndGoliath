@@ -4,7 +4,6 @@ import React, { useState } from 'react';
 import Layout from '../components/Layout';
 import { resumeData } from '../data/resume';
 import { FaLinkedin, FaEnvelope, FaMapMarkerAlt, FaPhone } from 'react-icons/fa';
-import { TypeAnimation } from 'react-type-animation'; // Import TypeAnimation
 
 // Document Slingshot Animation Component
 const DocumentSlingshotAnimation: React.FC<{ onLaunch?: () => void }> = ({ onLaunch }) => {
@@ -230,58 +229,20 @@ const Resume: NextPage = () => {
       >
         {/* Header Section */}
         <div className="text-center mb-8">
-          <h1 className="text-3xl md:text-4xl font-serif text-gray-100 mb-2">
-            <TypeAnimation
-              sequence={[
-                resumeData.name, // Type name from resumeData
-              ]}
-              speed={50}
-              repeat={0}
-              cursor={false}
-              wrapper="span"
-            />
-          </h1>
-          <p className="text-xl text-primary mb-4">
-            <TypeAnimation
-              sequence={[
-                resumeData.title, // Type title from resumeData
-              ]}
-              speed={50}
-              repeat={0}
-              cursor={false}
-              wrapper="span"
-            />
-          </p>
+          <h1 className="text-3xl md:text-4xl font-serif text-gray-100 mb-2">{resumeData.name}</h1>
+          <p className="text-xl text-primary mb-4">{resumeData.title}</p>
           <div className="flex flex-wrap justify-center gap-4 text-sm text-gray-300">
             <a
               href={`mailto:${resumeData.contact.email}`}
               className="flex items-center gap-2 hover:text-primary transition-colors"
             >
-              <FaEnvelope />
-              <TypeAnimation
-                sequence={[
-                  resumeData.contact.email,
-                ]}
-                speed={50}
-                repeat={0}
-                cursor={false}
-                wrapper="span"
-              />
+              <FaEnvelope /> {resumeData.contact.email}
             </a>
             <a
               href={`tel:${resumeData.contact.phone}`}
               className="flex items-center gap-2 hover:text-primary transition-colors"
             >
-              <FaPhone />
-              <TypeAnimation
-                sequence={[
-                  resumeData.contact.phone,
-                ]}
-                speed={50}
-                repeat={0}
-                cursor={false}
-                wrapper="span"
-              />
+              <FaPhone /> {resumeData.contact.phone}
             </a>
             <a
               href={`https://${resumeData.contact.linkedin}`}
@@ -292,16 +253,7 @@ const Resume: NextPage = () => {
               <FaLinkedin /> LinkedIn
             </a>
             <span className="flex items-center gap-2">
-              <FaMapMarkerAlt />
-              <TypeAnimation
-                sequence={[
-                  resumeData.contact.location,
-                ]}
-                speed={50}
-                repeat={0}
-                cursor={false}
-                wrapper="span"
-              />
+              <FaMapMarkerAlt /> {resumeData.contact.location}
             </span>
           </div>
         </div>
