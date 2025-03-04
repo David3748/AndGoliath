@@ -63,9 +63,7 @@ export const favorites: FavoriteCategory[] = [
       {id: "18", name: "What Could Have Been - Sting", url:"https://www.youtube.com/watch?v=liPu1_aPH5k"},
       {id: "19", name: "Forget Her - Jeff Buckley", url: "https://www.youtube.com/watch?v=K4J6xYIyC3Q"},
       {id: "20", name: "Seventeen - Heathers", url: "https://www.youtube.com/watch?v=9h80Sr15n4M"},
-      {id: "21", name: "Vertigo - Time for Three", url: "https://www.youtube.com/watch?v=oIxNzElm1K4"},
-      {id: "22", name: "How they fool ya", url: "https://www.youtube.com/watch?v=NOCsdhzo6Jg"}
-      
+      {id: "21", name: "Vertigo - Time for Three", url: "https://www.youtube.com/watch?v=oIxNzElm1K4"}      
     ]
   },
   {
@@ -116,7 +114,9 @@ export const favorites: FavoriteCategory[] = [
       { id: "2", name: "Kawhi Trade Game of Zones", url: "https://www.youtube.com/watch?v=cTU8iRdwfGc" },
       { id: "3", name: "The Broccoli Tree: A Parable", url: "https://youtu.be/ESyJop31cmY?si=dVQvONjm4rlarbvQ" },
       {id: "4", name:"William Belden Noble Lecture Series: John Green", url:"https://youtube.com/live/EQ3DakqVrvo?feature=share"},
-      {id: "5", name: "THE IMPOSSIBLE HAS HAPPENED", url: "https://www.youtube.com/watch?v=OVFsq9FQBlc"}
+      {id: "5", name: "THE IMPOSSIBLE HAS HAPPENED", url: "https://www.youtube.com/watch?v=OVFsq9FQBlc"},
+      {id: "6", name: "How they fool ya", url: "https://www.youtube.com/watch?v=NOCsdhzo6Jg"},
+      {id: "7", name: "Ain't no twin primes", url: "https://www.youtube.com/watch?v=djzKCZHeVjY" },)
     ]
   },
   {
