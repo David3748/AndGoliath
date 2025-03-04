@@ -64,6 +64,7 @@ export const favorites: FavoriteCategory[] = [
       {id: "19", name: "Forget Her - Jeff Buckley", url: "https://www.youtube.com/watch?v=K4J6xYIyC3Q"},
       {id: "20", name: "Seventeen - Heathers", url: "https://www.youtube.com/watch?v=9h80Sr15n4M"},
       {id: "21", name: "Vertigo - Time for Three", url: "https://www.youtube.com/watch?v=oIxNzElm1K4"},
+      {id: "22", name: "How they fool ya", url: "https://www.youtube.com/watch?v=NOCsdhzo6Jg"}
       
     ]
   },
