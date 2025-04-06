@@ -183,13 +183,13 @@ export const getStaticProps = async () => {
       title: 'Are We Judgemental',
       subtitle: 'An analysis comparing UMD CS students and Redditors on AITA questions ',
       technologies: ['Python', 'pandas', 'scipy', 'numpy', 'Jupyter Notebooks', 'praw', 'Reddit API'],
-      githubUrl: '',
+      githubUrl: 'https://david3748.github.io/Are-We-Judgemental-Website/',
     },
     {
       title: 'Prediction Market',
       subtitle: 'Prediction market website for collective behavior class',
       technologies: ['React', 'Tailwind CSS', 'JavaScript', 'JSONBin.io']      ,
-      githubUrl: 'https://github.com/David3748/prediction-market',
+      githubUrl: 'https://david3748.github.io/prediction-market/',
     },
     {
       title: 'Project Four',
