@@ -182,7 +182,7 @@ export const getStaticProps = async () => {
     {
       title: 'Are We Judgemental',
       subtitle: 'An analysis comparing UMD CS students and Redditors on AITA questions ',
-      technologies: ["Pandas", 'Jupyter Notebooks', 'sci-kit learn'],
+      technologies: ['Python', 'pandas', 'scipy', 'numpy', 'Jupyter Notebooks', 'praw', 'Reddit API'],
       githubUrl: '',
     },
     {
