@@ -77,6 +77,7 @@ export const favorites: FavoriteCategory[] = [
       { id: "4", name: "Into the Spider Verse" },
       { id: "5", name: "A Man Called Otto" },
       {id: "6", name: "Eternal Sunsine of the Spotless Mind" },
+      {id: "7", name:"Pride & Prejudice(2005)`" },
     ]
   },
   {
@@ -116,7 +117,8 @@ export const favorites: FavoriteCategory[] = [
       {id: "4", name:"William Belden Noble Lecture Series: John Green", url:"https://youtube.com/live/EQ3DakqVrvo?feature=share"},
       {id: "5", name: "THE IMPOSSIBLE HAS HAPPENED", url: "https://www.youtube.com/watch?v=OVFsq9FQBlc"},
       {id: "6", name: "How they fool ya", url: "https://www.youtube.com/watch?v=NOCsdhzo6Jg"},
-      {id: "7", name: "Ain't no twin primes", url: "https://www.youtube.com/watch?v=djzKCZHeVjY" },)
+      {id: "7", name: "Ain't no twin primes", url: "https://www.youtube.com/watch?v=djzKCZHeVjY" },
+      {"id": "8", name: "The Lizzie Bennet Diaries", url: "https://youtu.be/KisuGP2lcPs?si=cArOtZgNk5DKxXP4" },
     ]
   },
   {
@@ -168,6 +170,15 @@ export const favorites: FavoriteCategory[] = [
       {id: "2", name: "getting lost"},
       {id: "3", name: "Mosh Pits"},
       {id: "4", name: "Weird conversation starters"}
+    ]
+  },
+  {
+    id: 'quotes',
+    title: "Quotes",
+    createdAt: "February 21, 2025 9:42 PM",
+    items: [
+      {id: "1", name: "“I went to the woods because I wished to live deliberately... I wanted to live deep and suck out all the marrow of life... to put rout all that was not life; and not, when I came to die, discover that I had not lived.”- thoreau"},
+      {id: "2", name: "Do I contradict myself?Very well then I contradict myself,(I am large, I contain multitudes.)- Whitman "},
     ]
   }
 ];

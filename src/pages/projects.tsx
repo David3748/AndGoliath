@@ -180,16 +180,16 @@ export const getStaticProps = async () => {
       githubUrl: 'https://github.com/David3748/AndGoliath',
     },
     {
-      title: 'Project Two',
-      subtitle: 'TBD',
-      technologies: [],
+      title: 'Are We Judgemental',
+      subtitle: 'An analysis comparing UMD CS students and Redditors on AITA questions ',
+      technologies: ["Pandas", 'Jupyter Notebooks', 'sci-kit learn'],
       githubUrl: '',
     },
     {
-      title: 'Project Three',
-      subtitle: 'TBD',
-      technologies: [],
-      githubUrl: '',
+      title: 'Prediction Market',
+      subtitle: 'Prediction market website for collective behavior class',
+      technologies: ['React', 'Tailwind CSS', 'JavaScript', 'JSONBin.io']      ,
+      githubUrl: 'https://github.com/David3748/prediction-market',
     },
     {
       title: 'Project Four',
