@@ -119,7 +119,7 @@ const CardDeck: React.FC<{ projects: Project[] }> = ({ projects = [] }) => {
             transition={{ duration: 0.5 }}
             className="absolute bottom-[25%] text-gray-400 text-lg z-[1] pointer-events-none"
           >
-            click on David's first project
+            click on the orginal David Project
           </motion.p>
         )}
       </AnimatePresence>
