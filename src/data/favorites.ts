@@ -135,7 +135,8 @@ export const favorites: FavoriteCategory[] = [
       {id: "7", name: "Our Business Is Killing", url: "https://slate.com/human-interest/2023/02/veterinarians-euthanasia-mental-health-dogs-cats.html"},
       {id: "8", name: "Dentists are bad", url: "https://www.slowboring.com/p/dentists-are-bad"},
       {id: "9", name: "Forgetting Taylor Swift", url: "https://thelampmagazine.com/issues/issue-25/forgetting-taylor-swift"},
-      {id:"10", name: "Do the Real Thing" , url: "https://www.scotthyoung.com/blog/2020/05/04/do-the-real-thing/"}
+      {id:"10", name: "Do the Real Thing" , url: "https://www.scotthyoung.com/blog/2020/05/04/do-the-real-thing/"},
+      {id:"11", name: "The Colors of Her Coat", url: "https://www.astralcodexten.com/p/the-colors-of-her-coat"}
     ]
   },
   {

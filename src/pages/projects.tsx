@@ -2,177 +2,317 @@ import type { NextPage } from 'next';
 import Layout from '../components/Layout';
 import { motion, AnimatePresence } from 'framer-motion';
 import Link from 'next/link';
-import { useState, useEffect } from 'react';
-import { useSwipeable } from 'react-swipeable';
+import React, { useState, useEffect, useCallback, useRef } from 'react';
 
 interface Project {
   title: string;
   subtitle: string;
   technologies: string[];
   githubUrl: string;
+  id?: string;
 }
+
+type DeckProject = Project & { id: string };
+
+/* --------------------------------------------------------------------------
+// ... existing code ...
+/* --------------------------------------------------------------------------
+   Helper utilities
+   ------------------------------------------------------------------------*/
+// Restore random positioning helpers
+const randomTranslations = () => ({
+    x: Math.random() * 100 - 50, // Smaller random offset relative to fan position
+    y: Math.random() * 100 - 50,
+});
+
+const randomInitialTilt = () => ({
+  rotateX: Math.random() * 8 - 4, // Slightly less tilt
+  rotateY: Math.random() * 8 - 4,
+  rotateZ: Math.random() * 4 - 2,
+});
+
+// Restore spin duration
+const randomSpinDuration = () => Math.random() * 10 + 15; 
+
+/* --------------------------------------------------------------------------
+   CardDeck component (Fanning + Flying Animation)
+   ------------------------------------------------------------------------*/
+const CardDeck: React.FC<{ projects: Project[] }> = ({ projects = [] }) => {
+  const deck: DeckProject[] = projects.map((p, i) => {
+    const id = `${p.title.replace(/\s+/g, '-')}-${i}`.toLowerCase();
+    return { ...p, id };
+  });
+
+  const [exploded, setExploded] = useState(false);
+  const [selected, setSelected] = useState<DeckProject | null>(null);
+  // Restore positions state to store random offsets/spin
+  const [positions, setPositions] = useState<Record<string, { 
+    x: number; y: number; 
+    rotateX: number; rotateY: number; rotateZ: number; 
+    spinY: number; 
+  }>>({});
+  // State to hold viewport width
+  const [viewportWidth, setViewportWidth] = useState<number>(0);
+
+  // Ref for the drag constraints container
+  const constraintsRef = useRef(null);
+
+  // Effect to get viewport width on mount and resize
+  useEffect(() => {
+    const updateWidth = () => {
+      setViewportWidth(window.innerWidth);
+    };
+    // Set initial width
+    if (typeof window !== 'undefined') {
+      updateWidth();
+      window.addEventListener('resize', updateWidth);
+      // Cleanup listener on unmount
+      return () => window.removeEventListener('resize', updateWidth);
+    }
+    return undefined; // Return undefined if window is not available (SSR)
+  }, []);
+
+  // Restore useEffect to set random positions/spin once
+  useEffect(() => {
+    const posData: typeof positions = {};
+    deck.forEach((proj) => {
+      posData[proj.id] = { 
+        ...randomTranslations(), 
+        ...randomInitialTilt(), 
+        spinY: randomSpinDuration() 
+      };
+    });
+    setPositions(posData);
+  }, [projects]); // Re-calculate if projects change
+
+  const handleCardClick = useCallback(
+    (proj: DeckProject) => {
+      if (!exploded) {
+        setExploded(true);
+        return;
+      }
+      setSelected(proj);
+    },
+    [exploded]
+  );
+
+  // Define constants for the fan layout
+  const numCards = deck.length;
+  const cardSpacing = 150; // Increased from 50 for more horizontal spread
+  const fanAngle = 8; // Slightly increased angle for more fan
+  const arcRadius = 450; // Adjust arc slightly if needed with new spacing
+  const centerIndex = (numCards - 1) / 2;
+
+  // Define card width (based on w-48 -> 12rem -> 192px) + buffer
+  const cardWidth = 192;
+  const buffer = 20; // Px buffer from screen edge
+
+  return (
+    <div ref={constraintsRef} className="relative h-screen w-full overflow-hidden flex items-center justify-center" style={{ perspective: '1200px' }}>
+      {/* "Click to deal" Prompt */}
+      <AnimatePresence>
+        {!exploded && (
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            transition={{ duration: 0.5 }}
+            className="absolute bottom-[25%] text-gray-400 text-lg z-[1] pointer-events-none"
+          >
+            click on David's first project
+          </motion.p>
+        )}
+      </AnimatePresence>
+
+      {deck.map((proj, i) => {
+        // Get stored random positions/tilts
+        const randomPos = positions[proj.id] || { x: 0, y: 0, rotateX: 0, rotateY: 0, rotateZ: 0, spinY: 15 }; // Default fallback
+        const isSelected = selected?.id === proj.id;
+        const indexOffset = i - centerIndex;
+
+        // Calculate fanned position and rotation
+        const targetX = indexOffset * cardSpacing;
+        // Calculate Y based on an arc. Using cosine: 0 offset is lowest point.
+        const angleRad = (indexOffset * fanAngle * Math.PI) / 180; // Basic angle for rotation
+        // More pronounced arc: targetY = -Math.abs(indexOffset) * 20; // Example simple V shape
+        // Cosine arc: Higher value means lower Y position in this setup
+        const targetY = -arcRadius * (1 - Math.cos(angleRad * 0.5)); // Adjust multiplier (0.5) for arc shape
+        const targetRotateZ = indexOffset * fanAngle;
+
+        // --- Boundary Clamping Logic --- 
+        let finalX = targetX + randomPos.x;
+        let finalY = targetY + randomPos.y;
+        let yOffset = 0;
+
+        if (viewportWidth > 0) { // Only clamp if viewport width is known
+            const maxHorizontalDisplacement = (viewportWidth / 2) - (cardWidth / 2) - buffer;
+            const intendedX = targetX + randomPos.x; // Where card wants to go horizontally
+
+            if (Math.abs(intendedX) > maxHorizontalDisplacement) {
+                const clampedX = Math.sign(intendedX) * maxHorizontalDisplacement;
+                const excessX = Math.abs(intendedX) - maxHorizontalDisplacement;
+                // Apply vertical offset based on excess horizontal distance
+                // Move card further up the more it's pushed out - adjust multiplier as needed
+                yOffset = -excessX * 0.4; 
+                finalX = clampedX; // Use clamped horizontal position
+            }
+        }
+        // Apply calculated yOffset to the final Y position
+        finalY = targetY + randomPos.y + yOffset;
+        // --- End Boundary Clamping Logic ---
+
+        return (
+          <motion.div
+            key={proj.id}
+            layoutId={proj.id}
+            className="absolute cursor-pointer select-none"
+            style={{ transformStyle: 'preserve-3d' }}
+            initial={{
+              x: i * 4,          // Increased horizontal offset per card
+              y: -i * 4,         // Increased vertical offset per card
+              rotateX: 0,
+              rotateY: 0,
+              rotateZ: 0,        // Keep initial Z rotation 0 for clean stack
+              zIndex: deck.length - i // Keep zIndex layering
+            }}
+            animate={
+              exploded
+                ? isSelected
+                  ? { // Selected state: Neutral position (same as before)
+                      x: 0,
+                      y: -100, // Raise it slightly
+                      rotateX: 0,
+                      rotateY: 0, // Ensure it faces forward
+                      rotateZ: 0,
+                      zIndex: 999,
+                      scale: 1.1,
+                    }
+                  : { // Fanned out + Flying state (NO SPIN - FRONT FACING)
+                      // Use clamped/adjusted positions
+                      x: finalX,
+                      y: finalY,
+                      // Apply random tilt
+                      rotateX: randomPos.rotateX,
+                      // Keep card face up (Set to 180 degrees)
+                      rotateY: 180,
+                      // Combine Fan angle with Random tilt
+                      rotateZ: targetRotateZ + randomPos.rotateZ,
+                      zIndex: i,
+                      scale: 1,
+                    }
+                : { x: 0, y: 0, rotateX: 0, rotateY: 0, rotateZ: 0, zIndex: deck.length - i }
+            }
+            transition={
+              exploded
+                ? { // Spring for initial fan-out/selection
+                    // Apply spring to position and tilt changes - INCREASED STIFFNESS
+                    x: { type: 'spring', stiffness: 180, damping: 20, delay: i * 0.02 }, // Faster spring
+                    y: { type: 'spring', stiffness: 180, damping: 20, delay: i * 0.02 }, // Faster spring
+                    rotateX: { type: 'spring', stiffness: 180, damping: 20, delay: i * 0.02 }, // Faster spring
+                    rotateZ: { type: 'spring', stiffness: 180, damping: 20, delay: i * 0.02 }, // Faster spring
+                    scale: { type: 'spring', stiffness: 180, damping: 20 }, // Faster selection scale
+                    // RotateY now uses the same spring transition when moving between states
+                    rotateY: { type: 'spring', stiffness: 180, damping: 20 }, // Spring to 0 when selected/unselected
+                  }
+                : { type: 'spring', stiffness: 230, damping: 24 }
+            }
+            drag={exploded && !isSelected}
+            dragConstraints={constraintsRef}
+            dragElastic={0.1}
+            dragTransition={{ bounceStiffness: 300, bounceDamping: 20 }}
+            whileDrag={{ zIndex: 1000, scale: 1.05 }}
+            whileHover={!isSelected ? { scale: 1.08, y: finalY - 10, zIndex: 998 } : {}}
+            onClick={() => handleCardClick(proj)}
+          >
+            <div className="relative w-48 h-64 rounded-lg shadow-xl" style={{ transformStyle: 'preserve-3d' }}>
+              <div className="absolute inset-0 w-full h-full bg-gray-700 border border-current-line rounded-lg flex items-center justify-center overflow-hidden" style={{ backfaceVisibility: 'hidden' }} draggable={false}>
+                <img src="/card-back-themed.png" alt="Card back" className="w-full h-full object-cover opacity-60" />
+              </div>
+              <div
+                className="absolute inset-0 bg-background border border-current-line rounded-lg flex flex-col items-center justify-center text-foreground p-4 text-center"
+                style={{
+                  transform: 'rotateY(180deg)',
+                  backfaceVisibility: 'hidden'
+                }}
+                aria-hidden
+              >
+                <h3 className="text-md font-semibold mb-2 text-primary">{proj.title}</h3>
+                <p className="text-xs text-foreground/80 px-1 line-clamp-3">{proj.subtitle}</p>
+              </div>
+            </div>
+          </motion.div>
+        );
+      })}
+
+      <AnimatePresence>
+        {selected && (
+          <motion.div
+            key="overlay"
+            className="fixed inset-0 bg-black/70 backdrop-blur-md flex items-center justify-center z-[900]"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={() => setSelected(null)}
+          >
+            <motion.div
+              layoutId={selected.id}
+              className="bg-background w-11/12 max-w-lg p-6 md:p-8 rounded-xl shadow-2xl border border-current-line relative"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ type: 'spring', stiffness: 200, damping: 20 }}
+              onClick={(e) => e.stopPropagation()}
+            >
+              <h2 className="text-xl md:text-2xl font-semibold mb-3 text-primary">{selected.title}</h2>
+              <p className="mb-4 text-foreground/90 whitespace-pre-wrap">{selected.subtitle}</p>
+              {selected.technologies.length > 0 && (
+                <div className="mb-6">
+                  <h4 className="text-sm font-medium mb-2 text-gray-400">Technologies Used:</h4>
+                  <ul className="flex flex-wrap gap-2">
+                    {selected.technologies.map((tech) => (
+                      <li key={tech} className="text-xs bg-gray-800 text-primary px-2.5 py-1 rounded-full">
+                        {tech}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+              {selected.githubUrl && (
+                <Link href={selected.githubUrl} target="_blank" rel="noopener noreferrer" className="inline-block bg-primary hover:bg-primary/90 text-background font-medium px-4 py-2 rounded-md text-sm transition-colors">
+                  View on GitHub →
+                </Link>
+              )}
+              <button
+                onClick={() => setSelected(null)}
+                className="absolute top-3 right-3 text-gray-500 hover:text-foreground transition-colors p-1 rounded-full hover:bg-white/10"
+                aria-label="Close project details"
+              >
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M6 18 18 6M6 6l12 12" />
+                </svg>
+              </button>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
+  );
+};
 
 interface ProjectsPageProps {
   projects: Project[];
 }
 
-// Variants for sliding animation based on navigation direction
-const slideVariants = {
-  initial: (direction: number) => ({
-    x: direction > 0 ? 100 : -100,
-    opacity: 0,
-  }),
-  animate: {
-    x: 0,
-    opacity: 1,
-  },
-  exit: (direction: number) => ({
-    x: direction > 0 ? -100 : 100,
-    opacity: 0,
-  }),
-};
-
-const Projects: NextPage<ProjectsPageProps> = ({ projects }) => {
-  const [activeIndex, setActiveIndex] = useState(0);
-  const [direction, setDirection] = useState(0);
-
-  const handleChangeIndex = (newIndex: number) => {
-    if (newIndex > activeIndex) {
-      setDirection(1);
-    } else if (newIndex < activeIndex) {
-      setDirection(-1);
-    }
-    setActiveIndex(newIndex);
-  };
-
-  useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === 'ArrowRight') {
-        handleChangeIndex((activeIndex + 1) % projects.length);
-      } else if (e.key === 'ArrowLeft') {
-        handleChangeIndex((activeIndex - 1 + projects.length) % projects.length);
-      }
-    };
-    window.addEventListener('keydown', handleKeyDown);
-    return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [activeIndex, projects.length]);
-
-  const getNavigationCardStyle = (index: number) => {
-    const isActive = activeIndex === index;
-    const totalProjects = projects.length;
-    const cardWidth = 120;
-    const selectedOffset = -20;
-    const offset = (index - activeIndex) * 60;
-    const distance = Math.abs(index - activeIndex);
-    const zIndex = totalProjects - distance;
-
-    return {
-      left: `calc(50% + ${offset}px - ${cardWidth / 2}px)`,
-      zIndex: zIndex,
-      opacity: isActive ? 1 : 0.7 - distance * 0.1,
-      transform: isActive
-        ? `translateY(${selectedOffset}px) scale(1.1)`
-        : `translateY(0) scale(${1 - distance * 0.05})`,
-      width: `${cardWidth}px`,
-      filter: isActive ? 'brightness(1.1)' : 'brightness(0.9)',
-    };
-  };
-
-  const swipeHandlers = useSwipeable({
-    onSwipedLeft: () => handleChangeIndex((activeIndex + 1) % projects.length),
-    onSwipedRight: () => handleChangeIndex((activeIndex - 1 + projects.length) % projects.length),
-    trackMouse: true,
-  });
-
+const ProjectsPage: NextPage<ProjectsPageProps> = ({ projects }) => {
   return (
     <Layout title="&Goliath | Projects">
-      <div className="flex flex-col pb-12">
-        <h1 className="text-2xl md:text-3xl font-serif text-foreground border-b border-current-line pb-2 mt-6 mb-8">
-          Projects
-        </h1>
-
-        {/* Main project display area with fixed height to prevent overlap */}
-        <div className="relative" style={{ height: '300px' }} {...swipeHandlers}>
-          <AnimatePresence initial={false} custom={direction}>
-            <motion.div
-              key={activeIndex}
-              custom={direction}
-              variants={slideVariants}
-              initial="initial"
-              animate="animate"
-              exit="exit"
-              transition={{ type: 'spring', stiffness: 100, damping: 20 }}
-              className="bg-gray-900 p-6 rounded-lg border border-gray-800 shadow-lg absolute w-full"
-            >
-              {/* Project content (same as before) */}
-              <div className="flex justify-between items-start mb-4">
-                <Link
-                  href={projects[activeIndex].githubUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="block hover:underline"
-                >
-                  <h2 className="text-xl md:text-2xl font-medium text-gray-100 hover:text-primary transition-colors">
-                    <span className="text-primary">{projects[activeIndex].title.charAt(0)}</span>
-                    {projects[activeIndex].title.slice(1)}
-                  </h2>
-                </Link>
-                <span className="bg-gray-800 text-xs px-2 py-1 rounded-full text-gray-400">
-                  {activeIndex + 1} / {projects.length}
-                </span>
-              </div>
-              <p className="text-gray-400 mb-6 text-lg">{projects[activeIndex].subtitle}</p>
-              <ul className="flex flex-wrap mb-6">
-                {projects[activeIndex].technologies.map((tech, techIndex) => (
-                  <li
-                    key={techIndex}
-                    className="bg-gray-800 text-primary rounded-full px-3 py-1 mr-2 mb-2 text-sm"
-                  >
-                    {tech}
-                  </li>
-                ))}
-              </ul>
-              <div className="mt-6 flex justify-end">
-                <a
-                  href={projects[activeIndex].githubUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="bg-gray-800 hover:bg-gray-700 text-gray-300 px-4 py-2 rounded-md text-sm transition-colors"
-                >
-                  View Project →
-                </a>
-              </div>
-            </motion.div>
-          </AnimatePresence>
-        </div>
-
-        {/* Navigation Bar - positioned below the card display */}
-        <div className="relative h-20 mt-2">
-          <div className="absolute w-full">
-            {projects.map((project, index) => (
-              <motion.div
-                key={index}
-                className="absolute top-0 h-20 bg-gray-900 rounded-md border border-gray-800 cursor-pointer transition-all duration-300 ease-out flex items-center justify-center shadow-md hover:shadow-lg"
-                style={getNavigationCardStyle(index)}
-                onClick={() => handleChangeIndex(index)}
-                whileHover={{ y: -5 }}
-              >
-                <div className="p-2 text-center">
-                  <span className="block font-medium text-gray-200 truncate px-2">
-                    {project.title}
-                  </span>
-                </div>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </div>
+      <CardDeck projects={projects} />
     </Layout>
   );
 };
 
 export const getStaticProps = async () => {
-  const projects: Project[] = [
+  const projectsData: Omit<Project, 'id'>[] = [
     {
       title: '&Goliath',
       subtitle: 'punny personal website',
@@ -201,9 +341,9 @@ export const getStaticProps = async () => {
 
   return {
     props: {
-      projects,
+      projects: projectsData,
     },
   };
 };
 
-export default Projects;
+export default ProjectsPage;
