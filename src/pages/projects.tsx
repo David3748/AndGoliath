@@ -119,7 +119,7 @@ const CardDeck: React.FC<{ projects: Project[] }> = ({ projects = [] }) => {
             transition={{ duration: 0.5 }}
             className="absolute bottom-[25%] text-gray-400 text-lg z-[1] pointer-events-none"
           >
-            click on the orginal David Project
+            click on the original David Project
           </motion.p>
         )}
       </AnimatePresence>
@@ -164,7 +164,6 @@ const CardDeck: React.FC<{ projects: Project[] }> = ({ projects = [] }) => {
         return (
           <motion.div
             key={proj.id}
-            layoutId={proj.id}
             className="absolute cursor-pointer select-none"
             style={{ transformStyle: 'preserve-3d' }}
             initial={{
@@ -178,43 +177,48 @@ const CardDeck: React.FC<{ projects: Project[] }> = ({ projects = [] }) => {
             animate={
               exploded
                 ? isSelected
-                  ? { // Selected state: Neutral position (same as before)
-                      x: 0,
-                      y: -100, // Raise it slightly
-                      rotateX: 0,
-                      rotateY: 0, // Ensure it faces forward
-                      rotateZ: 0,
-                      zIndex: 999,
-                      scale: 1.1,
+                  ? { // Animate card out quickly when selected
+                      opacity: 0,
+                      scale: 0.8, 
+                      // Keep other properties briefly or let them snap via transition duration 0?
+                      // Setting y slightly lower might look better during fade
+                      y: finalY + 50, 
+                      transition: { duration: 0.2 } // Fast transition out
                     }
-                  : { // Fanned out + Flying state (NO SPIN - FRONT FACING)
-                      // Use clamped/adjusted positions
+                  : { // Fanned out state (unchanged)
                       x: finalX,
                       y: finalY,
-                      // Apply random tilt
                       rotateX: randomPos.rotateX,
-                      // Keep card face up (Set to 180 degrees)
                       rotateY: 180,
-                      // Combine Fan angle with Random tilt
                       rotateZ: targetRotateZ + randomPos.rotateZ,
                       zIndex: i,
                       scale: 1,
+                      opacity: 1, // Ensure opacity is 1 when not selected
                     }
-                : { x: 0, y: 0, rotateX: 0, rotateY: 0, rotateZ: 0, zIndex: deck.length - i }
+                : { // Non-exploded state: remain stacked (unchanged)
+                    x: 0, 
+                    y: 0, 
+                    rotateX: 0, 
+                    rotateY: 0, 
+                    rotateZ: 0, 
+                    zIndex: deck.length - i,
+                    opacity: 1,
+                    scale: 1,
+                  }
             }
             transition={
-              exploded
-                ? { // Spring for initial fan-out/selection
-                    // Apply spring to position and tilt changes - INCREASED STIFFNESS
-                    x: { type: 'spring', stiffness: 180, damping: 20, delay: i * 0.02 }, // Faster spring
-                    y: { type: 'spring', stiffness: 180, damping: 20, delay: i * 0.02 }, // Faster spring
-                    rotateX: { type: 'spring', stiffness: 180, damping: 20, delay: i * 0.02 }, // Faster spring
-                    rotateZ: { type: 'spring', stiffness: 180, damping: 20, delay: i * 0.02 }, // Faster spring
-                    scale: { type: 'spring', stiffness: 180, damping: 20 }, // Faster selection scale
-                    // RotateY now uses the same spring transition when moving between states
-                    rotateY: { type: 'spring', stiffness: 180, damping: 20 }, // Spring to 0 when selected/unselected
+              // Keep existing transitions for non-selected states
+              // The selected state above now defines its own short transition
+              exploded && !isSelected // Apply fan-out transition only if exploded AND not selected
+                ? { 
+                    x: { type: 'spring', stiffness: 180, damping: 20, delay: i * 0.02 },
+                    y: { type: 'spring', stiffness: 180, damping: 20, delay: i * 0.02 },
+                    rotateX: { type: 'spring', stiffness: 180, damping: 20, delay: i * 0.02 },
+                    rotateZ: { type: 'spring', stiffness: 180, damping: 20, delay: i * 0.02 },
+                    rotateY: { type: 'spring', stiffness: 180, damping: 20 }, // Spring to 180 
+                    opacity: { duration: 0.2 }, // Fade in/out if needed, though handled by selected state now
                   }
-                : { type: 'spring', stiffness: 230, damping: 24 }
+                : { type: 'spring', stiffness: 230, damping: 24 } // Initial stack transition
             }
             drag={exploded && !isSelected}
             dragConstraints={constraintsRef}
@@ -255,11 +259,10 @@ const CardDeck: React.FC<{ projects: Project[] }> = ({ projects = [] }) => {
             onClick={() => setSelected(null)}
           >
             <motion.div
-              layoutId={selected.id}
               className="bg-background w-11/12 max-w-lg p-6 md:p-8 rounded-xl shadow-2xl border border-current-line relative"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
+              initial={{ opacity: 0, scale: 0.9 }} 
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.9 }}
               transition={{ type: 'spring', stiffness: 200, damping: 20 }}
               onClick={(e) => e.stopPropagation()}
             >
