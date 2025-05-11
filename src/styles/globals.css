@@ -34,3 +34,126 @@ a {
 .prose :where(code):not(:where([class~="language-"]))::after {
   content: "" !important; /* Override default content added by Tailwind prose for inline code */
 }
+
+/* Code block styling to match theme */
+.prose :where(code):not(:where([class~="language-"])) {
+  background-color: #1A1D2E; /* current-line color */
+  color: #B39DFF; /* primary color */
+  border-radius: 0.25rem;
+  padding: 0.125rem 0.25rem;
+}
+
+.prose :where(pre) {
+  background-color: #1A1D2E !important; /* current-line color */
+  border: 1px solid #6272A4; /* comment color */
+  border-radius: 0.375rem;
+}
+
+.prose :where(pre) :where(code) {
+  background-color: transparent !important;
+  color: #F8F8F2 !important; /* foreground color */
+}
+
+/* Syntax highlighting colors matching Dracula theme */
+.prose .token.comment,
+.prose .token.prolog,
+.prose .token.doctype,
+.prose .token.cdata {
+  color: #6272A4; /* comment color */
+}
+
+.prose .token.punctuation {
+  color: #F8F8F2; /* foreground color */
+}
+
+.prose .token.property,
+.prose .token.tag,
+.prose .token.constant,
+.prose .token.symbol {
+  color: #8BE9FD; /* cyan color */
+}
+
+.prose .token.boolean,
+.prose .token.number {
+  color: #BD93F9; /* purple color */
+}
+
+.prose .token.selector,
+.prose .token.attr-name,
+.prose .token.string,
+.prose .token.char,
+.prose .token.builtin {
+  color: #50FA7B; /* green color */
+}
+
+.prose .token.operator,
+.prose .token.entity,
+.prose .token.url,
+.prose .language-css .token.string,
+.prose .style .token.string,
+.prose .token.variable {
+  color: #F8F8F2; /* foreground color */
+}
+
+.prose .token.atrule,
+.prose .token.attr-value,
+.prose .token.function {
+  color: #FFB86C; /* orange color */
+}
+
+.prose .token.keyword {
+  color: #FF79C6; /* pink color */
+}
+
+.prose .token.regex,
+.prose .token.important {
+  color: #F1FA8C; /* yellow color */
+}
+
+/* Line number styling */
+.prose pre[class*="language-"].line-numbers {
+  position: relative;
+  padding-left: 3.8em;
+  counter-reset: linenumber;
+}
+
+.prose pre[class*="language-"].line-numbers > code {
+  position: relative;
+  white-space: inherit;
+}
+
+.prose .line-numbers .line-numbers-rows {
+  position: absolute;
+  pointer-events: none;
+  top: 0;
+  font-size: 100%;
+  left: -3.8em;
+  width: 3em; /* works for line-numbers below 1000 lines */
+  letter-spacing: -1px;
+  border-right: 1px solid #6272A4;
+  user-select: none;
+}
+
+.prose .line-numbers-rows > span {
+  display: block;
+  counter-increment: linenumber;
+}
+
+.prose .line-numbers-rows > span:before {
+  content: counter(linenumber);
+  color: #6272A4; /* comment color */
+  display: block;
+  padding-right: 0.8em;
+  text-align: right;
+}
+
+/* Highlighted lines */
+.prose .highlight-line {
+  background-color: rgba(98, 114, 164, 0.2); /* comment color with transparency */
+  display: block;
+  margin-right: -1rem;
+  margin-left: -1rem;
+  padding-right: 1rem;
+  padding-left: 1rem;
+  border-left: 3px solid #FF79C6; /* pink color */
+}

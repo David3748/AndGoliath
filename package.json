@@ -18,6 +18,7 @@
     "react-markdown": "^10.0.0",
     "react-swipeable": "^7.0.2",
     "react-type-animation": "^3.2.0",
+    "rehype-prism-plus": "^2.0.1",
     "rehype-raw": "^7.0.0"
   },
   "devDependencies": {

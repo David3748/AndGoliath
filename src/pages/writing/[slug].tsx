@@ -1,5 +1,6 @@
 import ReactMarkdown from 'react-markdown';
 import rehypeRaw from 'rehype-raw';
+import rehypePrism from 'rehype-prism-plus';
 import type { NextPage } from 'next';
 import Layout from '../../components/Layout';
 import { motion } from 'framer-motion';
@@ -32,7 +33,7 @@ const ArticlePage: NextPage<ArticlePageProps> = ({ article }) => {
         <p className="text-gray-400 mb-8">{article.subtitle}</p>
 
         <div className="prose prose-lg max-w-none text-foreground">
-          <ReactMarkdown rehypePlugins={[rehypeRaw]}>{article.content}</ReactMarkdown>
+          <ReactMarkdown rehypePlugins={[rehypeRaw, [rehypePrism, { ignoreMissing: true }]]}>{article.content}</ReactMarkdown>
         </div>
 
       </motion.div>
