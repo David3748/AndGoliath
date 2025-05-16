@@ -4,7 +4,7 @@ import matter from 'gray-matter'; // You'll need to install gray-matter
 
 export interface Article {
   title: string;
-  subtitle: string;
+  subtitle?: string | null;
   slug: string;
   content: string;
 }
@@ -24,9 +24,9 @@ export async function getArticleBySlug(slug: string): Promise<Article | null> {
     const fileContents = await fs.readFile(fullPath, 'utf8');
     const { data, content } = matter(fileContents);
 
-    if (!data.title || !data.subtitle) {
-      console.error(`Missing title or subtitle in ${slug}.md`);
-      return null; // Or handle error as you see fit
+    if (!data.title) {
+      console.error(`Missing title in ${slug}.md`);
+      return null;
     }
 
     return {

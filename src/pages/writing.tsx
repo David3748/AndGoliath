@@ -36,7 +36,9 @@ const Writing: NextPage<WritingPageProps> = ({ articles }) => {
             >
               <Link href={`/writing/${article.slug}`} className="block">
                 <h2 className="text-lg font-medium text-foreground hover:text-primary transition-colors">{article.title}</h2>
-                <p className="text-sm text-gray-400">{article.subtitle}</p>
+                {article.subtitle && (
+                  <p className="text-sm text-gray-400">{article.subtitle}</p>
+                )}
               </Link>
             </motion.li>
           ))}
@@ -48,7 +50,11 @@ const Writing: NextPage<WritingPageProps> = ({ articles }) => {
 };
 
 export async function getStaticProps() {
-  const articles = await getAllArticles();
+  let articles = await getAllArticles();
+  articles = articles.map(article => ({
+    ...article,
+    subtitle: article.subtitle === undefined ? null : article.subtitle,
+  }));
   return {
     props: {
       articles,

@@ -157,3 +157,64 @@ a {
   padding-left: 1rem;
   border-left: 3px solid #FF79C6; /* pink color */
 }
+
+/* Footnote styles */
+.footnote {
+  position: relative;
+  display: inline-block;
+  color: #bd93f9;
+  text-decoration: none;
+  font-size: 0.8em;
+  vertical-align: super;
+  margin: 0 2px;
+}
+
+.footnote::before {
+  content: attr(data-number);
+}
+
+.footnote:hover::after {
+  content: attr(data-footnote);
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: #44475a;
+  color: #f8f8f2;
+  padding: 8px 12px;
+  border-radius: 4px;
+  font-size: 0.9em;
+  white-space: nowrap;
+  z-index: 10;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+
+/* Link styles to match HTML version */
+.prose a:link {
+  color: #bd93f9;
+  background-color: transparent;
+  text-decoration: none;
+}
+
+.prose a:visited {
+  color: #9580FF;
+  background-color: transparent;
+  text-decoration: none;
+}
+
+.prose a:hover {
+  color: #FFB86C;
+  background-color: transparent;
+  text-decoration: underline;
+}
+
+.prose a:active {
+  color: #50FA7B;
+  background-color: transparent;
+  text-decoration: underline;
+}
+
+.prose ::selection {
+  color: rgb(255, 255, 255);
+  background: #bd93f9;
+}

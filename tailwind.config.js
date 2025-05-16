@@ -60,6 +60,19 @@ module.exports = {
               fontFamily: theme('fontFamily.serif'),
               color: theme('colors.foreground'), // Set heading color to foreground
             },
+            blockquote: { // Custom styles for blockquotes
+              color: theme('colors.foreground'),
+              borderLeftColor: theme('colors.primary'),
+              fontStyle: 'italic',
+              marginLeft: theme('spacing.2'), 
+              paddingLeft: theme('spacing.4'),
+            },
+            'blockquote p:first-of-type::before': { // Remove default opening quote mark
+              content: 'none',
+            },
+            'blockquote p:last-of-type::after': { // Remove default closing quote mark
+              content: 'none',
+            },
             // ... other customizations ...
           },
         },
