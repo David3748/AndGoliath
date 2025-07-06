@@ -218,3 +218,20 @@ a {
   color: rgb(255, 255, 255);
   background: #bd93f9;
 }
+
+/* Project Button 3D Effect Styles */
+.project-button:hover .project-button-layer,
+.project-button:hover .project-button-text {
+  margin-top: var(--hover-travel);
+}
+
+.project-button:active .project-button-layer,
+.project-button:active .project-button-text,
+.project-button.pressed .project-button-layer {
+  margin-top: var(--press-travel);
+}
+
+/* Engraved key number styling */
+.key-number {
+  filter: drop-shadow(0 1px 1px rgba(0,0,0,0.8));
+}
