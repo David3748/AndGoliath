@@ -1,0 +1,23 @@
+<svg width="800" height="600" viewBox="0 0 800 600" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="800" height="600" fill="#0F111D"/>
+  
+  <!-- Grid lines -->
+  <path d="M100 500 L700 500" stroke="#2A2D3E" stroke-width="2"/>
+  <path d="M100 100 L100 500" stroke="#2A2D3E" stroke-width="2"/>
+  
+  <!-- Supply Curve (Upward sloping) -->
+  <path d="M150 450 C300 450 400 300 650 150" stroke="#FF79C6" stroke-width="8" stroke-linecap="round"/>
+  
+  <!-- Demand Curve (Downward sloping) -->
+  <path d="M150 150 C300 250 500 450 650 450" stroke="#B39DFF" stroke-width="8" stroke-linecap="round"/>
+  
+  <!-- Intersection Point removed as per user request -->
+  
+  <!-- Glow effects -->
+  <defs>
+    <filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="5" result="blur"/>
+      <feComposite in="SourceGraphic" in2="blur" operator="over"/>
+    </filter>
+  </defs>
+</svg>
