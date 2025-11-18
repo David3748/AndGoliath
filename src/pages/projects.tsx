@@ -212,11 +212,11 @@ export const getStaticProps = async () => {
       githubUrl: 'https://david3748.github.io/prediction-market/',
     },
     {
-      title: 'Project Four',
-      subtitle: 'TBD',
-      technologies: [],
-      githubUrl: '',
-    },
+        title: 'Transit Topography',
+        subtitle: 'Interactive isochrone visualization showing travel time zones via public transit and walking. Uses real-time transit data from OpenStreetMap, Dijkstra\'s algorithm for pathfinding, and dynamic canvas rendering to display how far you can travel from any point in 5-minute intervals.',
+        technologies: ['JavaScript', 'Leaflet.js', 'Overpass API', 'LocationIQ API', 'HTML','Tailwind CSS'],
+        githubUrl: 'https://github.com/David3748/Transit-Topography', 
+      },,
   ];
 
   return {
