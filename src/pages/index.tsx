@@ -43,7 +43,7 @@ const Home: NextPage = () => {
             <TypeAnimation
               sequence={[
                 2000, // Wait for name animation to finish first
-                'Dallas, Texas', // Type location
+                'Copenhagen, Denmark', // Type location
                 1000, // Wait at final state
               ]}
               wrapper="span"
