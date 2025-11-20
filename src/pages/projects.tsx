@@ -51,7 +51,7 @@ export const getStaticProps = async () => {
     },
     {
       title: 'Transit Topography',
-      subtitle: 'Interactive isochrone visualization showing travel time zones via public transit and walking. Uses real-time transit data from OpenStreetMap, Dijkstra\'s algorithm for pathfinding, and dynamic canvas rendering to display how far you can travel from any point in 5-minute intervals.',
+      subtitle: 'Isochrome maps of Transit Times',
       technologies: ['JavaScript', 'Leaflet.js', 'Overpass API', 'LocationIQ API', 'HTML', 'Tailwind CSS'],
       githubUrl: 'https://github.com/David3748/Transit-Topography',
       imageUrl: '/images/transit-topography.png',
