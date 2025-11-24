@@ -53,7 +53,7 @@ export const getStaticProps = async () => {
       title: 'Transit Topography',
       subtitle: 'Isochrome maps of Transit Times',
       technologies: ['JavaScript', 'Leaflet.js', 'Overpass API', 'LocationIQ API', 'HTML', 'Tailwind CSS'],
-      githubUrl: 'https://github.com/David3748/Transit-Topography',
+      githubUrl: 'https://david3748.github.io/Transit-Topography',
       imageUrl: '/images/transit-topography.png',
     },
   ];
