@@ -21,33 +21,69 @@ const photos: Photo[] = galleryPhotos.map((photo, index) => ({
   location: photo.location,
 }));
 
-const ProgressiveImage: React.FC<{
+// Grid thumbnail - shows blur then sharpens
+const GridImage: React.FC<{
   blur: string;
   src: string;
   alt: string;
   className?: string;
 }> = ({ blur, src, alt, className }) => {
   const [isLoaded, setIsLoaded] = useState(false);
-  const [currentSrc, setCurrentSrc] = useState(blur);
+
+  return (
+    <div className="relative overflow-hidden">
+      {/* Blur placeholder - scales to fill */}
+      <img
+        src={blur}
+        alt=""
+        className={`${className} absolute inset-0 w-full h-full object-cover transition-opacity duration-300 ${
+          isLoaded ? 'opacity-0' : 'opacity-100'
+        }`}
+        style={{ filter: 'blur(8px)', transform: 'scale(1.1)' }}
+      />
+      {/* Actual image */}
+      <img
+        src={src}
+        alt={alt}
+        className={`${className} transition-opacity duration-300 ${
+          isLoaded ? 'opacity-100' : 'opacity-0'
+        }`}
+        loading="lazy"
+        onLoad={() => setIsLoaded(true)}
+      />
+    </div>
+  );
+};
+
+// Lightbox image - shows spinner then image
+const LightboxImage: React.FC<{
+  src: string;
+  alt: string;
+}> = ({ src, alt }) => {
+  const [isLoaded, setIsLoaded] = useState(false);
 
   useEffect(() => {
-    const img = new Image();
-    img.src = src;
-    img.onload = () => {
-      setCurrentSrc(src);
-      setIsLoaded(true);
-    };
+    setIsLoaded(false);
   }, [src]);
 
   return (
-    <img
-      src={currentSrc}
-      alt={alt}
-      className={`${className} transition-all duration-500 ${
-        isLoaded ? 'blur-0' : 'blur-sm scale-105'
-      }`}
-      loading="lazy"
-    />
+    <div className="relative flex items-center justify-center">
+      {/* Loading spinner */}
+      {!isLoaded && (
+        <div className="absolute inset-0 flex items-center justify-center">
+          <div className="w-12 h-12 border-4 border-primary/30 border-t-primary rounded-full animate-spin" />
+        </div>
+      )}
+      {/* Full image */}
+      <img
+        src={src}
+        alt={alt}
+        className={`max-w-full max-h-[85vh] object-contain rounded-lg transition-opacity duration-300 ${
+          isLoaded ? 'opacity-100' : 'opacity-0'
+        }`}
+        onLoad={() => setIsLoaded(true)}
+      />
+    </div>
   );
 };
 
@@ -104,7 +140,7 @@ const Gallery: NextPage = () => {
                 setSelectedIndex(index);
               }}
             >
-              <ProgressiveImage
+              <GridImage
                 blur={photo.blur}
                 src={photo.thumb}
                 alt={photo.location}
@@ -158,11 +194,9 @@ const Gallery: NextPage = () => {
                 className="max-w-[90vw] max-h-[85vh] relative"
                 onClick={(e) => e.stopPropagation()}
               >
-                <ProgressiveImage
-                  blur={selectedPhoto.blur}
+                <LightboxImage
                   src={selectedPhoto.full}
                   alt={selectedPhoto.location}
-                  className="max-w-full max-h-[85vh] object-contain rounded-lg"
                 />
                 <div className="absolute bottom-0 left-0 right-0 p-6 bg-gradient-to-t from-black/80 to-transparent rounded-b-lg">
                   <div className="flex items-center gap-2">
