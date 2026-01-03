@@ -63,7 +63,8 @@ export const favorites: FavoriteCategory[] = [
       {id: "18", name: "What Could Have Been - Sting", url:"https://www.youtube.com/watch?v=liPu1_aPH5k"},
       {id: "19", name: "Forget Her - Jeff Buckley", url: "https://www.youtube.com/watch?v=K4J6xYIyC3Q"},
       {id: "20", name: "Seventeen - Heathers", url: "https://www.youtube.com/watch?v=9h80Sr15n4M"},
-      {id: "21", name: "Vertigo - Time for Three", url: "https://www.youtube.com/watch?v=oIxNzElm1K4"}      
+      {id: "21", name: "Vertigo - Time for Three", url: "https://www.youtube.com/watch?v=oIxNzElm1K4"},
+      {id: "22", name: "Nebraska (album) - Bruce Springsteen", url: "https://www.youtube.com/playlist?list=OLAK5uy_k2craGW4gVLrpzIBdrKxqbOPZ2DhRQJjQ"}
     ]
   },
   {
@@ -77,7 +78,8 @@ export const favorites: FavoriteCategory[] = [
       { id: "4", name: "Into the Spider Verse" },
       { id: "5", name: "A Man Called Otto" },
       {id: "6", name: "Eternal Sunsine of the Spotless Mind" },
-      {id: "7", name:"Pride & Prejudice(2005)`" },
+      {id: "7", name: "Pride & Prejudice (2005)" },
+      {id: "8", name: "When Harry Met Sally"},
     ]
   },
   {
@@ -179,8 +181,17 @@ export const favorites: FavoriteCategory[] = [
     title: "Quotes",
     createdAt: "February 21, 2025 9:42 PM",
     items: [
-      {id: "1", name: "“I went to the woods because I wished to live deliberately... I wanted to live deep and suck out all the marrow of life... to put rout all that was not life; and not, when I came to die, discover that I had not lived.”- thoreau"},
-      {id: "2", name: "Do I contradict myself?Very well then I contradict myself,(I am large, I contain multitudes.)- Whitman "},
+      {id: "1", name: `"I went to the woods because I wished to live deliberately... I wanted to live deep and suck out all the marrow of life... to put rout all that was not life; and not, when I came to die, discover that I had not lived." - Thoreau`},
+      {id: "2", name: `"Do I contradict myself? Very well then I contradict myself, (I am large, I contain multitudes.)" - Whitman`},
+    ]
+  },
+  {
+    id: 'plays',
+    title: "Plays",
+    createdAt: "January 3, 2026 12:00 PM",
+    items: [
+      {id: "1", name: "All My Sons (West End)"},
+      {id: "2", name: "Les Misérables"},
     ]
   }
 ];

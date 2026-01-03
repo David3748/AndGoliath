@@ -67,10 +67,10 @@ const Layout: React.FC<LayoutProps> = ({ children, title = '&Goliath', isSimple 
                 Favorites
               </Link>
               <Link
-                href="/resume"
-                className={`text-${isActive('/resume') ? 'primary' : 'foreground'} hover:text-primary transition-colors`}
+                href="/gallery"
+                className={`text-${isActive('/gallery') ? 'primary' : 'foreground'} hover:text-primary transition-colors`}
               >
-                Resume
+                Gallery
               </Link>
               <Link
                 href="/writing"
@@ -116,11 +116,11 @@ const Layout: React.FC<LayoutProps> = ({ children, title = '&Goliath', isSimple 
                     Favorites
                   </Link>
                   <Link
-                    href="/resume"
-                    className={`text-${isActive('/resume') ? 'primary' : 'foreground'} hover:text-primary transition-colors`}
+                    href="/gallery"
+                    className={`text-${isActive('/gallery') ? 'primary' : 'foreground'} hover:text-primary transition-colors`}
                     onClick={() => setMobileMenuOpen(false)}
                   >
-                    Resume
+                    Gallery
                   </Link>
                   <Link
                     href="/writing"

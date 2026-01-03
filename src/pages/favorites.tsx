@@ -212,13 +212,22 @@ const Favorites: NextPage = () => {
           ))}
         </div>
 
-        <div className="mt-12 md:mt-16 text-center">
+        <div className="mt-12 md:mt-16 text-center space-y-4">
           <button
             onClick={handleMoreFavorites}
-            className="mb-6 px-4 py-2 bg-primary text-background rounded-md hover:bg-purple transition-colors"
+            className="mb-2 px-4 py-2 bg-primary text-background rounded-md hover:bg-purple transition-colors"
           >
             But wait, there's more
           </button>
+          
+          <div>
+            <Link
+              href="/favorites/all"
+              className="inline-block px-4 py-2 border border-primary text-primary rounded-md hover:bg-primary hover:text-background transition-colors"
+            >
+              See all favorites by category
+            </Link>
+          </div>
         </div>
       </motion.div>
     </Layout>
