@@ -32,4 +32,7 @@ yarn-error.log*
 .vercel
 
 # typescript
-*.tsbuildinfo 
+*.tsbuildinfo
+
+# hidden articles (not deleted, just hidden from website)
+src/articles/Experience.md 

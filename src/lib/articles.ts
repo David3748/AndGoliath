@@ -15,7 +15,8 @@ export async function getArticleSlugs(): Promise<string[]> {
   const filenames = await fs.readdir(articlesDirectory);
   return filenames
     .filter(filename => filename.endsWith('.md'))
-    .map(filename => filename.replace('.md', ''));
+    .map(filename => filename.replace('.md', ''))
+    .filter(slug => slug !== 'Experience'); // Hide Experience article from website
 }
 
 export async function getArticleBySlug(slug: string): Promise<Article | null> {
