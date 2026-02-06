@@ -102,15 +102,15 @@ const Home: NextPage = () => {
           className="bg-gray-900 p-6 md:p-8 border border-gray-800 shadow-sm hover:shadow-md transition-shadow rounded-md"
         >
           <h2 className="text-xl md:text-2xl font-serif mb-3 md:mb-4 text-gray-100">
-            Resume
+            Gallery
           </h2>
-          <Link href="/resume">
+          <Link href="/gallery">
             <motion.div
               className="inline-block px-4 py-2 md:px-5 md:py-2 border border-primary text-primary hover:bg-primary hover:text-white transition-colors text-sm md:text-base"
               whileHover={{ y: -2 }}
               whileTap={{ y: 0 }}
             >
-              View Resume
+              View Gallery
             </motion.div>
           </Link>
         </motion.div>
