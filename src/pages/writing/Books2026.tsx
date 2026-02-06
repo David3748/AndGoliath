@@ -47,6 +47,13 @@ const books: BookData[] = [
     review: "I flew through this. Steinbeck is maybe my favorite dead author. Made me like 10% more communist.",
     rating: 4.6,
   },
+  {}
+    title: 'Tommorow, and Tommorow, and Tommorow',
+    author: 'Gabrielle Zevin',
+    color: '#FF5555',
+    review: "In addition to having an Oxford comma in the title(best punctuation), maybe the best novel I've read published in the 21st century.",
+    rating: 4.8,
+  },
 ];
 
 const StickyNote: React.FC<{ book: BookData; onClose: () => void }> = ({ book, onClose }) => {
