@@ -220,7 +220,7 @@ const CitiesPage: NextPage = () => {
   const [selectedCity, setSelectedCity] = useState<CityData | null>(null);
 
   return (
-    <Layout title="&Goliath | Writing - City Reviews">
+    <Layout title="&Goliath | Writing - Cities">
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
@@ -235,7 +235,7 @@ const CitiesPage: NextPage = () => {
         <h1 className="text-3xl md:text-4xl font-serif mb-2 text-foreground border-b border-current-line pb-2 mt-8">
           City Reviews
         </h1>
-        <p className="text-gray-400 mb-8">Places I&apos;ve been, briefly reviewed</p>
+        <p className="text-gray-400 mb-8">On places</p>
 
         <div className="grid gap-4" style={{ gridTemplateColumns: 'repeat(auto-fill, minmax(100px, 1fr))' }}>
           {cities.map((city, index) => {
