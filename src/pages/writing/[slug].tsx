@@ -87,7 +87,7 @@ export async function getStaticPaths() {
     subtitle: article.subtitle === undefined ? null : article.subtitle,
   }));
   // Exclude articles that have dedicated custom pages
-  const customPages = ['Cities'];
+  const customPages = ['Cities', 'Books2026'];
   const paths = safeArticles
     .filter((article) => !customPages.includes(article.slug))
     .map((article) => ({

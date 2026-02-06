@@ -26,6 +26,8 @@ import {
   FaHome,
   FaLandmark,
   FaBuilding,
+  FaStar,
+  FaRegStar,
 } from 'react-icons/fa';
 import { IconType } from 'react-icons';
 
@@ -34,6 +36,7 @@ interface CityData {
   icon: IconType;
   color: string;
   review: string;
+  rating?: number;
 }
 
 const cities: CityData[] = [
@@ -41,115 +44,134 @@ const cities: CityData[] = [
     name: 'Ellicott City',
     icon: FaHome,
     color: '#50FA7B',
-    review: "Does it feel like the default because it's my home or because it's such a typical suburb,",
+    review: "Does it feel like the default because it's my home or because it's such a typical suburb?",
+    rating: 1.5,
   },
   {
     name: 'College Park',
     icon: FaUniversity,
     color: '#FF5555',
-    review: "Most things you'd want in a college town and many you wouldn't. Stunningly unexeptional in many ways.",
+    review: "Most things you'd want in a college town and many you wouldn't. Stunningly unexceptional in many ways.",
+    rating: 2,
   },
   {
     name: 'Washington DC',
     icon: GiCapitol,
     color: '#F8F8F2',
     review: "Good metro, great museums and politics. So much politics.",
+    rating: 3,
   },
   {
     name: 'Baltimore',
     icon: GiRaven,
     color: '#B39DFF',
     review: "An underrated city purely because it's rated so badly.",
+    rating: 2,
   },
   {
     name: 'NYC',
     icon: FaBuilding,
     color: '#8BE9FD',
-    review: "Great and terrible. A city of extremes. The only thing I love more than New York City is the idea of New York City",
+    review: "Great and terrible. A city of extremes. The only thing I love more than New York City is the idea of New York City.",
+    rating: 5,
   },
   {
     name: 'Boston',
     icon: GiSailboat,
     color: '#FF79C6',
-    review: "In some ways the most European of American cities. ",
+    review: "In some ways the most European of American cities.",
+    rating: 3.5,
   },
   {
     name: 'SF',
     icon: GiBridge,
     color: '#FFB86C',
-    review: "We discovered heaven on earth and we put Silicon Valley there. It feels ironic that the part of the country that encompasses the most great nature in the smallest area has the people least dedicated to the natural.",
+    review: "We discovered heaven on earth and we put Silicon Valley there. It feels ironic that the part of the country that encompasses the greatest nature in the smallest area has the people least dedicated to the natural.",
+    rating: 3.5,
   },
   {
     name: 'Chicago',
     icon: GiPizzaSlice,
     color: '#8BE9FD',
     review: "Excellent in the summer. Bike by the lake if you can. I have not heard good things about the winter.",
+    rating: 3.6,
   },
   {
     name: 'Copenhagen',
     icon: GiWindmill,
     color: '#FF5555',
     review: "An almost perfectly designed city. The best cafes I've ever been to. Ruinously expensive. Makes you appreciate the Sun.",
+    rating: 4,
   },
   {
     name: 'Bergen',
     icon: GiMountains,
     color: '#50FA7B',
     review: "Miraculously its own weather event. Sadly that weather is fog. Fjords are incredible.",
+    rating: 3,
   },
   {
     name: 'Budapest',
     icon: FaLandmark,
     color: '#F1FA8C',
     review: "Extremely touristy, does it fine. Prague is better in most important ways at many of the same things.",
+    rating: 2.5,
   },
   {
     name: 'Vienna',
     icon: GiMusicalNotes,
     color: '#B39DFF',
-    review: "I had Paris syndrome here. Good city, not great. Overly touristy music. ",
+    review: "I had Paris syndrome here. Good city, not great. Overly touristy music.",
+    rating: 3,
   },
   {
     name: 'Prague',
     icon: GiCastle,
     color: '#FFB86C',
     review: "My favorite city in central Europe. It's how I imagine a European city should be.",
+    rating: 4,
   },
   {
     name: 'Madrid',
     icon: GiGuitar,
     color: '#FF5555',
     review: "One of the world's greatest places to do nothing. This is a compliment.",
+    rating: 4,
   },
   {
     name: 'London',
     icon: GiTowerBridge,
     color: '#F8F8F2',
     review: "There's so much going on. I love it so much. Easily the European city I could see myself in long-term.",
+    rating: 4.5,
   },
   {
     name: 'Florence',
     icon: GiFlowerPot,
     color: '#FF79C6',
     review: "It's a tourist trap and I don't even care, the trap was so good.",
+    rating: 4,
   },
   {
     name: 'Rome',
     icon: GiColiseum,
     color: '#FFB86C',
-    review: "A series of monuments that used to mean something and now mean a fall from grace. Bonus: the Vatican is quite bad at running a musuem.",
+    review: "A series of monuments that used to mean something and now mean a fall from grace. Bonus: the Vatican is quite bad at running a museum.",
+    rating: 1.5,
   },
   {
     name: 'Milan',
     icon: GiChurch,
     color: '#F8F8F2',
     review: "Pretty good city. If you can go on the roof of the cathedral, do so.",
+    rating: 3,
   },
   {
     name: 'Orvieto',
     icon: GiWineGlass,
     color: '#FF5555',
-    review: "Perfect little italian town.",
+    review: "Perfect little Italian town.",
+    rating: 3.2,
   },
 ];
 
@@ -209,6 +231,38 @@ const StickyNote: React.FC<{ city: CityData; onClose: () => void }> = ({ city, o
             ) : (
               <p className="text-comment italic">Review coming soon...</p>
             )}
+          </div>
+
+          {/* Rating */}
+          <div className="mt-4 pt-3 border-t border-gray-600/30 flex items-center gap-2">
+            <span className="text-sm text-comment">Rating:</span>
+            <div className="flex items-center gap-0.5">
+              {city.rating != null ? (
+                <>
+                  {[1, 2, 3, 4, 5].map((star) => {
+                    const fill = Math.min(1, Math.max(0, city.rating! - (star - 1)));
+                    if (fill >= 1) {
+                      return <FaStar key={star} className="text-sm" style={{ color: city.color }} />;
+                    } else if (fill <= 0) {
+                      return <FaRegStar key={star} className="text-sm text-comment" />;
+                    }
+                    return (
+                      <span key={star} className="relative inline-block text-sm">
+                        <FaRegStar className="text-comment" />
+                        <span className="absolute inset-0 overflow-hidden" style={{ width: `${fill * 100}%` }}>
+                          <FaStar style={{ color: city.color }} />
+                        </span>
+                      </span>
+                    );
+                  })}
+                  <span className="ml-1.5 text-sm text-comment">{city.rating}/5</span>
+                </>
+              ) : (
+                [1, 2, 3, 4, 5].map((star) => (
+                  <FaRegStar key={star} className="text-sm text-comment" />
+                ))
+              )}
+            </div>
           </div>
         </div>
       </motion.div>
