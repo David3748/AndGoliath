@@ -86,9 +86,13 @@ export async function getStaticPaths() {
     ...article,
     subtitle: article.subtitle === undefined ? null : article.subtitle,
   }));
-  const paths = safeArticles.map((article) => ({
-    params: { slug: article.slug },
-  }));
+  // Exclude articles that have dedicated custom pages
+  const customPages = ['Cities'];
+  const paths = safeArticles
+    .filter((article) => !customPages.includes(article.slug))
+    .map((article) => ({
+      params: { slug: article.slug },
+    }));
 
   return {
     paths,
