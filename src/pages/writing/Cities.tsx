@@ -233,7 +233,7 @@ const CitiesPage: NextPage = () => {
         </div>
 
         <h1 className="text-3xl md:text-4xl font-serif mb-2 text-foreground border-b border-current-line pb-2 mt-8">
-          City Reviews
+          Cities
         </h1>
         <p className="text-gray-400 mb-8">On places</p>
 
