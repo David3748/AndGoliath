@@ -15,7 +15,6 @@ import {
   GiMusicalNotes,
   GiGuitar,
   GiTowerBridge,
-  GiPizzaSlice,
   GiFlowerPot,
   GiColiseum,
   GiChurch,
@@ -26,6 +25,7 @@ import {
   FaHome,
   FaLandmark,
   FaBuilding,
+  FaWind,
   FaStar,
   FaRegStar,
 } from 'react-icons/fa';
@@ -91,7 +91,7 @@ const cities: CityData[] = [
   },
   {
     name: 'Chicago',
-    icon: GiPizzaSlice,
+    icon: FaWind,
     color: '#8BE9FD',
     review: "Excellent in the summer. Bike by the lake if you can. I have not heard good things about the winter.",
     rating: 3.6,
