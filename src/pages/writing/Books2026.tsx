@@ -47,7 +47,7 @@ const books: BookData[] = [
     review: "I flew through this. Steinbeck is maybe my favorite dead author. Made me like 10% more communist.",
     rating: 4.6,
   },
-  {}
+  {
     title: 'Tommorow, and Tommorow, and Tommorow',
     author: 'Gabrielle Zevin',
     color: '#FF5555',
