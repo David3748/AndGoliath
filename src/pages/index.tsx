@@ -74,87 +74,31 @@ const Home: NextPage = () => {
         </motion.div>
       </section>
 
-      <section className="mb-16 md:mb-20 grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-8">
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.2 }}
-          className="bg-gray-900 p-6 md:p-8 border border-gray-800 shadow-sm hover:shadow-md transition-shadow rounded-md"
-        >
-          <h2 className="text-xl md:text-2xl font-serif mb-3 md:mb-4 text-gray-100">
-            Favorite Things
-          </h2>
-          <Link href="/favorites">
-            <motion.div
-              className="inline-block px-4 py-2 md:px-5 md:py-2 border border-primary text-primary hover:bg-primary hover:text-white transition-colors text-sm md:text-base"
-              whileHover={{ y: -2 }}
-              whileTap={{ y: 0 }}
-            >
-              View Favorites
-            </motion.div>
-          </Link>
-        </motion.div>
-
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.3 }}
-          className="bg-gray-900 p-6 md:p-8 border border-gray-800 shadow-sm hover:shadow-md transition-shadow rounded-md"
-        >
-          <h2 className="text-xl md:text-2xl font-serif mb-3 md:mb-4 text-gray-100">
-            Gallery
-          </h2>
-          <Link href="/gallery">
-            <motion.div
-              className="inline-block px-4 py-2 md:px-5 md:py-2 border border-primary text-primary hover:bg-primary hover:text-white transition-colors text-sm md:text-base"
-              whileHover={{ y: -2 }}
-              whileTap={{ y: 0 }}
-            >
-              View Gallery
-            </motion.div>
-          </Link>
-        </motion.div>
-
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.4 }}
-          className="bg-gray-900 p-6 md:p-8 border border-gray-800 shadow-sm hover:shadow-md transition-shadow rounded-md"
-        >
-          <h2 className="text-xl md:text-2xl font-serif mb-3 md:mb-4 text-gray-100">
-            Writing
-          </h2>
-          <Link href="/writing">
-            <motion.div
-              className="inline-block px-4 py-2 md:px-5 md:py-2 border border-primary text-primary hover:bg-primary hover:text-white transition-colors text-sm md:text-base"
-              whileHover={{ y: -2 }}
-              whileTap={{ y: 0 }}
-            >
-              View Writing
-            </motion.div>
-          </Link>
-        </motion.div>
-
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.8, delay: 0.5 }}
-          className="bg-gray-900 p-6 md:p-8 border border-gray-800 shadow-sm hover:shadow-md transition-shadow rounded-md"
-        >
-          <h2 className="text-xl md:text-2xl font-serif mb-3 md:mb-4 text-gray-100">
-            Projects
-          </h2>
-          <Link href="/projects">
-            <motion.div
-              className="inline-block px-4 py-2 md:px-5 md:py-2 border border-primary text-primary hover:bg-primary hover:text-white transition-colors text-sm md:text-base"
-              whileHover={{ y: -2 }}
-              whileTap={{ y: 0 }}
-            >
-              View Projects
-            </motion.div>
-          </Link>
-        </motion.div>
-      </section>
+      <motion.section
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.8, delay: 0.2 }}
+        className="mb-16 md:mb-20 max-w-2xl"
+      >
+        <p className="text-gray-300 leading-relaxed text-base md:text-lg mb-4 md:mb-6">
+          I'm currently spending my time thinking about religion, photography, the Sabbath, math puzzles, Blood on the Clocktower, and making my mind a better place to live in.
+        </p>
+        <p className="text-gray-300 leading-relaxed text-base md:text-lg mb-4 md:mb-6">
+          I'm currently trying to find interesting conversations, the Great American Novel, uncorrelated alpha, and meaning.
+        </p>
+        <p className="text-gray-300 leading-relaxed text-base md:text-lg">
+          If you've ended up on this website, I'd love to{' '}
+          <a
+            href="https://calendly.com/lieman/one-on-one"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-primary hover:underline"
+          >
+            talk
+          </a>
+          .
+        </p>
+      </motion.section>
     </Layout>
   );
 };

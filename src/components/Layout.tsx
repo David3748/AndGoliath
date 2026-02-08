@@ -159,7 +159,7 @@ const Layout: React.FC<LayoutProps> = ({ children, title = '&Goliath', isSimple 
               <FaGithub size={24} />
             </a>
             <a
-              href="https://calendly.com/lieman/30min"
+              href="https://calendly.com/lieman/one-on-one"
               target="_blank"
               rel="noopener noreferrer"
               className="text-foreground hover:text-primary transition-colors"
