@@ -54,6 +54,13 @@ const books: BookData[] = [
     review: "In addition to having an Oxford comma in the title(best punctuation), maybe the best novel I've read published in the 21st century.",
     rating: 4.8,
   },
+  {
+    title: 'The Hedge Knight',
+    author: 'George R.R. Martin',
+    color: '#BD93F9',
+    review: "Better TV show than book.",
+    rating: 2,
+  },
 ];
 
 const StickyNote: React.FC<{ book: BookData; onClose: () => void }> = ({ book, onClose }) => {

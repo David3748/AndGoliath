@@ -42,14 +42,7 @@ export const getStaticProps = async () => {
       githubUrl: 'https://david3748.github.io/Are-We-Judgemental-Website/',
       imageUrl: '/images/are-we-judgemental.png',
     },
-    {
-      title: 'Prediction Market',
-      subtitle: 'Prediction market website for collective behavior class',
-      technologies: ['React', 'Tailwind CSS', 'JavaScript', 'JSONBin.io'],
-      githubUrl: 'https://david3748.github.io/prediction-market/',
-      imageUrl: '/images/prediction-market.svg',
-    },
-    {
+{
       title: 'Transit Topography',
       subtitle: 'Isochrome maps of Transit Times',
       technologies: ['JavaScript', 'Leaflet.js', 'Overpass API', 'LocationIQ API', 'HTML', 'Tailwind CSS'],
