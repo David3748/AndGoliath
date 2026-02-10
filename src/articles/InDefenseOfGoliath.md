@@ -1,5 +1,7 @@
 ---
 title: In Defense of Goliath
+createdAt: '2026-02-10'
+updatedAt: '2026-02-10'
 ---
 
 IN the bible, Goliath challenges the Israelites to single combat to determine the outcome of the war. Goliath is, of course, a mountain of a man. Nine feet tall, the very height of historic warriors. He challenges the Israelites to single combat for 40 days, they cower in fear, etc. The Israelites are told that "The king will greatly enrich the man who kills him and will give him his daughter and make his family free in Israel" (I Samuel 17:25-26). David walks up and hits him with a rock from a distance. David and Goliath is now the basis for an entire subsystem of morality. This feels insane.

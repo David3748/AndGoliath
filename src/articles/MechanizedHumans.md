@@ -1,5 +1,7 @@
 ---
 title: Mechanized Humans
+createdAt: '2026-02-10'
+updatedAt: '2026-02-10'
 ---
 
 While sometimes I worry about anthropomorphising machines, I just as often worry about mechanizing people. Here's an incomplete list of place I see this happening. If you have more examples, email me.

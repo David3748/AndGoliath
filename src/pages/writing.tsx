@@ -39,6 +39,7 @@ const Writing: NextPage<WritingPageProps> = ({ articles }) => {
                 {article.subtitle && (
                   <p className="text-sm text-gray-400">{article.subtitle}</p>
                 )}
+
               </Link>
             </motion.li>
           ))}
@@ -51,10 +52,18 @@ const Writing: NextPage<WritingPageProps> = ({ articles }) => {
 
 export async function getStaticProps() {
   let articles = await getAllArticles();
-  articles = articles.map(article => ({
-    ...article,
-    subtitle: article.subtitle === undefined ? null : article.subtitle,
-  }));
+  articles = articles
+    .map(article => ({
+      ...article,
+      subtitle: article.subtitle === undefined ? null : article.subtitle,
+      createdAt: article.createdAt || null,
+      updatedAt: article.updatedAt || null,
+    }))
+    .sort((a, b) => {
+      const dateA = a.updatedAt || a.createdAt || '';
+      const dateB = b.updatedAt || b.createdAt || '';
+      return dateB.localeCompare(dateA);
+    });
   return {
     props: {
       articles,

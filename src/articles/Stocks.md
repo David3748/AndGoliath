@@ -1,5 +1,7 @@
 ---
 title: CMSC320 Students and the Stock Market
+createdAt: '2025-05-16'
+updatedAt: '2025-05-16'
 ---
 
 > If you torture the data long enough, it will confess to anything

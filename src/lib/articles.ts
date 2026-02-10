@@ -7,6 +7,8 @@ export interface Article {
   subtitle?: string | null;
   slug: string;
   content: string;
+  createdAt?: string | null;
+  updatedAt?: string | null;
 }
 
 const articlesDirectory = path.join(process.cwd(), 'src', 'articles');
@@ -35,6 +37,8 @@ export async function getArticleBySlug(slug: string): Promise<Article | null> {
       title: data.title,
       subtitle: data.subtitle,
       content,
+      createdAt: data.createdAt || null,
+      updatedAt: data.updatedAt || null,
     };
   } catch (error) {
     console.error(`Error reading article ${slug}:`, error);

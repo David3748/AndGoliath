@@ -8,6 +8,8 @@ import {
   FaBook,
   FaStar,
   FaRegStar,
+  FaChevronDown,
+  FaChevronUp,
 } from 'react-icons/fa';
 
 interface BookData {
@@ -16,6 +18,8 @@ interface BookData {
   color: string;
   review: string;
   rating?: number;
+  sections?: BookData[];
+  read?: boolean;
 }
 
 const books: BookData[] = [
@@ -60,6 +64,53 @@ const books: BookData[] = [
     color: '#BD93F9',
     review: "Better TV show than book.",
     rating: 2,
+  },
+  {
+    title: 'Bible (NRSV)',
+    author: '',
+    color: '#F1FA8C',
+    review: '',
+    sections: [
+      // Old Testament
+      { title: 'Genesis', author: 'NRSV', color: '#F1FA8C', review: '', read: false },
+      { title: 'Exodus', author: 'NRSV', color: '#F1FA8C', review: '', read: false },
+      { title: 'Leviticus', author: 'NRSV', color: '#F1FA8C', review: '', read: false },
+      { title: 'Numbers', author: 'NRSV', color: '#F1FA8C', review: '', read: false },
+      { title: 'Deuteronomy', author: 'NRSV', color: '#F1FA8C', review: '', read: false },
+      { title: 'Joshua', author: 'NRSV', color: '#F1FA8C', review: '', read: false },
+      { title: 'Judges', author: 'NRSV', color: '#F1FA8C', review: '', read: false },
+      { title: 'Ruth', author: 'NRSV', color: '#F1FA8C', review: '', read: false },
+      { title: '1 Samuel', author: 'NRSV', color: '#F1FA8C', review: '', read: false },
+      { title: '2 Samuel', author: 'NRSV', color: '#F1FA8C', review: '', read: false },
+      { title: '1 Kings', author: 'NRSV', color: '#F1FA8C', review: '', read: false },
+      { title: '2 Kings', author: 'NRSV', color: '#F1FA8C', review: '', read: false },
+      { title: '1 Chronicles', author: 'NRSV', color: '#F1FA8C', review: '', read: false },
+      { title: '2 Chronicles', author: 'NRSV', color: '#F1FA8C', review: '', read: false },
+      { title: 'Ezra', author: 'NRSV', color: '#F1FA8C', review: '', read: false },
+      { title: 'Nehemiah', author: 'NRSV', color: '#F1FA8C', review: '', read: false },
+      { title: 'Esther', author: 'NRSV', color: '#F1FA8C', review: '', read: false },
+      { title: 'Job', author: 'NRSV', color: '#F1FA8C', review: '', read: false },
+      { title: 'Psalms', author: 'NRSV', color: '#F1FA8C', review: '', read: false },
+      { title: 'Proverbs', author: 'NRSV', color: '#F1FA8C', review: '', read: false },
+      { title: 'Ecclesiastes', author: 'NRSV', color: '#F1FA8C', review: '', read: false },
+      { title: 'Song of Solomon', author: 'NRSV', color: '#F1FA8C', review: '', read: false },
+      { title: 'Isaiah', author: 'NRSV', color: '#F1FA8C', review: '', read: false },
+      { title: 'Jeremiah', author: 'NRSV', color: '#F1FA8C', review: '', read: false },
+      { title: 'Lamentations', author: 'NRSV', color: '#F1FA8C', review: '', read: false },
+      { title: 'Ezekiel', author: 'NRSV', color: '#F1FA8C', review: '', read: false },
+      { title: 'Daniel', author: 'NRSV', color: '#F1FA8C', review: '', read: false },
+      { title: 'Minor Prophets', author: 'NRSV — Hosea through Malachi', color: '#F1FA8C', review: '', read: false },
+      // New Testament
+      { title: 'Matthew', author: 'NRSV', color: '#F1FA8C', review: '', read: false },
+      { title: 'Mark', author: 'NRSV', color: '#F1FA8C', review: '', read: false },
+      { title: 'Luke', author: 'NRSV', color: '#F1FA8C', review: '', read: false },
+      { title: 'John', author: 'NRSV', color: '#F1FA8C', review: '', read: false },
+      { title: 'Acts', author: 'NRSV', color: '#F1FA8C', review: '', read: false },
+      { title: "Paul's Letters", author: 'NRSV — Romans through Philemon', color: '#F1FA8C', review: '', read: false },
+      { title: 'Hebrews', author: 'NRSV', color: '#F1FA8C', review: '', read: false },
+      { title: 'General Epistles', author: 'NRSV — James through Jude', color: '#F1FA8C', review: '', read: false },
+      { title: 'Revelation', author: 'NRSV', color: '#F1FA8C', review: '', read: false },
+    ],
   },
 ];
 
@@ -159,6 +210,15 @@ const StickyNote: React.FC<{ book: BookData; onClose: () => void }> = ({ book, o
 
 const Books2026Page: NextPage = () => {
   const [selectedBook, setSelectedBook] = useState<BookData | null>(null);
+  const [expandedBook, setExpandedBook] = useState<string | null>(null);
+
+  const handleBookClick = (book: BookData) => {
+    if (book.sections) {
+      setExpandedBook(expandedBook === book.title ? null : book.title);
+    } else {
+      setSelectedBook(book);
+    }
+  };
 
   return (
     <Layout title="&Goliath | Writing - Books 2026">
@@ -185,13 +245,15 @@ const Books2026Page: NextPage = () => {
             {books.map((book, index) => (
               <motion.button
                 key={book.title}
-                className="flex flex-col items-center gap-2 p-4 rounded-lg bg-current-line border border-current-line hover:border-comment transition-all group"
+                className={`flex flex-col items-center gap-2 p-4 rounded-lg bg-current-line border transition-all group ${
+                  expandedBook === book.title ? 'border-comment' : 'border-current-line hover:border-comment'
+                }`}
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.4, delay: index * 0.05 }}
                 whileHover={{ y: -4, scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
-                onClick={() => setSelectedBook(book)}
+                onClick={() => handleBookClick(book)}
               >
                 <FaBook
                   className="text-3xl md:text-4xl transition-colors"
@@ -200,10 +262,65 @@ const Books2026Page: NextPage = () => {
                 <span className="text-xs md:text-sm text-gray-400 group-hover:text-foreground transition-colors text-center leading-tight">
                   {book.title}
                 </span>
+                {book.sections && (
+                  <span className="text-xs text-comment">
+                    {expandedBook === book.title ? <FaChevronUp /> : <FaChevronDown />}
+                  </span>
+                )}
               </motion.button>
             ))}
           </div>
         )}
+
+        {/* Expanded Bible sections */}
+        <AnimatePresence>
+          {expandedBook && (() => {
+            const parentBook = books.find(b => b.title === expandedBook);
+            if (!parentBook?.sections) return null;
+            const readSections = parentBook.sections.filter(s => s.read);
+
+            return (
+              <motion.div
+                key={expandedBook}
+                initial={{ opacity: 0, height: 0 }}
+                animate={{ opacity: 1, height: 'auto' }}
+                exit={{ opacity: 0, height: 0 }}
+                transition={{ duration: 0.3 }}
+                className="overflow-hidden"
+              >
+                <div className="mt-6 p-4 md:p-6 rounded-lg border border-gray-800 bg-gray-900/50">
+                  <h3 className="text-lg font-serif text-foreground mb-4">{expandedBook}</h3>
+                  {readSections.length === 0 ? (
+                    <p className="text-comment italic font-serif text-sm">No books read yet...</p>
+                  ) : (
+                    <div className="grid gap-3" style={{ gridTemplateColumns: 'repeat(auto-fill, minmax(90px, 1fr))' }}>
+                      {readSections.map((section, index) => (
+                        <motion.button
+                          key={section.title}
+                          className="flex flex-col items-center gap-2 p-3 rounded-lg bg-current-line border border-current-line hover:border-comment transition-all group"
+                          initial={{ opacity: 0, y: 10 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          transition={{ duration: 0.3, delay: index * 0.03 }}
+                          whileHover={{ y: -3, scale: 1.05 }}
+                          whileTap={{ scale: 0.95 }}
+                          onClick={() => setSelectedBook(section)}
+                        >
+                          <FaBook
+                            className="text-2xl md:text-3xl transition-colors"
+                            style={{ color: section.color }}
+                          />
+                          <span className="text-xs text-gray-400 group-hover:text-foreground transition-colors text-center leading-tight">
+                            {section.title}
+                          </span>
+                        </motion.button>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              </motion.div>
+            );
+          })()}
+        </AnimatePresence>
 
         <AnimatePresence>
           {selectedBook && (
