@@ -231,6 +231,18 @@ a {
   margin-top: var(--press-travel);
 }
 
+/* Drop cap styling */
+.drop-cap {
+  float: left;
+  font-family: 'IBM Plex Serif', 'Georgia', serif;
+  font-size: 3.5em;
+  line-height: 0.8;
+  padding-right: 0.08em;
+  padding-top: 0.07em;
+  color: #bd93f9;
+  font-weight: 700;
+}
+
 /* Engraved key number styling */
 .key-number {
   filter: drop-shadow(0 1px 1px rgba(0,0,0,0.8));

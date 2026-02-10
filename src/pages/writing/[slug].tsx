@@ -54,7 +54,7 @@ const ArticlePage: NextPage<ArticlePageProps> = ({ article }) => {
                   return <span className="footnote" {...props} />;
                 }
                 // eslint-disable-next-line jsx-a11y/alt-text -- This is a general span, not an image
-                return <span {...props} />;
+                return <span className={className} {...props} />;
               },
               // Custom paragraph component to unwrap standalone images
               p: (paragraph) => {
