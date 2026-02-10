@@ -9,10 +9,11 @@ import SlingshotAnimation from './SlingshotAnimation';
 interface LayoutProps {
   children: React.ReactNode;
   title?: string;
+  description?: string;
   isSimple?: boolean;
 }
 
-const Layout: React.FC<LayoutProps> = ({ children, title = '&Goliath', isSimple = false }) => {
+const Layout: React.FC<LayoutProps> = ({ children, title = '&Goliath', description, isSimple = false }) => {
   const router = useRouter();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
@@ -37,6 +38,7 @@ const Layout: React.FC<LayoutProps> = ({ children, title = '&Goliath', isSimple 
     <div className="flex flex-col min-h-screen bg-gray-950 text-foreground w-full">
       <Head>
         <title>{title}</title>
+        {description && <meta name="description" content={description} />}
         <link rel="icon" href="/favicon.ico" />
       </Head>
 

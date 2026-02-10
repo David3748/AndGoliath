@@ -8,7 +8,7 @@ import { TypeAnimation } from 'react-type-animation';
 
 const Home: NextPage = () => {
   return (
-    <Layout title="&Goliath | Home">
+    <Layout title="&Goliath | Home" description="David Lieman's website.">
       <section id="about" className="mb-16 md:mb-20">
         <motion.div
           initial={{ opacity: 0 }}
