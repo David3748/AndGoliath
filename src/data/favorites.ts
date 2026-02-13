@@ -25,6 +25,7 @@ export const favorites: FavoriteCategory[] = [
       { id: "5", name: "Worm" },
       { id: "6", name: "The Wheel of Time" },
       { id: "7", name: "East of Eden" },
+      {id: "8", name: "Tommorow, and Tommorow, and Tommorow"}
     ]
   },
   {

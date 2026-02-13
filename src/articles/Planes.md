@@ -22,7 +22,7 @@ What I want this post to be is an invitation to look from a different perspectiv
 
 - - - 
 
-At takeoff of every flight I listen to the New World Symphony by Dvořák. I'm actually listening to it right now. It's obviously inspired the New World in an American sense but after so many flights to me it's almost an anthem of modernity. This, like everything else, is a matter of perspective. 
+At takeoff of every flight I listen to the New World Symphony by Dvořák. I'm actually listening to it right now. It's obviously inspired by the New World in an American sense but after so many flights to me it's almost an anthem of modernity. This, like everything else, is a matter of perspective. 
 
 For example: you could be afraid of planes, think they're dangerous. Or you could realize that passenger planes are perhaps the safest form of transport mankind has ever invented. We have access to all of human knowledge in our pockets. We control the weather in our homes. You can tap a few buttons and someone will drive you basically anywhere. I mean even the produce aisle: I could get pineapples in Denmark! Denmark! Nothing grows there.
 

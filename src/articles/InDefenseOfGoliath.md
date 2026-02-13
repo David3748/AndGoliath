@@ -1,5 +1,6 @@
 ---
 title: In Defense of Goliath
+subtitle: Someone's gotta stand up for the big guy
 createdAt: '2026-02-10'
 updatedAt: '2026-02-10'
 ---
