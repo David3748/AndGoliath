@@ -66,6 +66,13 @@ const books: BookData[] = [
     rating: 2,
   },
   {
+    title: 'Piranesi',
+    author: 'Susanna Clarke',
+    color: '#FF5555',
+    review: "Odd, eerie book.",
+    rating: 3.8,
+  },
+  {
     title: 'Bible (NRSV)',
     author: '',
     color: '#F1FA8C',
