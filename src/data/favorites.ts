@@ -19,13 +19,11 @@ export const favorites: FavoriteCategory[] = [
     createdAt: "September 1, 2023 10:10 PM",
     items: [
       { id: "1", name: "Harry Potter and the Methods of Rationality" },
-      { id: "2", name: "Name of The Wind" },
-      { id: "3", name: "Red Rising Saga" },
-      { id: "4", name: "Licanius Trilogy" },
-      { id: "5", name: "Worm" },
-      { id: "6", name: "The Wheel of Time" },
-      { id: "7", name: "East of Eden" },
-      {id: "8", name: "Tommorow, and Tommorow, and Tommorow"}
+      { id: "2", name: "Red Rising Saga" },
+      { id: "3", name: "Worm" },
+      { id: "4", name: "The Wheel of Time" },
+      { id: "5", name: "East of Eden" },
+      {id: "6", name: "Tommorow, and Tommorow, and Tommorow"}
     ]
   },
   {
@@ -164,7 +162,9 @@ export const favorites: FavoriteCategory[] = [
     createdAt: "December 8, 2024 12:26 AM",
     items: [
       { id: "1", name: "North Cape By Moonlight", url: "https://www.metmuseum.org/art/collection/search/441379" },
-      { id: "2", name: "Among the Sierra Nevada", url: "https://americanart.si.edu/artwork/among-sierra-nevada-california-2059" }
+      { id: "2", name: "Among the Sierra Nevada", url: "https://americanart.si.edu/artwork/among-sierra-nevada-california-2059" },
+      { id: "3", name: "The Destruction of the Temple - Samuel Colman", url: "https://www.tate.org.uk/art/artworks/colman-the-destruction-of-the-temple-t01980" }
+      {}
     ]
   },
   {
@@ -185,6 +185,7 @@ export const favorites: FavoriteCategory[] = [
     items: [
       {id: "1", name: `"I went to the woods because I wished to live deliberately... I wanted to live deep and suck out all the marrow of life... to put rout all that was not life; and not, when I came to die, discover that I had not lived." - Thoreau`},
       {id: "2", name: `"Do I contradict myself? Very well then I contradict myself, (I am large, I contain multitudes.)" - Whitman`},
+      {id: "3", name: `"Of all the unimportant things, football is the most important." - St. John Paul II`},
     ]
   },
   {
