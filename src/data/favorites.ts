@@ -154,7 +154,8 @@ export const favorites: FavoriteCategory[] = [
       { id: "4", name: "Best Witchcraft is Geometry - Emily Dickinson", url: "https://hellopoetry.com/poem/2433/best-witchcraft-is-geometry/" },
       { id: "5", name: "I took my Power in my Hand - Emily Dickinson", url: "https://hellopoetry.com/poem/2973/i-took-my-power-in-my-hand/" },
       { id: "6", name: "Silence is all we dread - Emily Dickinson", url: "https://hellopoetry.com/poem/3531/silence-is-all-we-dread/" },
-      { id: "7", name: "Paradise is that old mansion - Emily Dickinson", url: "https://hellopoetry.com/poem/3407/paradise-is-that-old-mansion/" }
+      { id: "7", name: "Paradise is that old mansion - Emily Dickinson", url: "https://hellopoetry.com/poem/3407/paradise-is-that-old-mansion/" },
+      { id: "8", name: "Speech: \"Tomorrow, and tomorrow, and tomorrow\" - Shakespeare", url: "https://www.poetryfoundation.org/poems/56964/speech-tomorrow-and-tomorrow-and-tomorrow" }
     ]
   },
   {
