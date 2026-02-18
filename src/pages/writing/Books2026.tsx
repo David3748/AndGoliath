@@ -72,6 +72,12 @@ const books: BookData[] = [
     review: "Odd, eerie book.",
     rating: 3.8,
   },
+  {title: 'Never let me go',
+  author: 'Kazuo Ishiguro',
+  color: '#50FA7B',
+  review: "What great horrors do we commit every day without truly seeing? Where are the human scale tragedies and societal triumphs? Are they only visible from a distant lens, zoomed all the way in?",
+  rating:4.4,
+  },
   {
     title: 'Bible (NRSV)',
     author: '',
