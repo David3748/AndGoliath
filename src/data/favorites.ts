@@ -164,7 +164,6 @@ export const favorites: FavoriteCategory[] = [
       { id: "1", name: "North Cape By Moonlight", url: "https://www.metmuseum.org/art/collection/search/441379" },
       { id: "2", name: "Among the Sierra Nevada", url: "https://americanart.si.edu/artwork/among-sierra-nevada-california-2059" },
       { id: "3", name: "The Destruction of the Temple - Samuel Colman", url: "https://www.tate.org.uk/art/artworks/colman-the-destruction-of-the-temple-t01980" }
-      {}
     ]
   },
   {
