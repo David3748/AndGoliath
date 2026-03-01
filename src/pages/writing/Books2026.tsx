@@ -79,6 +79,20 @@ const books: BookData[] = [
   rating:4.4,
   },
   {
+    title: 'The Sabbath',
+    author: 'Abraham Joshua Heschel',
+    color: '#BD93F9',
+    review: 'I loved reading this during the sabbath itself. Beautiful meditation on sacred time. ',
+    rating: 4.3,
+  },
+  {
+    title: 'More Money Than God',
+    author: 'Sebastian Mallaby',
+    color: '#50FA7B',
+    review: 'Good. More entertaining than informative but you are not getting alpha out of this kind of book anyway.',
+    rating: 4.0,
+  },
+  {
     title: 'Bible (NRSV)',
     author: '',
     color: '#F1FA8C',

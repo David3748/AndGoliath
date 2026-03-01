@@ -120,6 +120,7 @@ export const favorites: FavoriteCategory[] = [
       {id: "6", name: "How they fool ya", url: "https://www.youtube.com/watch?v=NOCsdhzo6Jg"},
       {id: "7", name: "Ain't no twin primes", url: "https://www.youtube.com/watch?v=djzKCZHeVjY" },
       {"id": "8", name: "The Lizzie Bennet Diaries", url: "https://youtu.be/KisuGP2lcPs?si=cArOtZgNk5DKxXP4" },
+      {id: "9", name: "The Dinner Party - BriTANicK", url: "https://www.youtube.com/watch?v=k5dgSi4_Sfk"},
     ]
   },
   {
