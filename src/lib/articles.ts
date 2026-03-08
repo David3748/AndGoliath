@@ -9,6 +9,7 @@ export interface Article {
   content: string;
   createdAt?: string | null;
   updatedAt?: string | null;
+  published?: boolean;
 }
 
 const articlesDirectory = path.join(process.cwd(), 'src', 'articles');
@@ -39,6 +40,7 @@ export async function getArticleBySlug(slug: string): Promise<Article | null> {
       content,
       createdAt: data.createdAt || null,
       updatedAt: data.updatedAt || null,
+      published: data.published !== false,
     };
   } catch (error) {
     console.error(`Error reading article ${slug}:`, error);
@@ -51,5 +53,5 @@ export async function getAllArticles(): Promise<Article[]> {
   const articles = await Promise.all(
     slugs.map(slug => getArticleBySlug(slug))
   );
-  return articles.filter(article => article !== null) as Article[];
+  return articles.filter((article): article is Article => article !== null && article.published !== false);
 }

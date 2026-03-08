@@ -1,4 +1,5 @@
 import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
 import rehypeRaw from 'rehype-raw';
 import rehypePrism from 'rehype-prism-plus';
 import type { NextPage } from 'next';
@@ -14,6 +15,12 @@ interface ArticlePageProps {
 }
 
 const ArticlePage: NextPage<ArticlePageProps> = ({ article }) => {
+  // Build a lookup so markdown footnote refs can reuse tooltip hover text.
+  const footnoteMap = new Map<string, string>();
+  for (const match of article.content.matchAll(/^\[\^([^\]]+)\]:\s*(.+)$/gm)) {
+    footnoteMap.set(match[1], match[2]);
+  }
+
   return (
     <Layout title={`&Goliath | Writing - ${article.title}`}>
       <motion.div
@@ -36,8 +43,33 @@ const ArticlePage: NextPage<ArticlePageProps> = ({ article }) => {
 
         <div className="prose prose-lg max-w-none text-foreground">
           <ReactMarkdown 
+            remarkPlugins={[remarkGfm]}
             rehypePlugins={[rehypeRaw, [rehypePrism, { ignoreMissing: true }]]}
             components={{
+              // Style markdown section subtitles (##) to be smaller and purple.
+              h2: ({ children }) => (
+                <h2 className="text-xl md:text-2xl font-serif text-purple mt-8 mb-3">
+                  {children}
+                </h2>
+              ),
+              // Keep standard markdown footnotes and preserve hover-to-view tooltips.
+              a: ({ href, children, ...props }) => {
+                const footnoteRefMatch = href?.match(/#user-content-fn-([A-Za-z0-9_-]+)/);
+                if (footnoteRefMatch) {
+                  const number = decodeURIComponent(footnoteRefMatch[1]);
+                  return (
+                    <a
+                      {...props}
+                      href={href}
+                      className="footnote"
+                      data-number={number}
+                      data-footnote={footnoteMap.get(number) || ''}
+                      aria-label={`Footnote ${number}`}
+                    />
+                  );
+                }
+                return <a {...props} href={href}>{children}</a>;
+              },
               // Custom image component to handle image sizing
               img: ({ node, ...props }) => (
                 <div className="my-8">

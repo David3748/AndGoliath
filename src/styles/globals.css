@@ -183,7 +183,8 @@ a {
   color: #f8f8f2;
   padding: 8px 12px;
   border-radius: 4px;
-  font-size: 0.9em;
+  font-size: 1rem;
+  line-height: 1.45;
   white-space: nowrap;
   z-index: 10;
   box-shadow: 0 2px 4px rgba(0,0,0,0.2);

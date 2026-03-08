@@ -104,7 +104,8 @@ export const favorites: FavoriteCategory[] = [
       { id: "1", name: "Defenestration" },
       { id: "2", name: "Hallelujah" },
       { id: "3", name: "chutzpah" },
-      { id: "4", name: "Tetragrammaton" }
+      { id: "4", name: "Tetragrammaton" },
+      {id: "5", name: "zugzwang"}
     ]
   },
   {
