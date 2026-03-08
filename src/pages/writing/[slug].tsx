@@ -17,7 +17,7 @@ interface ArticlePageProps {
 const ArticlePage: NextPage<ArticlePageProps> = ({ article }) => {
   // Build a lookup so markdown footnote refs can reuse tooltip hover text.
   const footnoteMap = new Map<string, string>();
-  for (const match of article.content.matchAll(/^\[\^([^\]]+)\]:\s*(.+)$/gm)) {
+  for (const match of Array.from(article.content.matchAll(/^\[\^([^\]]+)\]:\s*(.+)$/gm))) {
     footnoteMap.set(match[1], match[2]);
   }
 
