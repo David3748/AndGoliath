@@ -187,6 +187,7 @@ export const favorites: FavoriteCategory[] = [
       {id: "1", name: `"I went to the woods because I wished to live deliberately... I wanted to live deep and suck out all the marrow of life... to put rout all that was not life; and not, when I came to die, discover that I had not lived." - Thoreau`},
       {id: "2", name: `"Do I contradict myself? Very well then I contradict myself, (I am large, I contain multitudes.)" - Whitman`},
       {id: "3", name: `"Of all the unimportant things, football is the most important." - St. John Paul II`},
+      {id: "4", name: `"The Guild navigators, gifted with limited prescience, had made the fatal decision: they'd chosen always the clear, safe course that leads ever downward into stagnation." - Frank Herbert, Dune`},
     ]
   },
   {
