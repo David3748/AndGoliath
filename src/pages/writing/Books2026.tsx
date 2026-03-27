@@ -112,6 +112,20 @@ const books: BookData[] = [
     review: '',
   },
   {
+    title: 'Stories of Your Life and Others',
+    author: 'Ted Chiang',
+    color: '#8BE9FD',
+    review: 'He had time to write a short letter.',
+    rating: 4.6,
+  },
+  {
+    title: 'What We Owe the Future',
+    author: 'William MacAskill',
+    color: '#50FA7B',
+    review: "Maybe the peak of this could've been a blog post.",
+    rating: 3.8,
+  },
+  {
     title: 'Bible (NRSV)',
     author: '',
     color: '#F1FA8C',
