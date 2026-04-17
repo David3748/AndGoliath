@@ -1,6 +1,7 @@
 ---
 title: Experience
 subtitle: How I exist
+listed: false
 ---
 I spend a lot of time thinking about the idea of enjoyment. Maybe that's not the right word. Then again, maybe it is, to be in joy? There's definitely something there. Maybe dividing it into positive and negative is a better way to think about it.
 

@@ -10,10 +10,12 @@ export interface Article {
   createdAt?: string | null;
   updatedAt?: string | null;
   published?: boolean;
+  /** When false, page still builds at /writing/[slug] but omitted from getAllArticleLists */
+  listed?: boolean;
 }
 
 const articlesDirectory = path.join(process.cwd(), 'src', 'articles');
-const hiddenArticleSlugs = new Set(['Experience', 'OnTime']);
+const hiddenArticleSlugs = new Set(['OnTime']);
 
 export async function getArticleSlugs(): Promise<string[]> {
   const filenames = await fs.readdir(articlesDirectory);
@@ -42,6 +44,7 @@ export async function getArticleBySlug(slug: string): Promise<Article | null> {
       createdAt: data.createdAt || null,
       updatedAt: data.updatedAt || null,
       published: data.published !== false,
+      listed: data.listed === undefined ? true : Boolean(data.listed),
     };
   } catch (error) {
     console.error(`Error reading article ${slug}:`, error);
@@ -50,6 +53,18 @@ export async function getArticleBySlug(slug: string): Promise<Article | null> {
 }
 
 export async function getAllArticles(): Promise<Article[]> {
+  const slugs = await getArticleSlugs();
+  const articles = await Promise.all(
+    slugs.map(slug => getArticleBySlug(slug))
+  );
+  return articles.filter(
+    (article): article is Article =>
+      article !== null && article.published !== false && article.listed !== false
+  );
+}
+
+/** All published articles, including `listed: false` (for static paths only). */
+export async function getAllArticlesForPaths(): Promise<Article[]> {
   const slugs = await getArticleSlugs();
   const articles = await Promise.all(
     slugs.map(slug => getArticleBySlug(slug))

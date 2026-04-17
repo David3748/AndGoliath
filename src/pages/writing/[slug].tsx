@@ -5,7 +5,7 @@ import rehypePrism from 'rehype-prism-plus';
 import type { NextPage } from 'next';
 import Layout from '../../components/Layout';
 import { motion } from 'framer-motion';
-import { getArticleBySlug, getAllArticles } from '../../lib/articles';
+import { getArticleBySlug, getAllArticlesForPaths } from '../../lib/articles';
 import { Article } from '../../lib/articles';
 import Link from 'next/link';
 import { FaArrowLeft } from 'react-icons/fa'; // Import back arrow icon
@@ -111,7 +111,7 @@ const ArticlePage: NextPage<ArticlePageProps> = ({ article }) => {
 };
 
 export async function getStaticPaths() {
-  const articles = await getAllArticles();
+  const articles = await getAllArticlesForPaths();
   // Ensure subtitles are null instead of undefined for paths generation, if necessary
   // Although for paths, only slug is critical. This ensures consistency if more fields were used.
   const safeArticles = articles.map(article => ({

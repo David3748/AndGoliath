@@ -126,6 +126,13 @@ const books: BookData[] = [
     rating: 3.8,
   },
   {
+    title: "The Heathen's Guide to World Religions",
+    author: 'William Hopper',
+    color: '#BD93F9',
+    review: 'Badly written, widely read, seemingly never deeply.',
+    rating: 2.1,
+  },
+  {
     title: 'Bible (NRSV)',
     author: '',
     color: '#F1FA8C',
