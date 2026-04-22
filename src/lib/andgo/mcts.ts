@@ -181,7 +181,7 @@ function simulate(board: GoBoard, startColor: StoneColor): StoneColor {
   let color = startColor;
   let consecutivePasses = 0;
 
-  for (let i = 0; i < 80; i++) {
+  for (let i = 0; i < 40; i++) {
     const moves = getCachedCandidateMoves(currentBoard, color);
 
     // Filter out eye-filling moves (basic heuristic)
@@ -294,9 +294,19 @@ export function runMCTS(board: GoBoard, color: StoneColor, playouts: number): MC
 }
 
 // Get the best move from MCTS
-export function getBestMove(board: GoBoard, color: StoneColor, playouts: number = 1500): Point | null {
+export function getBestMove(board: GoBoard, color: StoneColor, playouts: number = 500): Point | null {
   const results = runMCTS(board, color, playouts);
   if (results.length === 0) return null;
   if (shouldPass(board, color, results[0].winRate)) return null;
   return results[0].move;
+}
+
+// Adaptive playouts based on branching factor
+export function getAdaptiveBotPlayouts(board: GoBoard): number {
+  const candidates = getCandidateMoves(board, 'W').length;
+  if (candidates <= 8) return 300;
+  if (candidates <= 14) return 250;
+  if (candidates <= 22) return 200;
+  if (candidates <= 32) return 150;
+  return 100;
 }

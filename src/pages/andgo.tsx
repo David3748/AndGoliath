@@ -3,22 +3,21 @@ import { motion } from 'framer-motion';
 import Layout from '../components/Layout';
 import GoBoard from '../components/andgo/GoBoard';
 import { useAndGo } from '../components/andgo/useAndGo';
-import Link from 'next/link';
 
 const AndGoPage: NextPage = () => {
   const {
     state,
     wrongMove,
-    capturingStones,
-    showHintPoint,
+    hintPoints,
     handleMove,
     showHint,
     pass,
     reset,
+    loadRandomPuzzle,
   } = useAndGo();
 
   return (
-    <Layout title="&Go | Daily Puzzle" description="A daily Go puzzle from &Goliath.">
+    <Layout title="&Go | Tsumego" description="Go puzzles from &Goliath.">
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
@@ -31,7 +30,7 @@ const AndGoPage: NextPage = () => {
             <span className="text-primary">&</span>Go
           </h1>
           <p className="text-sm text-gray-400">
-            {state.phase === 'loading' && 'Generating puzzle...'}
+            {state.phase === 'loading' && 'Loading puzzle...'}
             {state.phase === 'puzzle' && 'Find the best move'}
             {state.phase === 'freeplay' && 'Keep playing!'}
             {state.phase === 'gameover' && 'Game over'}
@@ -48,7 +47,6 @@ const AndGoPage: NextPage = () => {
                   {state.wrongAttempts} wrong {state.wrongAttempts === 1 ? 'try' : 'tries'}
                 </span>
               )}
-              {state.botThinking && <ThinkingDots />}
             </div>
           )}
 
@@ -78,26 +76,15 @@ const AndGoPage: NextPage = () => {
                 board={state.board}
                 onIntersectionClick={handleMove}
                 lastMove={state.lastMove}
-                hintPoint={showHintPoint}
+                hintPoints={hintPoints}
                 wrongMove={wrongMove}
-                capturingStones={capturingStones}
+                capturingStones={[]}
                 disabled={state.botThinking || state.phase === 'gameover'}
                 playerColor="B"
               />
             </div>
           )}
         </div>
-
-        {/* Correct move flash */}
-        {state.phase === 'freeplay' && state.moveHistory.length === 1 && (
-          <motion.p
-            className="text-green text-sm font-medium mb-3"
-            initial={{ opacity: 0, y: -10 }}
-            animate={{ opacity: 1, y: 0 }}
-          >
-            Correct! Game continues...
-          </motion.p>
-        )}
 
         {/* Game over scores */}
         {state.phase === 'gameover' && state.scores && (
@@ -133,21 +120,37 @@ const AndGoPage: NextPage = () => {
             </button>
           )}
           {state.phase === 'freeplay' && (
-            <button
-              className="px-4 py-2 text-sm text-gray-400 border border-gray-600 rounded hover:bg-gray-800 transition-colors"
-              onClick={pass}
-              disabled={state.botThinking}
-            >
-              Pass
-            </button>
+            <>
+              <button
+                className="px-4 py-2 text-sm text-gray-400 border border-gray-600 rounded hover:bg-gray-800 transition-colors"
+                onClick={pass}
+                disabled={state.botThinking}
+              >
+                Pass
+              </button>
+              <button
+                className="px-4 py-2 text-sm text-primary border border-primary/30 rounded hover:bg-primary/10 transition-colors"
+                onClick={loadRandomPuzzle}
+              >
+                Next Puzzle
+              </button>
+            </>
           )}
           {state.phase === 'gameover' && (
-            <button
-              className="px-4 py-2 text-sm text-primary border border-primary/30 rounded hover:bg-primary/10 transition-colors"
-              onClick={reset}
-            >
-              Play Again
-            </button>
+            <>
+              <button
+                className="px-4 py-2 text-sm text-primary border border-primary/30 rounded hover:bg-primary/10 transition-colors"
+                onClick={loadRandomPuzzle}
+              >
+                Next Puzzle
+              </button>
+              <button
+                className="px-4 py-2 text-sm text-gray-400 border border-gray-600 rounded hover:bg-gray-800 transition-colors"
+                onClick={reset}
+              >
+                Restart
+              </button>
+            </>
           )}
         </div>
       </motion.div>

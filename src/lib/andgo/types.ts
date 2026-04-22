@@ -37,18 +37,15 @@ export interface MCTSMoveResult {
   winRate: number;
 }
 
-export interface DailyPuzzle {
+export interface TsumegoPuzzle {
   board: GoBoard;
   correctMove: Point;
-  difficulty: number;
-  dateStr: string;
 }
 
 export interface AndGoState {
   phase: 'loading' | 'puzzle' | 'freeplay' | 'gameover';
   board: GoBoard;
   correctMove: Point | null;
-  moveHistory: { point: Point; color: StoneColor }[];
   wrongAttempts: number;
   hintAvailable: boolean;
   botThinking: boolean;

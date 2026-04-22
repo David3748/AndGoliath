@@ -7,7 +7,7 @@ interface GoBoardProps {
   board: GoBoardType;
   onIntersectionClick: (row: number, col: number) => void;
   lastMove: Point | null;
-  hintPoint: Point | null;
+  hintPoints: Point[];
   wrongMove: Point | null;
   capturingStones: Point[];
   disabled?: boolean;
@@ -21,7 +21,7 @@ const GoBoard: React.FC<GoBoardProps> = ({
   board,
   onIntersectionClick,
   lastMove,
-  hintPoint,
+  hintPoints,
   wrongMove,
   capturingStones,
   disabled = false,
@@ -44,7 +44,7 @@ const GoBoard: React.FC<GoBoardProps> = ({
     lastMove !== null && lastMove[0] === r && lastMove[1] === c;
 
   const isHintPoint = (r: number, c: number) =>
-    hintPoint !== null && hintPoint[0] === r && hintPoint[1] === c;
+    hintPoints.some(([hr, hc]) => hr === r && hc === c);
 
   return (
     <svg
@@ -125,15 +125,18 @@ const GoBoard: React.FC<GoBoardProps> = ({
         );
       })}
 
-      {/* Hint glow (behind stones) */}
-      {hintPoint && board.grid[hintPoint[0]][hintPoint[1]] === null && (
-        <GoStone
-          color={playerColor}
-          cx={toPixel(hintPoint[1])}
-          cy={toPixel(hintPoint[0])}
-          radius={cellSize * 0.44}
-          isHint={true}
-        />
+      {/* Hint glows (behind stones) */}
+      {hintPoints.map((hp) =>
+        board.grid[hp[0]][hp[1]] === null ? (
+          <GoStone
+            key={`hint-${hp[0]}-${hp[1]}`}
+            color={playerColor}
+            cx={toPixel(hp[1])}
+            cy={toPixel(hp[0])}
+            radius={cellSize * 0.44}
+            isHint={true}
+          />
+        ) : null
       )}
 
       {/* Stones */}

@@ -1,19 +1,35 @@
-import { useState, useCallback, useEffect, useRef } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 import { AndGoState, GoBoard, Point, StoneColor } from '../../lib/andgo/types';
 import { placeStone, estimateScore, getCandidateMoves } from '../../lib/andgo/goEngine';
-import { getBestMove } from '../../lib/andgo/mcts';
-import {
-  generateDailyPuzzle,
-  getCachedPuzzle,
-  cachePuzzle,
-  getTodayDateStr,
-} from '../../lib/andgo/puzzleGen';
+import { getBestMove, getAdaptiveBotPlayouts } from '../../lib/andgo/mcts';
+import { TSUMEGO_PUZZLES } from '../../lib/andgo/tsumegoPuzzles';
+
+function shuffleArray<T>(arr: T[]): T[] {
+  const a = [...arr];
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
+function computeHintPoints(board: GoBoard, correct: Point): Point[] {
+  const candidates = getCandidateMoves(board, 'B');
+  const others = candidates.filter(
+    ([r, c]) => r !== correct[0] || c !== correct[1]
+  );
+  const picks = others.length >= 2
+    ? [others[0], others[Math.floor(Math.random() * (others.length - 1)) + 1]]
+    : others.length === 1
+      ? [others[0]]
+      : [];
+  return shuffleArray([correct, ...picks]).slice(0, 3);
+}
 
 const INITIAL_STATE: AndGoState = {
   phase: 'loading',
   board: { size: 9, grid: [], koPoint: null },
   correctMove: null,
-  moveHistory: [],
   wrongAttempts: 0,
   hintAvailable: false,
   botThinking: false,
@@ -22,74 +38,91 @@ const INITIAL_STATE: AndGoState = {
   scores: null,
 };
 
-function getAdaptiveBotPlayouts(board: GoBoard): number {
-  const candidateMoves = getCandidateMoves(board, 'W').length;
-  if (candidateMoves <= 8) return 900;
-  if (candidateMoves <= 14) return 750;
-  if (candidateMoves <= 22) return 620;
-  if (candidateMoves <= 32) return 500;
-  return 380;
-}
-
 export function useAndGo() {
   const [state, setState] = useState<AndGoState>(INITIAL_STATE);
   const [wrongMove, setWrongMove] = useState<Point | null>(null);
-  const [capturingStones, setCapturingStones] = useState<Point[]>([]);
-  const [showHintPoint, setShowHintPoint] = useState<Point | null>(null);
+  const [hintPoints, setHintPoints] = useState<Point[]>([]);
   const [consecutivePasses, setConsecutivePasses] = useState(0);
-  const mountedRef = useRef(true);
 
-  // Generate puzzle on mount
+  // Load first puzzle (index 0) on mount
   useEffect(() => {
-    mountedRef.current = true;
-    const dateStr = getTodayDateStr();
+    const puzzle = TSUMEGO_PUZZLES[0];
+    setHintPoints([]);
+    setConsecutivePasses(0);
+    setState({
+      ...INITIAL_STATE,
+      phase: 'puzzle',
+      board: puzzle.board,
+      correctMove: puzzle.correctMove,
+    });
+  }, []);
 
-    // Check cache first
-    const cached = getCachedPuzzle(dateStr);
-    if (cached) {
+  const loadRandomPuzzle = useCallback(() => {
+    const idx = Math.floor(Math.random() * TSUMEGO_PUZZLES.length);
+    const puzzle = TSUMEGO_PUZZLES[idx];
+    setWrongMove(null);
+    setHintPoints([]);
+    setConsecutivePasses(0);
+    setState({
+      ...INITIAL_STATE,
+      phase: 'puzzle',
+      board: puzzle.board,
+      correctMove: puzzle.correctMove,
+    });
+  }, []);
+
+  const endGame = useCallback((board: GoBoard) => {
+    const scores = estimateScore(board);
+    setState(prev => ({
+      ...prev,
+      phase: 'gameover',
+      scores,
+      botThinking: false,
+    }));
+  }, []);
+
+  const triggerBotMove = useCallback((board: GoBoard) => {
+    setTimeout(() => {
+      const botMove = getBestMove(board, 'W', getAdaptiveBotPlayouts(board));
+
+      if (!botMove) {
+        // Bot passes
+        setConsecutivePasses(prev => {
+          const newPasses = prev + 1;
+          if (newPasses >= 2) {
+            endGame(board);
+          } else {
+            setState(s => ({ ...s, botThinking: false }));
+          }
+          return newPasses;
+        });
+        return;
+      }
+
+      const result = placeStone(board, botMove[0], botMove[1], 'W');
+      if (!result.valid) {
+        setState(s => ({ ...s, botThinking: false }));
+        return;
+      }
+
+      setConsecutivePasses(0);
+
       setState(prev => ({
         ...prev,
-        phase: 'puzzle',
-        board: cached.board,
-        correctMove: cached.correctMove,
+        board: result.board,
+        lastMove: botMove,
+        capturedCount: {
+          ...prev.capturedCount,
+          B: prev.capturedCount.B + result.captured.length,
+        },
+        botThinking: false,
       }));
-      return;
-    }
-
-    import('../../lib/andgo/puzzleWorkerClient')
-      .then(({ generatePuzzleAsync }) => generatePuzzleAsync(dateStr))
-      .then(puzzle => {
-        cachePuzzle(puzzle);
-        if (mountedRef.current) {
-          setState(prev => ({
-            ...prev,
-            phase: 'puzzle',
-            board: puzzle.board,
-            correctMove: puzzle.correctMove,
-          }));
-        }
-      })
-      .catch(() => {
-        const puzzle = generateDailyPuzzle(dateStr);
-        cachePuzzle(puzzle);
-        if (mountedRef.current) {
-          setState(prev => ({
-            ...prev,
-            phase: 'puzzle',
-            board: puzzle.board,
-            correctMove: puzzle.correctMove,
-          }));
-        }
-      });
-
-    return () => {
-      mountedRef.current = false;
-    };
-  }, []);
+    }, 100);
+  }, [endGame]);
 
   const handleMove = useCallback((row: number, col: number) => {
     setState(prev => {
-      if (prev.botThinking) return prev;
+      if (prev.botThinking || prev.phase === 'gameover') return prev;
 
       if (prev.phase === 'puzzle') {
         // Check if this is the correct move
@@ -102,32 +135,25 @@ export function useAndGo() {
           const result = placeStone(prev.board, row, col, 'B');
           if (!result.valid) return prev;
 
-          const newCaptured = { ...prev.capturedCount };
-          newCaptured.W += result.captured.length;
-
-          // Show capturing animation
-          if (result.captured.length > 0) {
-            setCapturingStones(result.captured);
-            setTimeout(() => setCapturingStones([]), 500);
-          }
-
           setWrongMove(null);
-          setShowHintPoint(null);
+          setHintPoints([]);
 
           // Trigger bot response after a delay
-          setTimeout(() => triggerBotMove(result.board), 800);
+          setTimeout(() => triggerBotMove(result.board), 500);
 
           return {
             ...prev,
             phase: 'freeplay',
             board: result.board,
-            lastMove: [row, col],
-            moveHistory: [...prev.moveHistory, { point: [row, col], color: 'B' as StoneColor }],
-            capturedCount: newCaptured,
+            lastMove: [row, col] as Point,
+            capturedCount: {
+              ...prev.capturedCount,
+              W: prev.capturedCount.W + result.captured.length,
+            },
             botThinking: true,
           };
         } else {
-          // Wrong move
+          // Wrong move - don't place, just flash
           setWrongMove([row, col]);
           setTimeout(() => setWrongMove(null), 800);
 
@@ -144,14 +170,6 @@ export function useAndGo() {
         const result = placeStone(prev.board, row, col, 'B');
         if (!result.valid) return prev;
 
-        const newCaptured = { ...prev.capturedCount };
-        newCaptured.W += result.captured.length;
-
-        if (result.captured.length > 0) {
-          setCapturingStones(result.captured);
-          setTimeout(() => setCapturingStones([]), 500);
-        }
-
         setConsecutivePasses(0);
 
         // Trigger bot response
@@ -160,77 +178,24 @@ export function useAndGo() {
         return {
           ...prev,
           board: result.board,
-          lastMove: [row, col],
-          moveHistory: [...prev.moveHistory, { point: [row, col], color: 'B' as StoneColor }],
-          capturedCount: newCaptured,
+          lastMove: [row, col] as Point,
+          capturedCount: {
+            ...prev.capturedCount,
+            W: prev.capturedCount.W + result.captured.length,
+          },
           botThinking: true,
         };
       }
 
       return prev;
     });
-  }, []);
-
-  const triggerBotMove = useCallback((board: GoBoard) => {
-    // Run MCTS for bot's move
-    setTimeout(() => {
-      const botMove = getBestMove(board, 'W', getAdaptiveBotPlayouts(board));
-
-      if (!mountedRef.current) return;
-
-      if (!botMove) {
-        // Bot passes
-        setConsecutivePasses(prev => {
-          const newPasses = prev + 1;
-          if (newPasses >= 2) {
-            // Game over
-            const scores = estimateScore(board);
-            setState(s => ({
-              ...s,
-              phase: 'gameover',
-              botThinking: false,
-              scores,
-            }));
-          } else {
-            setState(s => ({ ...s, botThinking: false }));
-          }
-          return newPasses;
-        });
-        return;
-      }
-
-      const result = placeStone(board, botMove[0], botMove[1], 'W');
-      if (!result.valid) {
-        setState(s => ({ ...s, botThinking: false }));
-        return;
-      }
-
-      if (result.captured.length > 0) {
-        setCapturingStones(result.captured);
-        setTimeout(() => setCapturingStones([]), 500);
-      }
-
-      setConsecutivePasses(0);
-
-      setState(prev => ({
-        ...prev,
-        board: result.board,
-        lastMove: botMove,
-        moveHistory: [...prev.moveHistory, { point: botMove, color: 'W' as StoneColor }],
-        capturedCount: {
-          ...prev.capturedCount,
-          B: prev.capturedCount.B + result.captured.length,
-        },
-        botThinking: false,
-      }));
-    }, 100);
-  }, []);
+  }, [triggerBotMove]);
 
   const showHint = useCallback(() => {
     if (state.hintAvailable && state.correctMove) {
-      setShowHintPoint(state.correctMove);
+      setHintPoints(computeHintPoints(state.board, state.correctMove));
     }
-  }, [state.hintAvailable, state.correctMove]);
+  }, [state.hintAvailable, state.correctMove, state.board]);
 
   const pass = useCallback(() => {
     if (state.phase !== 'freeplay' || state.botThinking) return;
@@ -238,47 +203,36 @@ export function useAndGo() {
     setConsecutivePasses(prev => {
       const newPasses = prev + 1;
       if (newPasses >= 2) {
-        const scores = estimateScore(state.board);
-        setState(s => ({
-          ...s,
-          phase: 'gameover',
-          scores,
-        }));
+        endGame(state.board);
       } else {
-        // Bot's turn after player passes
         setState(s => ({ ...s, botThinking: true }));
         setTimeout(() => triggerBotMove(state.board), 300);
       }
       return newPasses;
     });
-  }, [state.phase, state.botThinking, state.board, triggerBotMove]);
+  }, [state.phase, state.botThinking, state.board, triggerBotMove, endGame]);
 
   const reset = useCallback(() => {
     setWrongMove(null);
-    setCapturingStones([]);
-    setShowHintPoint(null);
+    setHintPoints([]);
     setConsecutivePasses(0);
-
-    const dateStr = getTodayDateStr();
-    const cached = getCachedPuzzle(dateStr);
-    if (cached) {
-      setState({
-        ...INITIAL_STATE,
-        phase: 'puzzle',
-        board: cached.board,
-        correctMove: cached.correctMove,
-      });
-    }
+    const puzzle = TSUMEGO_PUZZLES[0];
+    setState({
+      ...INITIAL_STATE,
+      phase: 'puzzle',
+      board: puzzle.board,
+      correctMove: puzzle.correctMove,
+    });
   }, []);
 
   return {
     state,
     wrongMove,
-    capturingStones,
-    showHintPoint,
+    hintPoints,
     handleMove,
     showHint,
     pass,
     reset,
+    loadRandomPuzzle,
   };
 }

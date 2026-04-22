@@ -86,6 +86,12 @@ const Layout: React.FC<LayoutProps> = ({ children, title = '&Goliath', descripti
               >
                 Projects
               </Link>
+              <Link
+                href="/resume"
+                className={`text-${isActive('/resume') ? 'primary' : 'foreground'} hover:text-primary transition-colors`}
+              >
+                Resume
+              </Link>
             </nav>
 
             {/* Mobile Menu Button */}
@@ -137,6 +143,13 @@ const Layout: React.FC<LayoutProps> = ({ children, title = '&Goliath', descripti
                     onClick={() => setMobileMenuOpen(false)}
                   >
                     Projects
+                  </Link>
+                  <Link
+                    href="/resume"
+                    className={`text-${isActive('/resume') ? 'primary' : 'foreground'} hover:text-primary transition-colors`}
+                    onClick={() => setMobileMenuOpen(false)}
+                  >
+                    Resume
                   </Link>
               </div>
             </motion.nav>
