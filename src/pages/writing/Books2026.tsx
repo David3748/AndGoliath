@@ -133,6 +133,20 @@ const books: BookData[] = [
     rating: 2.1,
   },
   {
+    title: 'The Power Law',
+    author: 'Sebastian Mallaby',
+    color: '#50FA7B',
+    review: 'Mallaby writing about hedge funds makes me want to work at a hedge fund mallaby writing about VCs makes me want to be a VC',
+    rating: 4.0
+  },
+  {
+    title: "Ender's Shadow",
+    author: 'Orson Scott Card',
+    color: '#8BE9FD',
+    review: 'slightly worse than I remember, maybe was deep when I was 13',
+    rating: 3.8
+  },
+  {
     title: 'Bible (NRSV)',
     author: '',
     color: '#F1FA8C',

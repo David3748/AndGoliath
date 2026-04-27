@@ -44,9 +44,9 @@ export function useAndGo() {
   const [hintPoints, setHintPoints] = useState<Point[]>([]);
   const [consecutivePasses, setConsecutivePasses] = useState(0);
 
-  // Load first puzzle (index 0) on mount
+  // Load a random puzzle on mount
   useEffect(() => {
-    const puzzle = TSUMEGO_PUZZLES[0];
+    const puzzle = TSUMEGO_PUZZLES[Math.floor(Math.random() * TSUMEGO_PUZZLES.length)];
     setHintPoints([]);
     setConsecutivePasses(0);
     setState({
