@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 import SimpleLayout from '../components/SimpleLayout';
 import Link from 'next/link';
 import { useEffect, useRef, useState } from 'react';
+import { galleryPhotos } from '../data/galleryPhotos';
 
 const backgroundTextPhrase = "We're here because ";
 const wordsPerLine = 10;
@@ -13,6 +14,27 @@ const Because: NextPage = () => {
   const sectionRef = useRef<HTMLElement>(null);
   const [wordPositions, setWordPositions] = useState< { x: number, y: number, index: number }[] >([]);
   const [mousePosition, setMousePosition] = useState< { x: number, y: number } | null >(null);
+  const [bgImage, setBgImage] = useState<string | null>(null);
+
+  useEffect(() => {
+    const photo = galleryPhotos[Math.floor(Math.random() * galleryPhotos.length)];
+    const img = new Image();
+    img.crossOrigin = 'anonymous';
+    img.src = `/gallery/thumb/${photo.filename}`;
+    img.onload = () => {
+      const pixelWidth = 80;
+      const aspect = img.height / img.width;
+      const pixelHeight = Math.round(pixelWidth * aspect);
+      const canvas = document.createElement('canvas');
+      canvas.width = pixelWidth;
+      canvas.height = pixelHeight;
+      const ctx = canvas.getContext('2d');
+      if (!ctx) return;
+      ctx.imageSmoothingEnabled = false;
+      ctx.drawImage(img, 0, 0, pixelWidth, pixelHeight);
+      setBgImage(canvas.toDataURL('image/png'));
+    };
+  }, []);
 
   useEffect(() => {
     const generateBackgroundText = () => {
@@ -96,10 +118,29 @@ const Because: NextPage = () => {
         onMouseMove={handleMouseMove} // Track mouse move
         onMouseLeave={handleMouseLeave}
       >
+        {bgImage && (
+          <div
+            aria-hidden
+            className="absolute inset-0 pointer-events-none"
+            style={{
+              backgroundImage: `url(${bgImage})`,
+              backgroundSize: 'cover',
+              backgroundPosition: 'center',
+              backgroundRepeat: 'no-repeat',
+              imageRendering: 'pixelated',
+              opacity: 0.5,
+            }}
+          />
+        )}
         <div
           ref={backgroundTextRef}
-          className="absolute inset-0 text-gray-600 font-serif text-center pointer-events-none"
-          style={{ lineHeight: '1.2', whiteSpace: 'pre-line', fontSize: '1.5rem' }}
+          className="absolute inset-0 text-gray-100 font-serif text-center pointer-events-none"
+          style={{
+            lineHeight: '1.2',
+            whiteSpace: 'pre-line',
+            fontSize: '1.5rem',
+            textShadow: '0 1px 4px rgba(0,0,0,0.85)',
+          }}
         >
           {/* Text will be dynamically generated here */}
         </div>
