@@ -174,8 +174,6 @@ const Writing: NextPage<WritingPageProps> = () => {
               <div className="mono">
                 <div><span className="dash">—</span> I try to learn similar to RL</div>
                 <div><span className="dash">—</span> Tight feedback loops, everywhere</div>
-                <div><span className="dash">—</span> The quantified self, unprompted</div>
-                <div><span className="dash">—</span> Calendars as substitute for intent</div>
                 <div><span className="dash">—</span> <em>email me</em> with more notes</div>
               </div>
               <div className="foot">

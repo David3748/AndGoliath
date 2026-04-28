@@ -32,6 +32,9 @@ yarn-error.log*
 # vercel
 .vercel
 
+# cursor / ai tooling
+.claude
+
 # typescript
 *.tsbuildinfo
 
