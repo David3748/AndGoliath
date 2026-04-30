@@ -3,7 +3,7 @@ import { motion } from 'framer-motion';
 import Layout from '../components/Layout';
 import { favorites, FavoriteItem } from '../data/favorites';
 import Link from 'next/link';
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import SlingshotAnimation from '../components/musicNote';
 import VideoSlingshotAnimation from '../components/Slingshot Music Video Animation';
 import { TypeAnimation } from 'react-type-animation'; // Import TypeAnimation
@@ -14,6 +14,16 @@ interface SelectedItem extends FavoriteItem {
 }
 
 type ExcludedByCategory = Record<string, string[]>;
+type CursorTrailPetal = {
+  id: number;
+  x: number;
+  y: number;
+  shapeIdx: number;
+  colorIdx: number;
+  scale: number;
+  rotation: number;
+  createdAt: number;
+};
 
 const getRandomFavoritesFromDifferentCategories = (
   allFavorites: typeof favorites,
@@ -230,7 +240,9 @@ const Favorites: NextPage = () => {
   const [excludedByCategory, setExcludedByCategory] = useState<ExcludedByCategory>({});
   const [viewportHeight, setViewportHeight] = useState(0);
   const [themeIndex, setThemeIndex] = useState(0);
+  const [cursorTrail, setCursorTrail] = useState<CursorTrailPetal[]>([]);
   const theme = THEMES[themeIndex];
+  const bgRef = useRef<HTMLDivElement>(null);
 
   // Calculate how many items are needed to fill the screen
   const calculateItemsNeeded = () => {
@@ -271,6 +283,105 @@ const Favorites: NextPage = () => {
       document.body.classList.remove(className);
     };
   }, []);
+
+  useEffect(() => {
+    const REPEL_RADIUS = 140;
+    const REPEL_STRENGTH = 80;
+    let mouseX = -9999;
+    let mouseY = -9999;
+    let rafId = 0;
+    let pending = false;
+
+    const tick = () => {
+      pending = false;
+      const container = bgRef.current;
+      if (!container) return;
+      const petals = container.querySelectorAll<HTMLElement>('.petal');
+      petals.forEach((petal) => {
+        const rect = petal.getBoundingClientRect();
+        const cx = rect.left + rect.width / 2;
+        const cy = rect.top + rect.height / 2;
+        const dx = cx - mouseX;
+        const dy = cy - mouseY;
+        const dist = Math.hypot(dx, dy);
+        if (dist < REPEL_RADIUS && dist > 0.01) {
+          const force = (1 - dist / REPEL_RADIUS) * REPEL_STRENGTH;
+          const nx = (dx / dist) * force;
+          const ny = (dy / dist) * force;
+          petal.style.setProperty('--rx', `${nx.toFixed(1)}px`);
+          petal.style.setProperty('--ry', `${ny.toFixed(1)}px`);
+        } else {
+          petal.style.setProperty('--rx', '0px');
+          petal.style.setProperty('--ry', '0px');
+        }
+      });
+    };
+
+    const onMove = (e: MouseEvent) => {
+      mouseX = e.clientX;
+      mouseY = e.clientY;
+      if (!pending) {
+        pending = true;
+        rafId = requestAnimationFrame(tick);
+      }
+    };
+
+    const onLeave = () => {
+      mouseX = -9999;
+      mouseY = -9999;
+      if (!pending) {
+        pending = true;
+        rafId = requestAnimationFrame(tick);
+      }
+    };
+
+    window.addEventListener('mousemove', onMove);
+    window.addEventListener('mouseleave', onLeave);
+    return () => {
+      window.removeEventListener('mousemove', onMove);
+      window.removeEventListener('mouseleave', onLeave);
+      cancelAnimationFrame(rafId);
+    };
+  }, []);
+
+  useEffect(() => {
+    const TRAIL_INTERVAL_MS = 35;
+    const TRAIL_LIFETIME_MS = 450;
+    const MAX_TRAIL_COUNT = 16;
+    let lastSpawn = 0;
+    let nextId = 0;
+
+    const cleanupTimer = window.setInterval(() => {
+      const now = Date.now();
+      setCursorTrail((prev) => prev.filter((petal) => now - petal.createdAt < TRAIL_LIFETIME_MS));
+    }, 120);
+
+    const onMove = (e: MouseEvent) => {
+      const now = Date.now();
+      if (now - lastSpawn < TRAIL_INTERVAL_MS) return;
+      lastSpawn = now;
+
+      const nextPetal: CursorTrailPetal = {
+        id: nextId++,
+        x: e.clientX,
+        y: e.clientY,
+        shapeIdx: Math.floor(Math.random() * theme.shapes.length),
+        colorIdx: Math.floor(Math.random() * 4),
+        scale: 0.32 + Math.random() * 0.22,
+        rotation: Math.random() * 360,
+        createdAt: now,
+      };
+
+      setCursorTrail((prev) => [...prev.slice(-MAX_TRAIL_COUNT + 1), nextPetal]);
+    };
+
+    window.addEventListener('mousemove', onMove);
+    return () => {
+      window.removeEventListener('mousemove', onMove);
+      window.clearInterval(cleanupTimer);
+      setCursorTrail([]);
+    };
+  }, [theme.id, theme.shapes.length]);
 
   useEffect(() => {
     // Only generate favorites when we have viewport height
@@ -329,7 +440,7 @@ const Favorites: NextPage = () => {
 
   return (
     <Layout title="&Goliath | My Favorite Things">
-      <div className={`favorites-blossom-bg theme-${theme.id}`} aria-hidden="true">
+      <div ref={bgRef} className={`favorites-blossom-bg theme-${theme.id}`} aria-hidden="true">
         {Array.from({ length: 30 }).map((_, i) => {
           const flowerIdx = theme.shapes.length - 2;
           const flowerEligible = theme.id === 'blossoms' || theme.id === 'roses';
@@ -341,10 +452,38 @@ const Favorites: NextPage = () => {
           return (
             <span key={`${theme.id}-${i}`} className={`petal petal-${i % 4} ${isFlower ? 'is-flower' : ''}`} style={{
               left: `${(i * 3.7) % 100}%`,
-              animationDelay: `${(i * 0.6) % 14}s`,
-              animationDuration: `${12 + ((i * 1.3) % 10)}s`,
-              transform: `scale(${scale})`
+              ['--scale' as string]: scale,
             }}>
+              <span className="petal-inner" style={{
+                animationDelay: `${(i * 0.6) % 14}s`,
+                animationDuration: `${12 + ((i * 1.3) % 10)}s`,
+              }}>
+                <svg viewBox="0 0 24 24">
+                  {shape.stroke ? (
+                    <path d={shape.d} stroke="currentColor" strokeWidth="1.5" fill="none" strokeLinecap="round" />
+                  ) : (
+                    <path d={shape.d} />
+                  )}
+                </svg>
+              </span>
+            </span>
+          );
+        })}
+      </div>
+      <div className="favorites-cursor-trail" aria-hidden="true">
+        {cursorTrail.map((petal) => {
+          const shape = theme.shapes[petal.shapeIdx];
+          return (
+            <span
+              key={`${theme.id}-trail-${petal.id}`}
+              className={`cursor-trail-petal petal-${petal.colorIdx}`}
+              style={{
+                left: `${petal.x}px`,
+                top: `${petal.y}px`,
+                ['--trail-scale' as string]: petal.scale,
+                ['--trail-rotation' as string]: `${petal.rotation}deg`,
+              }}
+            >
               <svg viewBox="0 0 24 24">
                 {shape.stroke ? (
                   <path d={shape.d} stroke="currentColor" strokeWidth="1.5" fill="none" strokeLinecap="round" />
@@ -507,6 +646,14 @@ const Favorites: NextPage = () => {
           top: -6vh;
           width: 26px;
           height: 26px;
+          transform: translate3d(var(--rx, 0px), var(--ry, 0px), 0) scale(var(--scale, 1));
+          transition: transform 220ms cubic-bezier(.2, .8, .2, 1);
+          will-change: transform;
+        }
+        .favorites-blossom-bg .petal-inner {
+          display: block;
+          width: 100%;
+          height: 100%;
           opacity: 0;
           animation-name: blossomFall;
           animation-timing-function: linear;
@@ -527,6 +674,34 @@ const Favorites: NextPage = () => {
         .favorites-blossom-bg .petal-2 { color: ${theme.petalFills[2]}; }
         .favorites-blossom-bg .petal-3 { color: ${theme.petalFills[3]}; }
         .favorites-blossom-bg .petal.is-flower { width: 36px; height: 36px; filter: drop-shadow(0 0 6px ${theme.petalFills[0]}); }
+        .favorites-cursor-trail {
+          position: fixed;
+          inset: 0;
+          z-index: 2;
+          pointer-events: none;
+        }
+        .favorites-cursor-trail .cursor-trail-petal {
+          position: fixed;
+          width: 16px;
+          height: 16px;
+          transform: translate3d(-50%, -50%, 0) rotate(var(--trail-rotation, 0deg)) scale(var(--trail-scale, 0.4));
+          transform-origin: center;
+          animation: cursorTrailFade 460ms ease-out forwards;
+          will-change: transform, opacity;
+        }
+        .favorites-cursor-trail .cursor-trail-petal svg {
+          width: 100%;
+          height: 100%;
+          display: block;
+        }
+        .favorites-cursor-trail .petal-0 svg path { fill: ${theme.petalFills[0]}; }
+        .favorites-cursor-trail .petal-1 svg path { fill: ${theme.petalFills[1]}; }
+        .favorites-cursor-trail .petal-2 svg path { fill: ${theme.petalFills[2]}; }
+        .favorites-cursor-trail .petal-3 svg path { fill: ${theme.petalFills[3]}; }
+        .favorites-cursor-trail .petal-0 { color: ${theme.petalFills[0]}; }
+        .favorites-cursor-trail .petal-1 { color: ${theme.petalFills[1]}; }
+        .favorites-cursor-trail .petal-2 { color: ${theme.petalFills[2]}; }
+        .favorites-cursor-trail .petal-3 { color: ${theme.petalFills[3]}; }
         .favorites-cta {
           background: ${theme.buttonBg};
           color: ${theme.buttonText};
@@ -571,8 +746,19 @@ const Favorites: NextPage = () => {
             opacity: 0;
           }
         }
+        @keyframes cursorTrailFade {
+          0% {
+            opacity: 0.9;
+            transform: translate3d(-50%, -50%, 0) rotate(var(--trail-rotation, 0deg)) scale(var(--trail-scale, 0.4));
+          }
+          100% {
+            opacity: 0;
+            transform: translate3d(-50%, -50%, 0) translateY(8px) rotate(calc(var(--trail-rotation, 0deg) + 22deg)) scale(calc(var(--trail-scale, 0.4) * 0.75));
+          }
+        }
         @media (prefers-reduced-motion: reduce) {
-          .favorites-blossom-bg .petal { animation: none; opacity: 0.4; }
+          .favorites-blossom-bg .petal-inner { animation: none; opacity: 0.4; }
+          .favorites-cursor-trail { display: none; }
         }
       `}</style>
     </Layout>
