@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import type { NextPage } from 'next';
 import Head from 'next/head';
 import Layout from '../components/Layout';
@@ -68,6 +68,14 @@ const Writing: NextPage<WritingPageProps> = () => {
   const [sort, setSort] = useState<SortKind>('newest');
   const [sortDirection, setSortDirection] = useState<SortDirection>('desc');
 
+  useEffect(() => {
+    const className = 'writing-texture-aurora';
+    document.body.classList.add(className);
+    return () => {
+      document.body.classList.remove(className);
+    };
+  }, []);
+
   const handleSortClick = (nextSort: SortKind) => {
     if (sort === nextSort) {
       setSortDirection((prev) => (prev === 'desc' ? 'asc' : 'desc'));
@@ -102,7 +110,7 @@ const Writing: NextPage<WritingPageProps> = () => {
         initial={{ opacity: 0, y: 12 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.4 }}
-        className="reading-room"
+        className="reading-room texture-aurora"
       >
         <div className="page">
           <div className="head">
@@ -257,26 +265,56 @@ const Writing: NextPage<WritingPageProps> = () => {
 
         <style jsx global>{`
           .reading-room {
-            --bg: #0f111d;
-            --surface: #1a1d2e;
-            --surface-2: #141625;
-            --fg: #f8f8f2;
-            --fg-dim: #d6d6ce;
-            --muted: #6272a4;
-            --line: #2a2f47;
-            --primary: #b39dff;
-            --primary-2: #9580ff;
-            --pink: #ff79c6;
-            --cyan: #8be9fd;
-            --green: #50fa7b;
-            --orange: #ffb86c;
-            --yellow: #f1fa8c;
-            --red: #ff5555;
+            --bg: #1a1328;
+            --surface: #241b3a;
+            --surface-2: #1f1733;
+            --fg: #eee9ff;
+            --fg-dim: #d0c8ef;
+            --muted: #9185ba;
+            --line: #3b2f5d;
+            --primary: #ffb2dd;
+            --primary-2: #ffd2ef;
+            --pink: #ff8fc9;
+            --cyan: #9edff4;
+            --green: #7ddebf;
+            --orange: #ffbe8d;
+            --yellow: #ffe298;
+            --red: #ff7c9b;
             --font-sans: "IBM Plex Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
             --font-serif: "Merriweather", "IBM Plex Serif", Georgia, serif;
             --font-mono: "IBM Plex Mono", ui-monospace, "SF Mono", Menlo, monospace;
             color: var(--fg);
             font-family: var(--font-sans);
+            background: linear-gradient(180deg, #201732 0%, #171023 100%);
+            min-height: 100%;
+          }
+          body[class*="writing-texture-"] {
+            transition: background-color 220ms ease, color 220ms ease;
+          }
+          body[class*="writing-texture-"] .site-shell,
+          body[class*="writing-texture-"] .site-main {
+            background: transparent !important;
+          }
+          body[class*="writing-texture-"] .site-header {
+            background: rgba(23, 16, 35, 0.42) !important;
+            background-image: none !important;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.09) !important;
+            box-shadow:
+              inset 0 1px 0 rgba(255, 255, 255, 0.08),
+              0 8px 32px rgba(0, 0, 0, 0.12) !important;
+            backdrop-filter: blur(18px) saturate(1.25);
+            -webkit-backdrop-filter: blur(18px) saturate(1.25);
+          }
+          body[class*="writing-texture-"] .site-footer {
+            border-top-color: rgba(255, 178, 221, 0.18) !important;
+          }
+          .reading-room.texture-aurora,
+          body.writing-texture-aurora {
+            background-image:
+              radial-gradient(circle at 82% 0, rgba(255,143,201,.24), transparent 34%),
+              radial-gradient(circle at 16% 12%, rgba(158,223,244,.14), transparent 30%),
+              linear-gradient(180deg, #201732 0%, #171023 100%);
+            background-attachment: fixed, fixed, fixed;
           }
           .reading-room .page { max-width: min(1240px, 100%); margin: 0 auto; padding: clamp(28px, 5vw, 48px) clamp(16px, 4vw, 32px) clamp(64px, 12vw, 120px); }
           .reading-room .head { display: grid; grid-template-columns: 1fr auto; gap: clamp(20px, 3vw, 32px); align-items: end; margin-bottom: clamp(32px, 5vw, 48px); }

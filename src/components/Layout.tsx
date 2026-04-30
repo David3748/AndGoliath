@@ -16,6 +16,7 @@ interface LayoutProps {
 const Layout: React.FC<LayoutProps> = ({ children, title = '&Goliath', description, isSimple = false }) => {
   const router = useRouter();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const isWritingRoute = router.pathname.startsWith('/writing');
 
   const toggleMobileMenu = () => {
     setMobileMenuOpen(!mobileMenuOpen);
@@ -35,14 +36,19 @@ const Layout: React.FC<LayoutProps> = ({ children, title = '&Goliath', descripti
   };
 
   return (
-    <div className="flex flex-col min-h-screen bg-gray-950 text-foreground w-full">
+    <div
+      className={`site-shell flex flex-col min-h-screen text-foreground w-full ${isWritingRoute ? 'writing-shell' : 'bg-gray-950'}`}
+      style={isWritingRoute ? { background: 'transparent' } : undefined}
+    >
       <Head>
         <title>{title}</title>
         {description && <meta name="description" content={description} />}
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <header className="bg-gray-900 border-b border-gray-800 sticky top-0 z-10">
+      <header
+        className={`site-header sticky top-0 z-10 ${isWritingRoute ? 'writing-header border-none' : 'border-b bg-gray-900 border-gray-800'}`}
+      >
         <div className="container mx-auto px-4 py-3 md:py-4">
           <div className="flex justify-between items-center">
             <Link
@@ -157,11 +163,11 @@ const Layout: React.FC<LayoutProps> = ({ children, title = '&Goliath', descripti
         </AnimatePresence>
       </header>
 
-      <main className={`flex-grow ${isSimple ? 'container mx-auto px-4 py-8' : 'container mx-auto px-4 py-8 md:py-10'}`}>
+      <main className={`site-main flex-grow ${isSimple ? 'container mx-auto px-4 py-8' : 'container mx-auto px-4 py-8 md:py-10'}`}>
         {children}
       </main>
 
-      <footer className="py-6 md:py-8 border-t border-current-line">
+      <footer className="site-footer py-6 md:py-8 border-t border-current-line">
         <div className="container mx-auto px-4 max-w-3xl flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
           <div className="flex justify-center space-x-6">
             <a
