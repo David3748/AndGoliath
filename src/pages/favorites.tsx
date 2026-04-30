@@ -243,6 +243,7 @@ const Favorites: NextPage = () => {
   const [cursorTrail, setCursorTrail] = useState<CursorTrailPetal[]>([]);
   const theme = THEMES[themeIndex];
   const bgRef = useRef<HTMLDivElement>(null);
+  const viewportWidthRef = useRef(0);
 
   // Calculate how many items are needed to fill the screen
   const calculateItemsNeeded = () => {
@@ -265,10 +266,15 @@ const Favorites: NextPage = () => {
 
   useEffect(() => {
     // Get initial viewport height
+    viewportWidthRef.current = window.innerWidth;
     setViewportHeight(window.innerHeight);
 
-    // Update on window resize
+    // Mobile browsers fire resize events while scrolling as the address bar
+    // expands/collapses. Only regenerate when the layout width really changes.
     const handleResize = () => {
+      const nextWidth = window.innerWidth;
+      if (nextWidth === viewportWidthRef.current) return;
+      viewportWidthRef.current = nextWidth;
       setViewportHeight(window.innerHeight);
     };
 

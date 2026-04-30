@@ -21,31 +21,27 @@ const photos: Photo[] = galleryPhotos.map((photo, index) => ({
   location: photo.location,
 }));
 
-// Grid thumbnail - shows blur then sharpens
+// Grid image - keeps the photo sharp over a blurred version of itself.
 const GridImage: React.FC<{
-  blur: string;
   src: string;
   alt: string;
   className?: string;
-}> = ({ blur, src, alt, className }) => {
+}> = ({ src, alt, className }) => {
   const [isLoaded, setIsLoaded] = useState(false);
 
   return (
-    <div className="relative overflow-hidden">
-      {/* Blur placeholder - scales to fill */}
+    <div className="gallery-image relative overflow-hidden">
       <img
-        src={blur}
+        src={src}
         alt=""
-        className={`${className} absolute inset-0 w-full h-full object-cover transition-opacity duration-300 ${
-          isLoaded ? 'opacity-0' : 'opacity-100'
-        }`}
-        style={{ filter: 'blur(8px)', transform: 'scale(1.1)' }}
+        className="gallery-image-bg"
+        loading="lazy"
+        aria-hidden="true"
       />
-      {/* Actual image */}
       <img
         src={src}
         alt={alt}
-        className={`${className} transition-opacity duration-300 ${
+        className={`${className} gallery-image-main transition-opacity duration-300 ${
           isLoaded ? 'opacity-100' : 'opacity-0'
         }`}
         loading="lazy"
@@ -175,10 +171,9 @@ const Gallery: NextPage = () => {
               }}
             >
               <GridImage
-                blur={photo.blur}
-                src={photo.thumb}
+                src={photo.full}
                 alt={photo.location}
-                className="w-full object-cover transition-transform duration-500 group-hover:scale-105 min-h-[300px]"
+                className="w-full transition-transform duration-500 group-hover:scale-[1.025]"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                 <div className="absolute bottom-0 left-0 right-0 p-4 flex items-center gap-2 text-white">
@@ -423,6 +418,30 @@ const Gallery: NextPage = () => {
         }
         .gallery-card > div {
           border-radius: 4px;
+        }
+        .gallery-image {
+          min-height: 300px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          background: rgba(8, 7, 8, 0.8);
+        }
+        .gallery-image-bg {
+          position: absolute;
+          inset: -18px;
+          width: calc(100% + 36px);
+          height: calc(100% + 36px);
+          object-fit: cover;
+          filter: blur(18px) saturate(1.15) brightness(0.62);
+          transform: scale(1.06);
+          opacity: 0.78;
+        }
+        .gallery-image-main {
+          position: relative;
+          z-index: 1;
+          height: auto;
+          object-fit: contain;
+          filter: none;
         }
         .gallery-lightbox {
           background: #050506;
