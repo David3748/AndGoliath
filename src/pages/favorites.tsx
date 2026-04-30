@@ -49,10 +49,163 @@ const getRandomFavoritesFromDifferentCategories = (
   return { selectedItems, updatedExcluded };
 };
 
+interface PetalShape {
+  d: string;
+  stroke?: boolean;
+}
+
+interface Theme {
+  id: string;
+  label: string;
+  shapes: PetalShape[];
+  htmlBg: string;
+  bodyBg: string;
+  headerBg: string;
+  headerBorder: string;
+  footerBorder: string;
+  petalFills: string[];
+  buttonBg: string;
+  buttonHoverBg: string;
+  buttonText: string;
+  outlineColor: string;
+  outlineHoverText: string;
+  categoryText: string;
+  cardBg: string;
+  cardBorder: string;
+  cardText: string;
+  linkHover: string;
+}
+
+// Cherry blossom shapes — sakura petal has a notched/heart-shaped tip and tapered base
+const SAKURA_PETAL = "M12 22 C9 22, 6 19, 6 14 C6 10, 8 6, 12 3 C16 6, 18 10, 18 14 C18 19, 15 22, 12 22 Z M10 5 C11 6, 11 7, 12 8 C13 7, 13 6, 14 5 C13 4, 12 3.5, 12 3 C12 3.5, 11 4, 10 5 Z";
+const SAKURA_PETAL_TILTED = "M14 22 C10 22, 7 19, 7 14 C7 10, 9 6, 14 3 C17 7, 18 11, 17 15 C16 19, 15 22, 14 22 Z M12 5 C13 6, 13.5 7, 14 8 C14.5 7, 15 6, 16 5 C15 4, 14.5 3.5, 14 3 C14 3.5, 13 4, 12 5 Z";
+const SAKURA_FLOWER_FULL = "M12 12 m-1.5 0 a1.5 1.5 0 1 0 3 0 a1.5 1.5 0 1 0 -3 0 M12 3 C10 5, 9 7, 10 9 C10.5 10, 11.5 10, 12 10 C12.5 10, 13.5 10, 14 9 C15 7, 14 5, 12 3 C12 4, 12 4, 12 5 C12 4, 12 4, 12 3 Z M21 12 C19 10, 17 9, 15 10 C14 10.5, 14 11.5, 14 12 C14 12.5, 14 13.5, 15 14 C17 15, 19 14, 21 12 C20 12, 20 12, 19 12 C20 12, 20 12, 21 12 Z M12 21 C14 19, 15 17, 14 15 C13.5 14, 12.5 14, 12 14 C11.5 14, 10.5 14, 10 15 C9 17, 10 19, 12 21 Z M3 12 C5 14, 7 15, 9 14 C10 13.5, 10 12.5, 10 12 C10 11.5, 10 10.5, 9 10 C7 9, 5 10, 3 12 Z";
+const SAKURA_PETAL_SMALL = "M12 20 C10 20, 8 18, 8 14 C8 11, 10 8, 12 6 C14 8, 16 11, 16 14 C16 18, 14 20, 12 20 Z M11 7 C11.5 7.5, 11.5 8, 12 8.5 C12.5 8, 12.5 7.5, 13 7 C12.5 6.5, 12 6.2, 12 6 C12 6.2, 11.5 6.5, 11 7 Z";
+
+// Rose petal shapes (single petals, curved)
+const ROSE_PETAL_CURL = "M12 3 C8 5, 5 9, 6 14 C7 18, 11 21, 14 19 C16 17, 16 13, 14 10 C13 7, 12 4, 12 3 Z";
+const ROSE_PETAL_SOLO = "M12 2 C9 5, 8 9, 9 13 C10 16, 13 18, 16 16 C18 13, 17 9, 14 5 C13 3, 12 2, 12 2 Z";
+const ROSE_PETAL_WIDE = "M12 3 C7 6, 5 11, 7 16 C9 20, 15 20, 17 16 C19 11, 17 6, 12 3 Z";
+const ROSE_FULL = "M12 4 C8 4, 5 7, 5 11 C5 13, 6 14, 7 14 C7 17, 9 20, 12 20 C15 20, 17 17, 17 14 C18 14, 19 13, 19 11 C19 7, 16 4, 12 4 Z M12 8 C10 8, 9 10, 10 12 C11 13, 13 13, 14 12 C15 10, 14 8, 12 8 Z";
+
+// Autumn leaf shapes
+const LEAF_OAK = "M12 3 C7 5, 4 10, 5 16 C5 18, 7 20, 9 20 C13 20, 18 16, 19 9 C19 6, 17 4, 14 3 Z";
+const LEAF_MAPLE = "M12 2 L14 7 L19 6 L16 11 L21 13 L16 15 L17 20 L13 18 L12 22 L11 18 L7 20 L8 15 L3 13 L8 11 L5 6 L10 7 Z";
+const LEAF_ELONGATED = "M12 2 C10 8, 8 12, 8 16 C8 19, 10 22, 12 22 C14 22, 16 19, 16 16 C16 12, 14 8, 12 2 Z M12 4 L12 22";
+const LEAF_BIRCH = "M12 3 C9 6, 7 11, 7 16 C7 19, 9 21, 12 21 C15 21, 17 19, 17 16 C17 11, 15 6, 12 3 Z";
+
+// Snowflake shapes
+const SNOW_SIMPLE = "M12 2 L12 22 M2 12 L22 12 M5 5 L19 19 M19 5 L5 19 M12 5 L10 7 M12 5 L14 7 M12 19 L10 17 M12 19 L14 17";
+const SNOW_HEXAGON = "M12 2 L12 22 M3 7 L21 17 M3 17 L21 7 M12 6 L10 4 M12 6 L14 4 M12 18 L10 20 M12 18 L14 20 M6 9 L4 8 M18 15 L20 16 M6 15 L4 16 M18 9 L20 8";
+const SNOW_STAR = "M12 2 L13 10 L21 8 L14 13 L18 21 L12 16 L6 21 L10 13 L3 8 L11 10 Z";
+const SNOW_DOT = "M12 12 m-5 0 a5 5 0 1 0 10 0 a5 5 0 1 0 -10 0 M12 12 m-2 0 a2 2 0 1 0 4 0 a2 2 0 1 0 -4 0";
+
+
+const THEMES: Theme[] = [
+  {
+    id: 'blossoms',
+    label: 'cherry blossoms',
+    shapes: [{ d: SAKURA_PETAL }, { d: SAKURA_PETAL_TILTED }, { d: SAKURA_FLOWER_FULL }, { d: SAKURA_PETAL_SMALL }],
+    htmlBg: '#2a0f22',
+    bodyBg: `radial-gradient(ellipse 60% 50% at 80% 0%, rgba(255, 170, 200, 0.55), transparent 70%),
+             radial-gradient(ellipse 70% 60% at 15% 95%, rgba(220, 130, 175, 0.45), transparent 70%),
+             radial-gradient(ellipse 50% 40% at 50% 50%, rgba(120, 60, 100, 0.25), transparent 80%),
+             linear-gradient(180deg, #3a1530 0%, #28102a 55%, #18081e 100%)`,
+    headerBg: 'rgba(29, 14, 28, 0.55)',
+    headerBorder: 'rgba(255, 192, 213, 0.16)',
+    footerBorder: 'rgba(255, 192, 213, 0.2)',
+    petalFills: ['rgba(255, 183, 207, 0.85)', 'rgba(255, 210, 225, 0.78)', 'rgba(255, 158, 193, 0.72)', 'rgba(255, 232, 240, 0.7)'],
+    buttonBg: '#ff9ec1',
+    buttonHoverBg: '#ffb7d3',
+    buttonText: '#3a1530',
+    outlineColor: '#ffb7d3',
+    outlineHoverText: '#3a1530',
+    categoryText: '#ffb7d3',
+    cardBg: 'rgba(58, 21, 48, 0.55)',
+    cardBorder: 'rgba(255, 183, 207, 0.22)',
+    cardText: '#ffe7f0',
+    linkHover: '#ffd2e3',
+  },
+  {
+    id: 'roses',
+    label: 'roses',
+    shapes: [{ d: ROSE_PETAL_CURL }, { d: ROSE_PETAL_WIDE }, { d: ROSE_FULL }, { d: ROSE_PETAL_SOLO }],
+    htmlBg: '#1a0808',
+    bodyBg: `radial-gradient(ellipse 60% 50% at 20% 10%, rgba(220, 50, 80, 0.45), transparent 65%),
+             radial-gradient(ellipse 70% 55% at 90% 90%, rgba(120, 25, 35, 0.55), transparent 70%),
+             radial-gradient(ellipse 40% 30% at 50% 50%, rgba(60, 20, 25, 0.4), transparent 80%),
+             linear-gradient(180deg, #2a0a10 0%, #1a0608 60%, #0d0304 100%)`,
+    headerBg: 'rgba(26, 6, 8, 0.6)',
+    headerBorder: 'rgba(220, 80, 100, 0.18)',
+    footerBorder: 'rgba(220, 80, 100, 0.22)',
+    petalFills: ['rgba(220, 40, 70, 0.85)', 'rgba(180, 30, 55, 0.8)', 'rgba(255, 90, 110, 0.7)', 'rgba(140, 20, 40, 0.78)'],
+    buttonBg: '#dc2846',
+    buttonHoverBg: '#ff5a6e',
+    buttonText: '#1a0608',
+    outlineColor: '#ff7a8c',
+    outlineHoverText: '#1a0608',
+    categoryText: '#ff8a9c',
+    cardBg: 'rgba(40, 10, 14, 0.6)',
+    cardBorder: 'rgba(220, 80, 100, 0.22)',
+    cardText: '#ffe0e4',
+    linkHover: '#ff9eaa',
+  },
+  {
+    id: 'autumn',
+    label: 'autumn leaves',
+    shapes: [{ d: LEAF_OAK }, { d: LEAF_MAPLE }, { d: LEAF_ELONGATED }, { d: LEAF_BIRCH }],
+    htmlBg: '#1a0e05',
+    bodyBg: `radial-gradient(ellipse 60% 50% at 75% 5%, rgba(255, 140, 50, 0.45), transparent 65%),
+             radial-gradient(ellipse 70% 60% at 10% 90%, rgba(180, 80, 30, 0.5), transparent 70%),
+             radial-gradient(ellipse 50% 40% at 40% 50%, rgba(80, 35, 15, 0.35), transparent 80%),
+             linear-gradient(180deg, #2a1208 0%, #1c0c05 55%, #0e0602 100%)`,
+    headerBg: 'rgba(28, 12, 5, 0.6)',
+    headerBorder: 'rgba(255, 160, 80, 0.18)',
+    footerBorder: 'rgba(255, 160, 80, 0.22)',
+    petalFills: ['rgba(255, 140, 50, 0.85)', 'rgba(220, 90, 30, 0.8)', 'rgba(255, 200, 90, 0.78)', 'rgba(180, 60, 25, 0.78)'],
+    buttonBg: '#ff8c32',
+    buttonHoverBg: '#ffb05a',
+    buttonText: '#1c0c05',
+    outlineColor: '#ffb05a',
+    outlineHoverText: '#1c0c05',
+    categoryText: '#ffb05a',
+    cardBg: 'rgba(42, 18, 8, 0.55)',
+    cardBorder: 'rgba(255, 160, 80, 0.22)',
+    cardText: '#ffe9d1',
+    linkHover: '#ffc88a',
+  },
+  {
+    id: 'snow',
+    label: 'snowflakes',
+    shapes: [{ d: SNOW_SIMPLE, stroke: true }, { d: SNOW_HEXAGON, stroke: true }, { d: SNOW_STAR }, { d: SNOW_DOT }],
+    htmlBg: '#0a1424',
+    bodyBg: `radial-gradient(ellipse 60% 50% at 70% 0%, rgba(150, 200, 255, 0.4), transparent 70%),
+             radial-gradient(ellipse 70% 55% at 15% 95%, rgba(80, 130, 200, 0.35), transparent 70%),
+             radial-gradient(ellipse 50% 40% at 50% 50%, rgba(40, 70, 120, 0.3), transparent 80%),
+             linear-gradient(180deg, #14223a 0%, #0c1828 55%, #050b18 100%)`,
+    headerBg: 'rgba(12, 24, 40, 0.6)',
+    headerBorder: 'rgba(180, 220, 255, 0.18)',
+    footerBorder: 'rgba(180, 220, 255, 0.22)',
+    petalFills: ['rgba(220, 235, 255, 0.85)', 'rgba(180, 210, 245, 0.8)', 'rgba(255, 255, 255, 0.7)', 'rgba(150, 190, 235, 0.75)'],
+    buttonBg: '#a8d0ff',
+    buttonHoverBg: '#d0e4ff',
+    buttonText: '#0c1828',
+    outlineColor: '#a8d0ff',
+    outlineHoverText: '#0c1828',
+    categoryText: '#a8d0ff',
+    cardBg: 'rgba(20, 34, 58, 0.55)',
+    cardBorder: 'rgba(180, 220, 255, 0.2)',
+    cardText: '#e6f0ff',
+    linkHover: '#c8dcff',
+  },
+];
+
 const Favorites: NextPage = () => {
   const [randomFavorites, setRandomFavorites] = useState<SelectedItem[]>([]);
   const [excludedByCategory, setExcludedByCategory] = useState<ExcludedByCategory>({});
   const [viewportHeight, setViewportHeight] = useState(0);
+  const [themeIndex, setThemeIndex] = useState(0);
+  const theme = THEMES[themeIndex];
 
   // Calculate how many items are needed to fill the screen
   const calculateItemsNeeded = () => {
@@ -84,6 +237,14 @@ const Favorites: NextPage = () => {
 
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+  useEffect(() => {
+    const className = 'favorites-themed';
+    document.body.classList.add(className);
+    return () => {
+      document.body.classList.remove(className);
+    };
   }, []);
 
   useEffect(() => {
@@ -138,10 +299,38 @@ const Favorites: NextPage = () => {
     );
     setRandomFavorites(selectedItems);
     setExcludedByCategory(updatedExcluded);
+    setThemeIndex((prev) => (prev + 1) % THEMES.length);
   };
 
   return (
     <Layout title="&Goliath | My Favorite Things">
+      <div className={`favorites-blossom-bg theme-${theme.id}`} aria-hidden="true">
+        {Array.from({ length: 30 }).map((_, i) => {
+          const flowerIdx = theme.shapes.length - 2;
+          const flowerEligible = theme.id === 'blossoms' || theme.id === 'roses';
+          const isFlower = flowerEligible && (i % 10 === 3);
+          const shapeIdx = isFlower ? flowerIdx : (i * 7) % (theme.shapes.length - (flowerEligible ? 1 : 0));
+          const shape = theme.shapes[isFlower ? flowerIdx : (shapeIdx >= flowerIdx && flowerEligible ? shapeIdx + 1 : shapeIdx)];
+          const baseScale = 0.6 + ((i * 0.13) % 0.7);
+          const scale = isFlower ? baseScale * 1.4 : baseScale;
+          return (
+            <span key={`${theme.id}-${i}`} className={`petal petal-${i % 4} ${isFlower ? 'is-flower' : ''}`} style={{
+              left: `${(i * 3.7) % 100}%`,
+              animationDelay: `${(i * 0.6) % 14}s`,
+              animationDuration: `${12 + ((i * 1.3) % 10)}s`,
+              transform: `scale(${scale})`
+            }}>
+              <svg viewBox="0 0 24 24">
+                {shape.stroke ? (
+                  <path d={shape.d} stroke="currentColor" strokeWidth="1.5" fill="none" strokeLinecap="round" />
+                ) : (
+                  <path d={shape.d} />
+                )}
+              </svg>
+            </span>
+          );
+        })}
+      </div>
       <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ duration: 0.8 }}>
         <div className="flex flex-col md:flex-row md:items-end justify-between mb-6">
           <h1 className="text-2xl md:text-3xl font-serif text-foreground border-b border-current-line pb-2 mt-8">
@@ -191,16 +380,16 @@ const Favorites: NextPage = () => {
               initial={{ opacity: 0, x: -50 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.5, delay: index * 0.1, ease: 'easeOut' }}
-              className="p-4 bg-current-line rounded-lg shadow-sm border border-current-line hover:shadow-md transition-shadow"
+              className="favorites-item p-4 rounded-lg shadow-sm transition-shadow"
             >
-              <div className="text-sm text-primary mb-1">{item.category}</div>
-              <h3 className="text-lg font-medium text-foreground">
+              <div className="favorites-item-cat text-sm mb-1">{item.category}</div>
+              <h3 className="favorites-item-name text-lg font-medium">
                 {item.url ? (
                   <Link
                     href={item.url}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="hover:text-primary transition-colors"
+                    className="favorites-item-link transition-colors"
                   >
                     {item.name}
                   </Link>
@@ -215,21 +404,133 @@ const Favorites: NextPage = () => {
         <div className="mt-12 md:mt-16 text-center space-y-4">
           <button
             onClick={handleMoreFavorites}
-            className="mb-2 px-4 py-2 bg-primary text-background rounded-md hover:bg-purple transition-colors"
+            className="favorites-cta mb-2 px-4 py-2 rounded-md transition-colors"
           >
-            But wait, there's more
+            But wait, there&apos;s more
           </button>
-          
+
           <div>
             <Link
               href="/favorites/all"
-              className="inline-block px-4 py-2 border border-primary text-primary rounded-md hover:bg-primary hover:text-background transition-colors"
+              className="favorites-cta-outline inline-block px-4 py-2 rounded-md transition-colors"
             >
               See all favorites by category
             </Link>
           </div>
         </div>
       </motion.div>
+      <style jsx global>{`
+        html:has(body.favorites-themed) {
+          background: ${theme.htmlBg} !important;
+          transition: background 600ms ease;
+        }
+        body.favorites-themed {
+          background: ${theme.bodyBg} !important;
+          background-attachment: fixed !important;
+          transition: background 600ms ease;
+          min-height: 100vh;
+        }
+        body.favorites-themed .site-shell,
+        body.favorites-themed .site-main {
+          background: transparent !important;
+          position: relative;
+        }
+        body.favorites-themed .site-main {
+          z-index: 1;
+        }
+        body.favorites-themed .site-header {
+          background: ${theme.headerBg} !important;
+          border-bottom: 1px solid ${theme.headerBorder} !important;
+          backdrop-filter: blur(14px) saturate(1.2);
+          -webkit-backdrop-filter: blur(14px) saturate(1.2);
+          transition: background 600ms ease, border-color 600ms ease;
+        }
+        body.favorites-themed .site-footer {
+          border-top-color: ${theme.footerBorder} !important;
+          position: relative;
+          z-index: 1;
+          transition: border-color 600ms ease;
+        }
+        .favorites-blossom-bg {
+          position: fixed;
+          inset: 0;
+          z-index: 0;
+          pointer-events: none;
+          overflow: hidden;
+        }
+        .favorites-blossom-bg .petal {
+          position: absolute;
+          top: -6vh;
+          width: 26px;
+          height: 26px;
+          opacity: 0;
+          animation-name: blossomFall;
+          animation-timing-function: linear;
+          animation-iteration-count: infinite;
+          will-change: transform, opacity;
+        }
+        .favorites-blossom-bg .petal svg {
+          width: 100%;
+          height: 100%;
+          display: block;
+        }
+        .favorites-blossom-bg .petal-0 svg path { fill: ${theme.petalFills[0]}; }
+        .favorites-blossom-bg .petal-1 svg path { fill: ${theme.petalFills[1]}; }
+        .favorites-blossom-bg .petal-2 svg path { fill: ${theme.petalFills[2]}; }
+        .favorites-blossom-bg .petal-3 svg path { fill: ${theme.petalFills[3]}; }
+        .favorites-blossom-bg .petal-0 { color: ${theme.petalFills[0]}; }
+        .favorites-blossom-bg .petal-1 { color: ${theme.petalFills[1]}; }
+        .favorites-blossom-bg .petal-2 { color: ${theme.petalFills[2]}; }
+        .favorites-blossom-bg .petal-3 { color: ${theme.petalFills[3]}; }
+        .favorites-blossom-bg .petal.is-flower { width: 36px; height: 36px; filter: drop-shadow(0 0 6px ${theme.petalFills[0]}); }
+        .favorites-cta {
+          background: ${theme.buttonBg};
+          color: ${theme.buttonText};
+          border: 1px solid ${theme.buttonBg};
+          font-weight: 500;
+        }
+        .favorites-cta:hover {
+          background: ${theme.buttonHoverBg};
+          border-color: ${theme.buttonHoverBg};
+        }
+        .favorites-cta-outline {
+          border: 1px solid ${theme.outlineColor};
+          color: ${theme.outlineColor};
+          background: transparent;
+        }
+        .favorites-cta-outline:hover {
+          background: ${theme.outlineColor};
+          color: ${theme.outlineHoverText};
+        }
+        .favorites-item {
+          background: ${theme.cardBg};
+          border: 1px solid ${theme.cardBorder};
+          backdrop-filter: blur(6px);
+          -webkit-backdrop-filter: blur(6px);
+        }
+        .favorites-item-cat { color: ${theme.categoryText}; }
+        .favorites-item-name { color: ${theme.cardText}; }
+        .favorites-item-link { color: ${theme.cardText}; }
+        .favorites-item-link:hover { color: ${theme.linkHover}; }
+        @keyframes blossomFall {
+          0% {
+            transform: translate3d(0, -8vh, 0) rotate(0deg);
+            opacity: 0;
+          }
+          8% { opacity: 1; }
+          50% {
+            transform: translate3d(40px, 50vh, 0) rotate(220deg);
+          }
+          92% { opacity: 1; }
+          100% {
+            transform: translate3d(-30px, 110vh, 0) rotate(540deg);
+            opacity: 0;
+          }
+        }
+        @media (prefers-reduced-motion: reduce) {
+          .favorites-blossom-bg .petal { animation: none; opacity: 0.4; }
+        }
+      `}</style>
     </Layout>
   );
 };
