@@ -597,12 +597,14 @@ const Favorites: NextPage = () => {
         html:has(body.favorites-themed) {
           background: ${theme.htmlBg} !important;
           transition: background 600ms ease;
+          overscroll-behavior-y: none;
         }
         body.favorites-themed {
           background: ${theme.bodyBg} !important;
           background-attachment: fixed !important;
           transition: background 600ms ease;
           min-height: 100vh;
+          overscroll-behavior-y: contain;
         }
         body.favorites-themed .site-shell,
         body.favorites-themed .site-main {
