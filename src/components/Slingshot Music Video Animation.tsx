@@ -4,11 +4,17 @@ import { motion, AnimatePresence } from 'framer-motion';
 interface VideoSlingshotAnimationProps {
   className?: string;
   onLaunch?: () => void;
+  frameColor?: string;
+  elasticColor?: string;
+  stoneColor?: string;
 }
 
-const VideoSlingshotAnimation: React.FC<VideoSlingshotAnimationProps> = ({ 
+const VideoSlingshotAnimation: React.FC<VideoSlingshotAnimationProps> = ({
   className = '',
-  onLaunch
+  onLaunch,
+  frameColor: frameColorProp,
+  elasticColor: elasticColorProp,
+  stoneColor: stoneColorProp,
 }) => {
   const [isLaunched, setIsLaunched] = useState(false);
 
@@ -94,10 +100,9 @@ const VideoSlingshotAnimation: React.FC<VideoSlingshotAnimationProps> = ({
     }
   };
 
-  // Colors with a video theme
-  const frameColor = '#FF5757'; // Reddish color like YouTube
-  const elastic = '#FFFFFF';
-  const stone = '#FF0000'; // Red play button
+  const frameColor = frameColorProp ?? '#FF5757';
+  const elastic = elasticColorProp ?? '#FFFFFF';
+  const stone = stoneColorProp ?? '#FF0000';
 
   return (
     <div className={`relative inline-flex items-center justify-center ${className}`}>

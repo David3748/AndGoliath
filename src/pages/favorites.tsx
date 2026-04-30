@@ -74,6 +74,11 @@ interface Theme {
   cardBorder: string;
   cardText: string;
   linkHover: string;
+  musicFrame: string;
+  musicNote: string;
+  videoFrame: string;
+  videoStone: string;
+  navAccent: string;
 }
 
 // Cherry blossom shapes — sakura petal has a notched/heart-shaped tip and tapered base
@@ -125,6 +130,11 @@ const THEMES: Theme[] = [
     cardBorder: 'rgba(255, 183, 207, 0.22)',
     cardText: '#ffe7f0',
     linkHover: '#ffd2e3',
+    musicFrame: '#c64b8c',
+    musicNote: '#ffd2ef',
+    videoFrame: '#ff8fc9',
+    videoStone: '#ffb2dd',
+    navAccent: '#ffb7d3',
   },
   {
     id: 'roses',
@@ -149,6 +159,11 @@ const THEMES: Theme[] = [
     cardBorder: 'rgba(220, 80, 100, 0.22)',
     cardText: '#ffe0e4',
     linkHover: '#ff9eaa',
+    musicFrame: '#8a1a28',
+    musicNote: '#ff7a8c',
+    videoFrame: '#dc2846',
+    videoStone: '#ff5a6e',
+    navAccent: '#ff7a8c',
   },
   {
     id: 'autumn',
@@ -173,6 +188,11 @@ const THEMES: Theme[] = [
     cardBorder: 'rgba(255, 160, 80, 0.22)',
     cardText: '#ffe9d1',
     linkHover: '#ffc88a',
+    musicFrame: '#a85020',
+    musicNote: '#ffd29a',
+    videoFrame: '#ff8c32',
+    videoStone: '#ffb05a',
+    navAccent: '#ffb05a',
   },
   {
     id: 'snow',
@@ -197,6 +217,11 @@ const THEMES: Theme[] = [
     cardBorder: 'rgba(180, 220, 255, 0.2)',
     cardText: '#e6f0ff',
     linkHover: '#c8dcff',
+    musicFrame: '#3a72b8',
+    musicNote: '#d0e4ff',
+    videoFrame: '#a8d0ff',
+    videoStone: '#e0eeff',
+    navAccent: '#a8d0ff',
   },
 ];
 
@@ -364,11 +389,21 @@ const Favorites: NextPage = () => {
 
           <div className="flex justify-center space-x-8 mb-4 md:mb-0">
             <div className="text-center">
-              <SlingshotAnimation className="w-12 h-12 md:w-16 md:h-16" onLaunch={openRandomSong} />
+              <SlingshotAnimation
+                className="w-12 h-12 md:w-16 md:h-16"
+                onLaunch={openRandomSong}
+                frameColor={theme.musicFrame}
+                noteColor={theme.musicNote}
+              />
             </div>
 
             <div className="text-center">
-              <VideoSlingshotAnimation className="w-12 h-12 md:w-16 md:h-16" onLaunch={openRandomVideo} />
+              <VideoSlingshotAnimation
+                className="w-12 h-12 md:w-16 md:h-16"
+                onLaunch={openRandomVideo}
+                frameColor={theme.videoFrame}
+                stoneColor={theme.videoStone}
+              />
             </div>
           </div>
         </div>
@@ -444,6 +479,15 @@ const Favorites: NextPage = () => {
           backdrop-filter: blur(14px) saturate(1.2);
           -webkit-backdrop-filter: blur(14px) saturate(1.2);
           transition: background 600ms ease, border-color 600ms ease;
+        }
+        body.favorites-themed .site-header h1 .text-primary,
+        body.favorites-themed .site-header .text-primary {
+          color: ${theme.navAccent} !important;
+          transition: color 600ms ease;
+        }
+        body.favorites-themed .site-header nav a:hover,
+        body.favorites-themed .site-header nav a.text-primary {
+          color: ${theme.navAccent} !important;
         }
         body.favorites-themed .site-footer {
           border-top-color: ${theme.footerBorder} !important;

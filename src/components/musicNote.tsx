@@ -4,11 +4,17 @@ import { motion, AnimatePresence } from 'framer-motion';
 interface MusicSlingshotAnimationProps {
   className?: string;
   onLaunch?: () => void;
+  frameColor?: string;
+  elasticColor?: string;
+  noteColor?: string;
 }
 
-const MusicSlingshotAnimation: React.FC<MusicSlingshotAnimationProps> = ({ 
+const MusicSlingshotAnimation: React.FC<MusicSlingshotAnimationProps> = ({
   className = '',
-  onLaunch
+  onLaunch,
+  frameColor: frameColorProp,
+  elasticColor: elasticColorProp,
+  noteColor: noteColorProp,
 }) => {
   const [isLaunched, setIsLaunched] = useState(false);
 
@@ -97,10 +103,9 @@ const MusicSlingshotAnimation: React.FC<MusicSlingshotAnimationProps> = ({
     }
   };
 
-  // Colors with a music theme
-  const frameColor = '#6A329F'; // Purple for music theme
-  const elastic = '#FFFFFF';
-  const noteColor = '#3498DB'; // Blue note
+  const frameColor = frameColorProp ?? '#6A329F';
+  const elastic = elasticColorProp ?? '#FFFFFF';
+  const noteColor = noteColorProp ?? '#3498DB';
 
   return (
     <div className={`relative inline-flex items-center justify-center ${className}`}>
