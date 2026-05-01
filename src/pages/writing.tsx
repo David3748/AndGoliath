@@ -5,6 +5,9 @@ import Layout from '../components/Layout';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
 import { getAllArticles, Article } from '../lib/articles';
+import { ALL_CONVO_STARTERS } from '../data/conversationStarters';
+
+const CONVO_REPLY_EMAIL = 'davidel1014.dl@gmail.com';
 
 interface WritingPageProps {
   articles: Article[];
@@ -13,7 +16,7 @@ interface WritingPageProps {
 type FilterKind = 'all' | 'essay' | 'notes' | 'log';
 type SortKind = 'newest' | 'longest' | 'az';
 type SortDirection = 'asc' | 'desc';
-type CardId = 'goliath' | 'planes' | 'mechanized' | 'experience' | 'books' | 'cities' | 'stocks';
+type CardId = 'goliath' | 'planes' | 'mechanized' | 'conversation' | 'experience' | 'books' | 'cities' | 'stocks';
 
 interface CardMeta {
   id: CardId;
@@ -32,6 +35,7 @@ const CARD_META: CardMeta[] = [
   { id: 'goliath', category: 'essay', title: 'In defense of Goliath', dateSort: '2026-02-10', lengthScore: 6 },
   { id: 'planes', category: 'essay', title: 'Planes', dateSort: '2026-02-12', lengthScore: 4 },
   { id: 'mechanized', category: 'notes', title: 'Mechanized humans', dateSort: '2026-02-10', lengthScore: 3 },
+  { id: 'conversation', category: 'notes', title: 'Conversation starters', dateSort: '2026-04-30', lengthScore: 4 },
   { id: 'experience', category: 'essay', title: 'Experience', dateSort: '0000-00-00', lengthScore: 9 },
   { id: 'books', category: 'log', title: 'Books 2026', dateSort: '2026-02-01', lengthScore: 17 },
   { id: 'cities', category: 'log', title: 'Cities', dateSort: '2026-02-05', lengthScore: 5 },
@@ -68,6 +72,9 @@ const Writing: NextPage<WritingPageProps> = () => {
   const [sort, setSort] = useState<SortKind>('newest');
   const [sortDirection, setSortDirection] = useState<SortDirection>('desc');
 
+  const [convoIndex, setConvoIndex] = useState(0);
+  const [convoResponse, setConvoResponse] = useState('');
+
   useEffect(() => {
     const className = 'writing-texture-aurora';
     document.body.classList.add(className);
@@ -75,6 +82,32 @@ const Writing: NextPage<WritingPageProps> = () => {
       document.body.classList.remove(className);
     };
   }, []);
+
+  useEffect(() => {
+    setConvoIndex(Math.floor(Math.random() * ALL_CONVO_STARTERS.length));
+  }, []);
+
+  const shuffleConvoPrompt = () => {
+    setConvoResponse('');
+    setConvoIndex((prev) => {
+      if (ALL_CONVO_STARTERS.length <= 1) return 0;
+      let next = prev;
+      while (next === prev) {
+        next = Math.floor(Math.random() * ALL_CONVO_STARTERS.length);
+      }
+      return next;
+    });
+  };
+
+  const convoMailtoHref = useMemo(() => {
+    const prompt = ALL_CONVO_STARTERS[convoIndex] ?? '';
+    const trimmed = convoResponse.trim();
+    const answerPart = trimmed
+      ? `My answer:\n${trimmed}`
+      : '(Add your answer in the box first, or continue in the email.)';
+    const body = `Prompt:\n${prompt}\n\n${answerPart}`;
+    return `mailto:${CONVO_REPLY_EMAIL}?subject=${encodeURIComponent('Conversation starter')}&body=${encodeURIComponent(body)}`;
+  }, [convoIndex, convoResponse]);
 
   const handleSortClick = (nextSort: SortKind) => {
     if (sort === nextSort) {
@@ -189,6 +222,34 @@ const Writing: NextPage<WritingPageProps> = () => {
                 <span className="read">Read →</span>
               </div>
             </Link>
+              );
+              if (card.id === 'conversation') return (
+                <div key={card.id} className="card c-third notes convo-card">
+                  <div className="corner" />
+                  <div className="meta"><span>Notes · prompts</span><span className="len">Apr 30 · 2026</span></div>
+                  <h2>Conversation <em>starters</em>.</h2>
+                  <p className="convo-prompt">{ALL_CONVO_STARTERS[convoIndex]}</p>
+                  <textarea
+                    className="convo-textarea"
+                    value={convoResponse}
+                    onChange={(e) => setConvoResponse(e.target.value)}
+                    placeholder="Your answer…"
+                    rows={4}
+                    aria-label="Your response to the prompt"
+                  />
+                  <div className="convo-actions">
+                    <button type="button" className="convo-shuffle" onClick={shuffleConvoPrompt}>
+                      Another prompt
+                    </button>
+                    <a href={convoMailtoHref} className="convo-email">
+                      Email me
+                    </a>
+                  </div>
+                  <div className="foot">
+                    <div className="tag-row"><span className="tag">notes</span></div>
+                    <Link href="/writing/ConversationStarters" className="read convo-full-list">Full list →</Link>
+                  </div>
+                </div>
               );
               if (card.id === 'experience') return (
                 <Link key={card.id} className="card c-third" href="/writing/Experience">
@@ -384,6 +445,71 @@ const Writing: NextPage<WritingPageProps> = () => {
           .reading-room .card.notes { background: var(--surface-2); }
           .reading-room .card.notes .mono { font-family: var(--font-mono); font-size: 12px; line-height: 1.7; color: var(--fg-dim); }
           .reading-room .card.notes .dash { color: var(--pink); margin-right: 6px; }
+          .reading-room .convo-card { cursor: default; text-decoration: none; color: inherit; min-height: min(48vh, 420px); }
+          .reading-room .convo-card:hover { transform: translateY(-4px); border-color: var(--primary); z-index: 3; }
+          .reading-room .convo-prompt {
+            font-family: var(--font-serif);
+            font-size: 15px;
+            line-height: 1.55;
+            color: var(--fg);
+            margin: 0;
+          }
+          .reading-room .convo-textarea {
+            width: 100%;
+            min-height: 96px;
+            resize: vertical;
+            padding: 12px 14px;
+            border-radius: 6px;
+            border: 1px solid var(--line);
+            background: rgba(0, 0, 0, 0.22);
+            color: var(--fg-dim);
+            font-family: var(--font-sans);
+            font-size: 14px;
+            line-height: 1.5;
+            margin-top: 4px;
+          }
+          .reading-room .convo-textarea::placeholder { color: var(--muted); opacity: 0.85; }
+          .reading-room .convo-textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 1px rgba(255, 178, 221, 0.35);
+          }
+          .reading-room .convo-actions {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: flex-end;
+            align-items: center;
+            gap: 8px;
+            margin-top: 2px;
+          }
+          .reading-room .convo-shuffle {
+            padding: 7px 12px;
+            border-radius: 999px;
+            border: 1px solid var(--line);
+            background: transparent;
+            color: var(--fg-dim);
+            font-family: var(--font-mono);
+            font-size: 10px;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            cursor: pointer;
+          }
+          .reading-room .convo-shuffle:hover { border-color: var(--primary); color: var(--primary); }
+          .reading-room .convo-email {
+            padding: 7px 12px;
+            border-radius: 999px;
+            border: 1px solid var(--primary);
+            background: rgba(255, 178, 221, 0.12);
+            color: var(--primary);
+            font-family: var(--font-mono);
+            font-size: 10px;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            text-decoration: none;
+          }
+          .reading-room .convo-email:hover { background: rgba(255, 178, 221, 0.2); color: var(--fg); }
+          .reading-room .convo-card a.convo-full-list.read { color: var(--primary); text-decoration: none; }
+          .reading-room .convo-card a.convo-full-list.read:hover { text-decoration: underline; }
           .reading-room .card.log { background: repeating-linear-gradient(transparent 0 26px, rgba(98,114,164,.12) 26px 27px), var(--surface); }
           .reading-room .card.log h2 { color: var(--primary); }
           .reading-room .card.log .list { font-family: var(--font-mono); font-size: 12px; line-height: 2.16; color: var(--fg-dim); padding-left: 0; list-style: none; margin: 0; }
