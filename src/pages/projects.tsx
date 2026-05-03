@@ -36,13 +36,20 @@ export const getStaticProps = async () => {
       imageUrl: '/images/andgoliath.svg',
     },
     {
+      title: 'MMOthello',
+      subtitle: 'Persistent massively multiplayer Othello on a shared 1000×1000 grid',
+      technologies: ['Go', 'TypeScript', 'WebSockets', 'Vite', 'Canvas 2D'],
+      githubUrl: 'https://github.com/David3748/MMOthello',
+      imageUrl: '/images/mmothello.jpg',
+    },
+    {
       title: 'Are We Judgemental',
       subtitle: 'An analysis comparing UMD CS students and Redditors on AITA questions ',
       technologies: ['Python', 'pandas', 'scipy', 'numpy', 'Jupyter Notebooks', 'praw', 'Reddit API'],
       githubUrl: 'https://david3748.github.io/Are-We-Judgemental-Website/',
       imageUrl: '/images/are-we-judgemental.png',
     },
-{
+    {
       title: 'Transit Topography',
       subtitle: 'Isochrome maps of Transit Times',
       technologies: ['JavaScript', 'Leaflet.js', 'Overpass API', 'LocationIQ API', 'HTML', 'Tailwind CSS'],
