@@ -16,7 +16,7 @@ interface WritingPageProps {
 type FilterKind = 'all' | 'essay' | 'notes' | 'log';
 type SortKind = 'newest' | 'longest' | 'az';
 type SortDirection = 'asc' | 'desc';
-type CardId = 'goliath' | 'planes' | 'mechanized' | 'conversation' | 'experience' | 'books' | 'cities' | 'stocks';
+type CardId = 'sabbath' | 'goliath' | 'planes' | 'mechanized' | 'conversation' | 'experience' | 'books' | 'cities' | 'stocks';
 
 interface CardMeta {
   id: CardId;
@@ -32,6 +32,7 @@ interface RatedItem {
 }
 
 const CARD_META: CardMeta[] = [
+  { id: 'sabbath', category: 'essay', title: 'The Sabbath', dateSort: '2026-05-10', lengthScore: 7 },
   { id: 'goliath', category: 'essay', title: 'In defense of Goliath', dateSort: '2026-02-10', lengthScore: 6 },
   { id: 'planes', category: 'essay', title: 'Planes', dateSort: '2026-02-12', lengthScore: 4 },
   { id: 'mechanized', category: 'notes', title: 'Mechanized humans', dateSort: '2026-02-10', lengthScore: 3 },
@@ -65,6 +66,54 @@ const starString = (rating: number) => {
   const full = Math.floor(rating);
   const half = rating - full >= 0.5 ? '½' : '';
   return `${'★'.repeat(full)}${half}`;
+};
+
+const WEEK_DAYS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+const SABBATH_START_PROGRESS = (5 + 18 / 24) / 7; // Friday 6pm
+const SABBATH_SLICE_DEGREES = 360 / 7;
+
+const getWeeklyProgress = (date: Date) => {
+  const secondsToday =
+    date.getHours() * 60 * 60 +
+    date.getMinutes() * 60 +
+    date.getSeconds() +
+    date.getMilliseconds() / 1000;
+  return (date.getDay() + secondsToday / 86400) / 7;
+};
+
+const SabbathClock: React.FC = () => {
+  const [now, setNow] = useState<Date | null>(null);
+
+  useEffect(() => {
+    setNow(new Date());
+    const interval = window.setInterval(() => setNow(new Date()), 30 * 1000);
+    return () => window.clearInterval(interval);
+  }, []);
+
+  const date = now ?? new Date(2026, 0, 4, 0, 0, 0);
+  const progress = getWeeklyProgress(date);
+  const handAngle = progress * 360;
+  const sabbathAngle = SABBATH_START_PROGRESS * 360;
+
+  return (
+    <div
+      className="sabbath-clock"
+      style={
+        {
+          '--hand-angle': `${handAngle}deg`,
+          '--sabbath-angle': `${sabbathAngle}deg`,
+          '--sabbath-slice': `${SABBATH_SLICE_DEGREES}deg`,
+        } as React.CSSProperties
+      }
+      aria-label="Weekly clock with Sabbath slice highlighted"
+    >
+      <div className="clock-face">
+        <div className="clock-ring" />
+        <div className="clock-hand" />
+        <div className="clock-center" />
+      </div>
+    </div>
+  );
 };
 
 const Writing: NextPage<WritingPageProps> = () => {
@@ -175,6 +224,18 @@ const Writing: NextPage<WritingPageProps> = () => {
 
           <div className="stack">
             {visibleCards.map((card) => {
+              if (card.id === 'sabbath') return (
+                <Link key={card.id} className="card c-half sabbath-card tilt-r" href="/writing/TheSabbath">
+              <div className="corner" />
+              <div className="meta"><span>Essay · 7 min</span><span className="len">May 10 · 2026</span></div>
+              <h2>The <em>Sabbath</em>.</h2>
+              <SabbathClock />
+              <div className="foot">
+                <div className="tag-row"><span className="tag">essays</span></div>
+                <span className="read">Read →</span>
+              </div>
+            </Link>
+              );
               if (card.id === 'goliath') return (
                 <Link key={card.id} className="card c-half polemic tilt-r" href="/writing/InDefenseOfGoliath">
               <div className="corner" />
@@ -441,6 +502,72 @@ const Writing: NextPage<WritingPageProps> = () => {
             border: 1px solid var(--line);
             border-radius: 6px;
             filter: sepia(0.38) hue-rotate(205deg) saturate(1.55) brightness(0.68) contrast(1.06);
+          }
+          .reading-room .sabbath-card { background: linear-gradient(135deg, #151f34, var(--surface)); border-color: rgba(158,223,244,.24); }
+          .reading-room .sabbath-clock {
+            margin: 10px 0 12px;
+            width: 100%;
+            min-height: clamp(230px, 30vw, 300px);
+            border: 1px solid var(--line);
+            border-radius: 6px;
+            background:
+              radial-gradient(circle at 50% 48%, rgba(158,223,244,.2), transparent 38%),
+              radial-gradient(circle at 26% 25%, rgba(255,178,221,.16), transparent 28%),
+              linear-gradient(135deg, rgba(14,18,35,.92), rgba(31,23,51,.92));
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: clamp(20px, 3vw, 28px);
+            overflow: hidden;
+            position: relative;
+          }
+          .reading-room .clock-face {
+            width: min(236px, 68vw);
+            aspect-ratio: 1;
+            border-radius: 50%;
+            position: relative;
+            background:
+              conic-gradient(from var(--sabbath-angle), rgba(255,178,221,.46) 0 var(--sabbath-slice), rgba(255,178,221,0) var(--sabbath-slice) 360deg),
+              repeating-conic-gradient(from 0deg, rgba(238,233,255,.25) 0 1deg, transparent 1deg 51.428deg),
+              radial-gradient(circle at center, rgba(158,223,244,.18), rgba(31,23,51,.24) 60%);
+            border: 1px solid rgba(158,223,244,.5);
+            box-shadow:
+              inset 0 0 0 11px rgba(26,19,40,.76),
+              inset 0 0 0 42px rgba(16,15,31,.26),
+              0 18px 42px rgba(0,0,0,.34);
+          }
+          .reading-room .clock-ring {
+            position: absolute;
+            inset: 28px;
+            border-radius: 50%;
+            border: 1px dashed rgba(238,233,255,.2);
+          }
+          .reading-room .clock-hand {
+            position: absolute;
+            inset: 50% auto auto 50%;
+            width: 9px;
+            height: calc(50% - 24px);
+            background:
+              linear-gradient(90deg, transparent 0 3px, rgba(238,233,255,.45) 3px 4px, var(--cyan) 4px 5px, rgba(238,233,255,.45) 5px 6px, transparent 6px 100%),
+              linear-gradient(180deg, rgba(238,233,255,.86), var(--cyan) 42%, rgba(158,223,244,.54));
+            clip-path: polygon(50% 0, 78% 72%, 56% 100%, 44% 100%, 22% 72%);
+            transform: translate(-50%, -100%) rotate(var(--hand-angle));
+            transform-origin: 50% 100%;
+            transition: transform 800ms cubic-bezier(.2,.8,.2,1);
+            filter: drop-shadow(0 0 12px rgba(158,223,244,.44));
+          }
+          .reading-room .clock-center {
+            position: absolute;
+            inset: 50% auto auto 50%;
+            width: 12px;
+            height: 12px;
+            border-radius: 999px;
+            background: #241b3a;
+            transform: translate(-50%, -50%);
+            box-shadow:
+              inset 0 0 0 2px rgba(158,223,244,.62),
+              0 0 0 4px rgba(26,19,40,.68),
+              0 0 14px rgba(158,223,244,.22);
           }
           .reading-room .card.notes { background: var(--surface-2); }
           .reading-room .card.notes .mono { font-family: var(--font-mono); font-size: 12px; line-height: 1.7; color: var(--fg-dim); }

@@ -27,6 +27,7 @@ const ArticlePage: NextPage<ArticlePageProps> = ({ article }) => {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ duration: 0.8 }}
+        className="mx-auto w-full max-w-[700px]"
       >
         <div className="flex items-center justify-between mb-4 md:mb-6">
           <Link href="/writing" className="text-primary hover:text-secondary transition-colors">
