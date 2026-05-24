@@ -147,6 +147,13 @@ const books: BookData[] = [
     rating: 3.8
   },
   {
+    title: 'Anna Karenina',
+    author: 'Leo Tolstoy',
+    color: '#BD93F9',
+    review: 'I read this in about 2 days. I missed the characters when I closed the book for the last time. Perhaps the best characters in literature. ',
+    rating: 4.9
+  },
+  {
     title: 'Bible (NRSV)',
     author: '',
     color: '#F1FA8C',
