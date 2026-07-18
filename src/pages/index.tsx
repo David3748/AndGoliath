@@ -47,7 +47,7 @@ const Home: NextPage = () => {
                 <TypeAnimation
                   sequence={[
                     2000, // Wait for name animation to finish first
-                    'College Park, MD', // Type location
+                    'New York, NY', // Type location
                     1000, // Wait at final state
                   ]}
                   wrapper="span"
