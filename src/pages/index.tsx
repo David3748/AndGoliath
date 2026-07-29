@@ -103,14 +103,14 @@ const Home: NextPage = () => {
               >
                 idealist
               </a>
-              , an incoming intern at{' '}
+              , currently at{' '}
               <a
                 href="https://www.bridgewater.com/"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-primary hover:underline"
               >
-                Bridgewater Associates
+                Bridgewater
               </a>
               , and a reluctant utilitarian.
             </p>
