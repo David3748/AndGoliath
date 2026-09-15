@@ -248,3 +248,109 @@ a {
 .key-number {
   filter: drop-shadow(0 1px 1px rgba(0,0,0,0.8));
 }
+
+/* Homepage studies: restrained typography and ink trajectories. */
+.particle-experience { position: relative; isolation: isolate; background: #0f111d; }
+.particle-experience .site-shell { position: relative; z-index: 1; background: transparent; }
+.particle-experience .site-header { background: #0f111d55; border-color: #b39dff12; backdrop-filter: blur(8px); }
+.particle-experience .site-footer { background: transparent; border-color: #b39dff12; }
+.sculpture-backdrop { position: fixed; inset: 0; z-index: 0; pointer-events: none; overflow: hidden; }
+.sculpture-canvas { width: 100%; height: 100%; display: block; opacity: 0; transition: opacity .5s; }
+.sculpture-canvas.ready { opacity: 1; }
+.sculpture-vignette { position: absolute; inset: 0; background: linear-gradient(0deg, #0f111d 0%, transparent 5%, transparent 89%, #0f111d55), radial-gradient(ellipse at center, transparent 55%, #0f111d66); }
+@media (prefers-reduced-motion: reduce) { .sculpture-pause { display: none; } }
+.study-particles .prototype-copy { text-shadow: 0 0 10px #0f111d, 0 0 22px #0f111d; }
+.study-particles .prototype-copy::before { content: ''; position: absolute; inset: -40px -24px; z-index: -1; pointer-events: none; background: radial-gradient(closest-side, #0f111db3 50%, #0f111d00); }
+.sculpture-pause { position: fixed; z-index: 15; right: 24px; bottom: 22px; width: 40px; height: 40px; border: 1px solid #b39dff30; border-radius: 50%; color: #b39dff99; background: #0f111d66; backdrop-filter: blur(8px); }
+.sculpture-pause:hover, .sculpture-pause:focus-visible { color: #f8f8f2; border-color: #b39dff; }
+/* Command School readouts, level with the pause button */
+.battle-readout { position: fixed; z-index: 15; left: 24px; bottom: 24px; display: grid; gap: 6px; font: 10px/1.5 ui-monospace, SFMono-Regular, Menlo, monospace; letter-spacing: .14em; text-transform: uppercase; color: #6272a4; font-variant-numeric: tabular-nums; pointer-events: none; }
+.battle-readout-status { color: #8f9ccb; }
+.battle-readout dl { display: grid; grid-template-columns: auto auto; column-gap: 20px; row-gap: 1px; margin: 0; }
+.battle-readout dt, .battle-readout dd { margin: 0; }
+.battle-readout dd { text-align: right; color: #8f9ccb; }
+.battle-readout dd[data-kind="fleet"] { color: #b39dff; }
+@media (max-width: 760px), (prefers-reduced-motion: reduce) { .battle-readout { display: none; } }
+/* The name: its own span carries the heading styles, the inner text span resets them */
+.name-burst { position: relative; }
+/* The dots are the visible name; the text stays for screen readers, search, and selection. */
+.prototype-intro .name-burst .name-burst-text { display: inline; font-size: inherit; margin: 0; color: transparent; }
+.name-burst-canvas { position: absolute; z-index: 1; left: -260px; top: -180px; width: calc(100% + 520px); height: calc(100% + 360px); pointer-events: none; }
+.particle-experience .study-picker { justify-content: center; opacity: .65; }
+.particle-experience .study.study-particles { min-height: 690px; padding: 45px 0 100px; margin: 0 auto; }
+.study-particles .prototype-copy { max-width: 500px; width: 44%; margin: 0 auto; }
+.study-particles .prototype-intro h1 { font-size: clamp(28px, 2.5vw, 38px); font-weight: 400; letter-spacing: -.045em; }
+.study-particles .prototype-intro h1 span { display: block; font-size: 1.32em; margin-top: 4px; }
+.study-particles .prototype-location { margin-top: 24px; font-size: 11px; letter-spacing: .045em; }
+.study-particles .prototype-body { margin-top: 42px; }
+.study-particles .prototype-body p { font-size: 14px; line-height: 1.95; text-shadow: 0 1px 12px #0f111d; }
+@media (max-width: 760px) {
+  .study.study-particles .prototype-copy { width: 100%; max-width: 460px; }
+  .particle-experience .study.study-particles { padding: 25px 14px 80px; }
+  .particle-experience .prototype-intro h1 { font-size: 30px; }
+  .sculpture-vignette { background: linear-gradient(#0f111d 5%, #0f111d99 24%, transparent 46%); }
+  .study-particles .prototype-copy::before { display: none; }
+}
+.study-page { max-width: 1140px; margin: auto; color: #f8f8f2; }
+.study-picker { display: flex; justify-content: flex-end; gap: 6px; margin: 0 0 24px; }
+.study-picker button { font: 12px ui-monospace, monospace; width: 42px; height: 34px; color: #9ca3af; border-bottom: 1px solid transparent; transition: color .2s; }
+.study-picker button:hover, .study-picker button.active { color: #b39dff; border-color: #b39dff; }
+.study-picker button:focus-visible { outline: 1px solid #b39dff; outline-offset: 3px; }
+.study { position: relative; min-height: 660px; padding: 65px 44px 90px; }
+.prototype-copy { position: relative; z-index: 1; }
+.prototype-intro h1 { font: 400 38px/1.3 'Merriweather', Georgia, serif; letter-spacing: -.035em; margin: 0; }
+.prototype-intro h1 span { color: #b39dff; }
+.prototype-location { display: flex; align-items: center; gap: 8px; font: 12px/1.6 Inter, sans-serif; color: #9ca3af; margin-top: 18px; }
+.prototype-location svg { width: 10px; opacity: .65; }
+.prototype-intro > p { font: 14px/1.8 Inter, sans-serif; margin-top: 24px; color: #9ca3af; }
+.prototype-body { margin-top: 45px; }
+.prototype-body p { font: 15px/1.95 Inter, sans-serif; color: #d1d5db; margin: 0 0 20px; }
+.prototype-copy a { color: #b39dff; text-decoration: underline; text-decoration-color: #b39dff40; text-underline-offset: 4px; }
+.prototype-copy a:hover { color: #ff79c6; text-decoration-color: currentColor; }
+.study-illustration { pointer-events: none; }
+.study-art { display: block; width: 100%; overflow: visible; }
+.study-1 .prototype-copy { width: 60%; max-width: 600px; }
+.study-1 .study-illustration { width: 31%; position: absolute; right: 0; top: 92px; }
+.study-1 .prototype-body { margin-top: 62px; }
+.study-2 { padding-top: 85px; }
+.study-2 .prototype-copy { display: grid; grid-template-columns: .9fr 1.1fr; gap: 100px; }
+.study-2 .prototype-intro h1 { max-width: 300px; font-size: 42px; line-height: 1.45; }
+.study-2 .prototype-intro h1 span { display: block; }
+.study-2 .prototype-body { margin-top: 8px; }
+.study-2 .study-illustration { width: 180px; position: absolute; left: 64px; top: 345px; opacity: .6; }
+.study-3 { padding-top: 20px; }
+.study-3 .prototype-copy { display: grid; grid-template-columns: 1fr 1fr; gap: 100px; }
+.study-3 .prototype-intro { padding-top: 50px; }
+.study-3 .prototype-intro h1 { font-size: 33px; }
+.study-3 .prototype-intro h1 span { display: block; font-size: 43px; margin-top: 10px; }
+.study-3 .prototype-body { margin-top: 235px; }
+.study-3 .study-illustration { width: 280px; position: absolute; right: 105px; top: -20px; }
+.study-3 .prototype-body p { font-family: Georgia, serif; font-size: 17px; line-height: 1.85; }
+.study-4 { max-width: 860px; margin: auto; padding-top: 45px; }
+.study-4 .prototype-intro { padding-bottom: 40px; border-bottom: 1px solid #6272a433; }
+.study-4 .prototype-intro h1 { font-size: 35px; }
+.study-4 .prototype-intro > p { margin-top: 15px; }
+.study-4 .prototype-body { max-width: 570px; margin-top: 38px; }
+.study-4 .study-illustration { position: absolute; width: 155px; top: 7px; right: 35px; }
+.study-5 { max-width: 730px; margin: auto; padding-top: 55px; }
+.study-5 .prototype-intro { padding-right: 90px; }
+.study-5 .prototype-intro h1 { font-size: 32px; }
+.study-5 .prototype-intro h1 span { color: #f8f8f2; }
+.study-5 .prototype-body { margin-top: 58px; }
+.study-5 .prototype-body p { font: 17px/1.9 Georgia, serif; color: #d1d5db; }
+.study-5 .study-illustration { width: 115px; position: absolute; top: 48px; right: 15px; }
+@media (max-width: 760px) {
+  .study-picker { justify-content: center; margin-bottom: 15px; }
+  .study { min-height: 0; padding: 35px 12px 65px; }
+  .study .prototype-copy { display: block; width: 100%; }
+  .study .prototype-intro h1 { font-size: 30px; }
+  .study .prototype-intro h1 span { font-size: inherit; }
+  .study .prototype-body { margin-top: 40px; }
+  .study-1 .study-illustration, .study-2 .study-illustration, .study-3 .study-illustration { position: relative; top: auto; left: auto; right: auto; width: 150px; margin: 12px 0 0 auto; }
+  .study-2 .prototype-intro h1 { max-width: none; }
+  .study-3 .prototype-intro { padding-top: 0; }
+  .study-4 .study-illustration { width: 85px; top: 14px; right: 0; }
+  .study-4 .prototype-intro { padding-right: 60px; }
+  .study-5 .study-illustration { width: 80px; right: -5px; top: 30px; }
+  .study-5 .prototype-intro { padding-right: 50px; }
+}
