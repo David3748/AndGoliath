@@ -1,0 +1,142 @@
+.page { --ink: #f0ece3; --muted: #aaa7b7; --accent: #c5b4ec; --line: #ffffff19; max-width: 1180px; margin: 0 auto; color: var(--ink); }
+.page button, .page a { -webkit-tap-highlight-color: transparent; }
+.page button:focus-visible, .page a:focus-visible { outline: 2px solid var(--accent); outline-offset: 5px; }
+.back { display: inline-flex; gap: 9px; align-items: center; color: var(--muted); font-size: 12px; }
+.back:hover { color: var(--ink); }
+.back svg { width: 10px; }
+.heading { display: flex; justify-content: space-between; align-items: flex-end; gap: 40px; padding: 45px 0 38px; }
+.heading h1 { font: 400 clamp(60px, 7vw, 88px)/1.08 'Merriweather', Georgia, serif; letter-spacing: -.055em; margin-left: -5px; }
+.subtitle { font: italic 18px/1.7 'Merriweather', Georgia, serif; color: var(--muted); margin-top: 12px; }
+.wander { display: flex; align-items: center; gap: 10px; color: var(--accent); font-size: 12px; padding: 3px 0; }
+.wander:hover { color: var(--ink); }
+.wander svg { font-size: 11px; }
+.explorer { display: grid; grid-template-columns: minmax(0, 1fr) 330px; border: 1px solid var(--line); background: #151623; }
+.mapSection { min-width: 0; display: flex; flex-direction: column; }
+.regionBar { display: flex; flex-wrap: wrap; align-items: center; gap: 3px; min-height: 58px; border-bottom: 1px solid var(--line); padding: 10px 15px; background: #191a29; }
+.regionBar button { display: flex; align-items: center; gap: 7px; padding: 7px 10px; color: var(--muted); font-size: 11px; border-radius: 3px; transition: background .15s, color .15s; }
+.regionBar button span { font: 9px ui-monospace, monospace; opacity: .65; }
+.regionBar button:hover { color: var(--ink); background: #ffffff08; }
+.regionBar button[aria-pressed="true"] { color: var(--accent); background: #c5b4ec12; }
+.map { position: relative; isolation: isolate; width: 100%; aspect-ratio: 1000 / 650; overflow: hidden; flex: 1; min-height: 400px; }
+.geography { position: absolute; inset: 0; width: 100%; height: 100%; }
+.land { fill: #292b3c; stroke: #67677f; stroke-width: .65; stroke-opacity: .65; }
+.graticule { stroke: #b8b2d4; stroke-width: .6; opacity: .12; stroke-dasharray: 3 6; }
+.ocean { fill: #aaa7c4; opacity: .4; font: italic 13px Georgia, serif; letter-spacing: .3em; }
+.mapTitle { position: absolute; top: 21px; left: 22px; font: 10px/1.5 ui-monospace, monospace; text-transform: uppercase; letter-spacing: .1em; color: var(--ink); padding: 4px 6px; background: #151623bb; }
+.mapTitle span { color: var(--muted); }
+.compass { position: absolute; right: 25px; top: 22px; color: #a9a2be; display: flex; flex-direction: column; align-items: center; gap: 5px; font: 9px ui-monospace, monospace; opacity: .7; }
+.compass svg { width: 17px; height: 31px; }
+.pins { position: absolute; inset: 0; }
+.pin { position: absolute; width: 24px; height: 24px; transform: translate(-50%, -50%); color: #dad1ed; border-radius: 50%; display: flex; justify-content: center; align-items: center; z-index: 1; }
+.pinDot { height: 6px; width: 6px; border-radius: 50%; background: #d3c6ee; box-shadow: 0 0 0 3px #151623aa; }
+.pinLabel { position: absolute; transform: translate(12px, -50%); font-size: 11px; white-space: nowrap; padding: 3px 5px; border-radius: 2px; background: #171824d9; color: #d5d1dc; pointer-events: auto; }
+.labelLeft { transform: translate(calc(-100% + 12px), -50%); }
+.pin:hover, .pin:focus-visible, .selectedPin { z-index: 3; }
+.pin:hover .pinLabel, .pin:focus-visible .pinLabel, .selectedPin .pinLabel { color: #f6f0ff; background: #37304e; }
+.selectedPin .pinDot { width: 8px; height: 8px; background: #e2cbff; box-shadow: 0 0 0 5px #c5b4ec22, 0 0 0 10px #c5b4ec12; }
+.selectedPin::before { content: ''; position: absolute; inset: -3px; border: 1px solid #c5b4ec65; border-radius: 50%; }
+.cluster { width: 30px; height: 30px; }
+.clusterCount { display: flex; align-items: center; justify-content: center; width: 22px; height: 22px; background: #2e2940; border: 1px solid #c5b4ec80; border-radius: 50%; font: 10px ui-monospace, monospace; color: var(--accent); }
+.cluster .pinLabel { color: var(--accent); }
+.cluster .pinLabel > span { opacity: .65; }
+.mapCredit { position: absolute; bottom: 13px; right: 17px; font-size: 9px; color: #aaa7b7; z-index: 4; }
+.mapCredit:hover { color: var(--ink); text-decoration: underline; }
+.mapFooter { display: flex; justify-content: flex-end; align-items: center; gap: 10px; padding: 11px 22px; min-height: 55px; border-top: 1px solid var(--line); }
+.zoomControls { display: flex; align-items: center; gap: 2px; }
+.zoomControls button { width: 28px; height: 27px; font: 15px ui-monospace, monospace; color: var(--ink); background: #ffffff06; border: 1px solid var(--line); }
+.zoomControls button:nth-child(2) { width: 40px; font-size: 10px; }
+.zoomControls button:disabled { color: #898494; background: transparent; cursor: default; }
+.zoomControls button:hover:not(:disabled) { background: #c5b4ec20; }
+.note { border-left: 1px solid var(--line); padding: 26px 28px 0; display: flex; flex-direction: column; background: radial-gradient(ellipse at 100% 0, #c5b4ec09, transparent 70%), #1d1d2b; }
+.noteContent { display: flex; flex-direction: column; flex: 1; animation: note-enter .25s ease-out; }
+.noteTop { display: flex; align-items: center; justify-content: space-between; font: 9px ui-monospace, monospace; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); padding-bottom: 22px; border-bottom: 1px dashed #ffffff22; }
+.noteMark { font: 24px Georgia, serif; color: var(--accent); }
+.location { font: 9px/1.6 ui-monospace, monospace; letter-spacing: .08em; text-transform: uppercase; color: var(--accent); margin-top: 27px; }
+.note h2 { font: 400 32px/1.25 'Merriweather', Georgia, serif; letter-spacing: -.035em; margin-top: 10px; }
+.coordinates { font: 9px/1.7 ui-monospace, monospace; color: var(--muted); margin-top: 10px; }
+.review { position: relative; padding-top: 41px; padding-bottom: 30px; flex: 1; }
+.quoteMark { position: absolute; top: 15px; left: -3px; font: 47px/1 Georgia, serif; color: var(--accent); opacity: .65; }
+.review p { font: 14px/1.95 'Merriweather', Georgia, serif; color: #e3dfea; }
+.rating { display: flex; gap: 20px; align-items: center; padding: 17px 0 24px; border-top: 1px solid var(--line); }
+.ratingNumber { font: 400 36px/1 Georgia, serif; letter-spacing: -.04em; color: var(--accent); white-space: nowrap; }
+.ratingNumber small { color: var(--muted); font: 12px Georgia, serif; margin-left: 7px; }
+.rating > div { flex: 1; }
+.ratingLabel { font: 9px/1.5 ui-monospace, monospace; color: var(--muted); }
+.ratingTrack { display: block; width: 100%; height: 3px; background: #ffffff10; margin-top: 8px; }
+.ratingTrack > span { display: block; height: 100%; background: var(--accent); }
+.noteNav { display: flex; align-items: center; justify-content: space-between; gap: 8px; margin: 0 -28px; padding: 18px; border-top: 1px solid var(--line); }
+.noteNav button { display: flex; align-items: center; gap: 7px; font-size: 10px; color: var(--muted); }
+.noteNav button:hover { color: var(--ink); }
+.noteNav button svg { width: 9px; }
+.index { margin-top: 40px; }
+.indexHeader { display: flex; align-items: baseline; justify-content: space-between; gap: 16px; padding-bottom: 18px; }
+.indexHeader h2 { font: 18px 'Merriweather', Georgia, serif; }
+.indexHeader h2 span { color: var(--muted); font: 10px ui-monospace, monospace; margin-left: 12px; }
+.sortControls { display: flex; align-items: center; gap: 9px; font-size: 10px; color: var(--muted); }
+.sortControls span { opacity: .5; }
+.sortControls button[aria-pressed="true"] { color: var(--accent); }
+.sortControls button:hover { color: var(--ink); }
+.cityIndex { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); column-gap: 28px; }
+.cityIndex button { display: flex; align-items: center; gap: 12px; text-align: left; padding: 14px 0; min-width: 0; border-top: 1px solid var(--line); }
+.cityNumber { font: 9px ui-monospace, monospace; color: var(--muted); opacity: .7; }
+.cityName { font: 12px/1.5 'Merriweather', Georgia, serif; flex: 1; }
+.cityScore { color: var(--muted); font: 10px ui-monospace, monospace; white-space: nowrap; }
+.cityScore > span { margin-left: 10px; opacity: .35; }
+.cityIndex button:hover .cityName, .activeCity .cityName, .activeCity .cityScore { color: var(--accent); }
+.activeCity .cityNumber { color: var(--accent); opacity: 1; }
+@keyframes note-enter { from { opacity: .3; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+@media (max-width: 1100px) {
+  .explorer { grid-template-columns: minmax(0, 1fr) 300px; }
+  .note { padding-left: 23px; padding-right: 23px; }
+  .noteNav { margin-left: -23px; margin-right: -23px; }
+  .regionBar { padding: 8px; gap: 0; }
+  .regionBar button { padding: 7px 8px; font-size: 10px; }
+  .pinLabel { font-size: 10px; }
+  .cityIndex { column-gap: 18px; }
+}
+@media (max-width: 850px) {
+  .explorer { grid-template-columns: 1fr; }
+  .map { flex: none; min-height: 0; }
+  .note { border-left: 0; border-top: 1px solid var(--line); }
+  .noteContent { display: grid; grid-template-columns: 1fr 1.5fr; column-gap: 34px; }
+  .noteTop { grid-column: 1 / -1; padding-bottom: 12px; }
+  .location, .note h2, .coordinates { grid-column: 1; }
+  .location { margin-top: 23px; }
+  .review { grid-column: 2; grid-row: 2 / 6; padding-top: 40px; padding-bottom: 24px; }
+  .rating { grid-column: 1; margin-top: 22px; padding-bottom: 22px; }
+  .noteNav { padding: 14px 23px; }
+  .cityIndex { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}
+@media (max-width: 580px) {
+  .heading { display: block; padding: 34px 0 27px; }
+  .heading h1 { font-size: 64px; }
+  .subtitle { font-size: 15px; margin-top: 9px; }
+  .wander { margin-top: 20px; }
+  .regionBar { padding: 9px 8px; gap: 3px; }
+  .regionBar button { padding: 6px 8px; }
+  .map { aspect-ratio: 1000 / 900; }
+  .pinLabel { font-size: 9px; padding: 3px; }
+  .worldMap .pinLabel { display: none; }
+  .worldMap .selectedPin .pinLabel, .worldMap .cluster .pinLabel, .worldMap .pin:focus-visible .pinLabel, .worldMap .pin:hover .pinLabel { display: block; }
+  .mapTitle { font-size: 8px; left: 12px; top: 14px; }
+  .compass { top: 17px; right: 14px; }
+  .compass svg { width: 13px; height: 24px; }
+  .mapFooter { padding: 10px 13px; }
+  .note { padding: 20px 22px 0; }
+  .noteContent { display: flex; }
+  .noteTop { padding-bottom: 14px; }
+  .location { margin-top: 22px; }
+  .note h2 { font-size: 29px; }
+  .review { padding-top: 39px; padding-bottom: 22px; }
+  .review p { font-size: 13px; line-height: 1.95; }
+  .rating { margin-top: 0; padding-bottom: 20px; }
+  .noteNav { margin-left: -22px; margin-right: -22px; }
+  .index { margin-top: 29px; }
+  .indexHeader { flex-wrap: wrap; gap: 13px; }
+  .cityIndex { grid-template-columns: repeat(2, minmax(0, 1fr)); column-gap: 18px; }
+  .cityIndex button { gap: 8px; }
+  .cityName { font-size: 10px; }
+  .cityScore { font-size: 9px; }
+  .cityScore > span { display: none; }
+}
+@media (prefers-reduced-motion: reduce) { .noteContent { animation: none; } .regionBar button { transition: none; } }

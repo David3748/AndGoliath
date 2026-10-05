@@ -1,328 +1,122 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import type { NextPage } from 'next';
-import Layout from '../../components/Layout';
-import { motion, AnimatePresence } from 'framer-motion';
 import Link from 'next/link';
-import { FaArrowLeft } from 'react-icons/fa';
-import {
-  GiCapitol,
-  GiRaven,
-  GiSailboat,
-  GiWindmill,
-  GiMountains,
-  GiBridge,
-  GiCastle,
-  GiMusicalNotes,
-  GiGuitar,
-  GiTowerBridge,
-  GiFlowerPot,
-  GiColiseum,
-  GiChurch,
-  GiWineGlass,
-} from 'react-icons/gi';
-import {
-  FaUniversity,
-  FaHome,
-  FaLandmark,
-  FaBuilding,
-  FaWind,
-  FaStar,
-  FaRegStar,
-} from 'react-icons/fa';
-import { IconType } from 'react-icons';
+import { FaArrowLeft, FaArrowRight, FaRandom } from 'react-icons/fa';
+import Layout from '../../components/Layout';
+import CityAtlas, { regions, citiesInRegion, type Region } from '../../components/cities/CityAtlas';
+import { cities, type City } from '../../data/cities';
+import styles from '../../styles/Cities.module.css';
 
-interface CityData {
-  name: string;
-  icon: IconType;
-  color: string;
-  review: string;
-  rating?: number;
-}
-
-const cities: CityData[] = [
-  {
-    name: 'Ellicott City',
-    icon: FaHome,
-    color: '#50FA7B',
-    review: "Does it feel like the default because it's my home or because it's such a typical suburb?",
-    rating: 1.5,
-  },
-  {
-    name: 'College Park',
-    icon: FaUniversity,
-    color: '#FF5555',
-    review: "Most things you'd want in a college town and many you wouldn't. Stunningly unexceptional in many ways.",
-    rating: 2,
-  },
-  {
-    name: 'Washington DC',
-    icon: GiCapitol,
-    color: '#F8F8F2',
-    review: "Good metro, great museums and politics. So much politics.",
-    rating: 3,
-  },
-  {
-    name: 'Baltimore',
-    icon: GiRaven,
-    color: '#B39DFF',
-    review: "An underrated city purely because it's rated so badly.",
-    rating: 2,
-  },
-  {
-    name: 'NYC',
-    icon: FaBuilding,
-    color: '#8BE9FD',
-    review: "Great and terrible. A city of extremes. The only thing I love more than New York City is the idea of New York City.",
-    rating: 5,
-  },
-  {
-    name: 'Boston',
-    icon: GiSailboat,
-    color: '#FF79C6',
-    review: "In some ways the most European of American cities.",
-    rating: 3.5,
-  },
-  {
-    name: 'SF',
-    icon: GiBridge,
-    color: '#FFB86C',
-    review: "We discovered heaven on earth and we put Silicon Valley there. It feels ironic that the part of the country that encompasses the greatest nature in the smallest area has the people least dedicated to the natural.",
-    rating: 3.5,
-  },
-  {
-    name: 'Chicago',
-    icon: FaWind,
-    color: '#8BE9FD',
-    review: "Excellent in the summer. Bike by the lake if you can. I have not heard good things about the winter.",
-    rating: 3.6,
-  },
-  {
-    name: 'Copenhagen',
-    icon: GiWindmill,
-    color: '#FF5555',
-    review: "An almost perfectly designed city. The best cafes I've ever been to. Ruinously expensive. Makes you appreciate the Sun.",
-    rating: 4,
-  },
-  {
-    name: 'Bergen',
-    icon: GiMountains,
-    color: '#50FA7B',
-    review: "Miraculously its own weather event. Sadly that weather is fog. Fjords are incredible.",
-    rating: 3,
-  },
-  {
-    name: 'Budapest',
-    icon: FaLandmark,
-    color: '#F1FA8C',
-    review: "Extremely touristy, does it fine. Prague is better in most important ways at many of the same things.",
-    rating: 2.5,
-  },
-  {
-    name: 'Vienna',
-    icon: GiMusicalNotes,
-    color: '#B39DFF',
-    review: "I had Paris syndrome here. Good city, not great. Overly touristy music.",
-    rating: 3,
-  },
-  {
-    name: 'Prague',
-    icon: GiCastle,
-    color: '#FFB86C',
-    review: "My favorite city in central Europe. It's how I imagine a European city should be.",
-    rating: 4,
-  },
-  {
-    name: 'Madrid',
-    icon: GiGuitar,
-    color: '#FF5555',
-    review: "One of the world's greatest places to do nothing. This is a compliment.",
-    rating: 4,
-  },
-  {
-    name: 'London',
-    icon: GiTowerBridge,
-    color: '#F8F8F2',
-    review: "There's so much going on. I love it so much. Easily the European city I could see myself in long-term.",
-    rating: 4.5,
-  },
-  {
-    name: 'Florence',
-    icon: GiFlowerPot,
-    color: '#FF79C6',
-    review: "It's a tourist trap and I don't even care, the trap was so good.",
-    rating: 4,
-  },
-  {
-    name: 'Rome',
-    icon: GiColiseum,
-    color: '#FFB86C',
-    review: "A series of monuments that used to mean something and now mean a fall from grace. Bonus: the Vatican is quite bad at running a museum.",
-    rating: 1.5,
-  },
-  {
-    name: 'Milan',
-    icon: GiChurch,
-    color: '#F8F8F2',
-    review: "Pretty good city. If you can go on the roof of the cathedral, do so.",
-    rating: 3,
-  },
-  {
-    name: 'Orvieto',
-    icon: GiWineGlass,
-    color: '#FF5555',
-    review: "Perfect little Italian town.",
-    rating: 3.2,
-  },
-];
-
-const StickyNote: React.FC<{ city: CityData; onClose: () => void }> = ({ city, onClose }) => {
-  const Icon = city.icon;
-  return (
-    <motion.div
-      className="fixed inset-0 z-50 flex items-center justify-center px-4"
-      initial={{ opacity: 0 }}
-      animate={{ opacity: 1 }}
-      exit={{ opacity: 0 }}
-      transition={{ duration: 0.2 }}
-      onClick={onClose}
-    >
-      <div className="fixed inset-0 bg-black/60" />
-      <motion.div
-        className="relative z-10 w-full max-w-md"
-        initial={{ scale: 0.8, rotate: -2, opacity: 0 }}
-        animate={{ scale: 1, rotate: 1, opacity: 1 }}
-        exit={{ scale: 0.8, rotate: 2, opacity: 0 }}
-        transition={{ type: 'spring', damping: 20, stiffness: 300 }}
-        onClick={(e) => e.stopPropagation()}
-      >
-        {/* Sticky note */}
-        <div
-          className="rounded-sm shadow-2xl p-6 pb-8"
-          style={{
-            background: '#2A2D3E',
-            borderTop: `4px solid ${city.color}`,
-            boxShadow: '4px 4px 20px rgba(0,0,0,0.5)',
-          }}
-        >
-          {/* Top tape effect */}
-          <div
-            className="absolute -top-3 left-1/2 -translate-x-1/2 w-16 h-6 rounded-sm opacity-30"
-            style={{ background: city.color }}
-          />
-
-          {/* Close button */}
-          <button
-            onClick={onClose}
-            className="absolute top-2 right-3 text-comment hover:text-foreground transition-colors text-lg"
-          >
-            &times;
-          </button>
-
-          {/* City icon and name */}
-          <div className="flex items-center gap-3 mb-4">
-            <Icon className="text-3xl" style={{ color: city.color }} />
-            <h2 className="text-xl font-serif text-foreground">{city.name}</h2>
-          </div>
-
-          {/* Review content */}
-          <div className="font-serif text-gray-300 leading-relaxed min-h-[80px]">
-            {city.review ? (
-              <p>{city.review}</p>
-            ) : (
-              <p className="text-comment italic">Review coming soon...</p>
-            )}
-          </div>
-
-          {/* Rating */}
-          <div className="mt-4 pt-3 border-t border-gray-600/30 flex items-center gap-2">
-            <span className="text-sm text-comment">Rating:</span>
-            <div className="flex items-center gap-0.5">
-              {city.rating != null ? (
-                <>
-                  {[1, 2, 3, 4, 5].map((star) => {
-                    const fill = Math.min(1, Math.max(0, city.rating! - (star - 1)));
-                    if (fill >= 1) {
-                      return <FaStar key={star} className="text-sm" style={{ color: city.color }} />;
-                    } else if (fill <= 0) {
-                      return <FaRegStar key={star} className="text-sm text-comment" />;
-                    }
-                    return (
-                      <span key={star} className="relative inline-block text-sm">
-                        <FaRegStar className="text-comment" />
-                        <span className="absolute inset-0 overflow-hidden" style={{ width: `${fill * 100}%` }}>
-                          <FaStar style={{ color: city.color }} />
-                        </span>
-                      </span>
-                    );
-                  })}
-                  <span className="ml-1.5 text-sm text-comment">{city.rating}/5</span>
-                </>
-              ) : (
-                [1, 2, 3, 4, 5].map((star) => (
-                  <FaRegStar key={star} className="text-sm text-comment" />
-                ))
-              )}
-            </div>
-          </div>
-        </div>
-      </motion.div>
-    </motion.div>
-  );
-};
+const cityNumber = (city: City) => String(cities.indexOf(city) + 1).padStart(2, '0');
+const coordinates = (city: City) => `${city.latitude.toFixed(2)}° N / ${Math.abs(city.longitude).toFixed(2)}° ${city.longitude < 0 ? 'W' : 'E'}`;
 
 const CitiesPage: NextPage = () => {
-  const [selectedCity, setSelectedCity] = useState<CityData | null>(null);
+  const [selectedCity, setSelectedCity] = useState(cities[4]);
+  const [region, setRegion] = useState<Region>('all');
+  const [ranked, setRanked] = useState(false);
+  const [zoom, setZoom] = useState(1);
+  const visibleCities = citiesInRegion(region);
+  const indexedCities = ranked ? [...visibleCities].sort((a, b) => b.rating - a.rating) : visibleCities;
+  const selectedIndex = indexedCities.indexOf(selectedCity);
+
+  useEffect(() => {
+    const readHash = () => {
+      const city = cities.find((entry) => `#${entry.id}` === window.location.hash);
+      if (city) {
+        setSelectedCity(city);
+        setRegion(city.nearHome ? 'home' : city.location === 'Italy' ? 'italy' : city.region);
+        setZoom(1);
+      }
+    };
+    readHash();
+    window.addEventListener('hashchange', readHash);
+    return () => window.removeEventListener('hashchange', readHash);
+  }, []);
+
+  const selectCity = (city: City) => {
+    setSelectedCity(city);
+    window.history.replaceState(null, '', `#${city.id}`);
+  };
+
+  const changeRegion = (next: Region) => {
+    setRegion(next);
+    setZoom(1);
+    const nextCities = citiesInRegion(next);
+    if (!nextCities.includes(selectedCity)) selectCity([...nextCities].sort((a, b) => b.rating - a.rating)[0]);
+  };
+
+  const stepCity = (direction: number) => {
+    selectCity(indexedCities[(selectedIndex + direction + indexedCities.length) % indexedCities.length]);
+  };
 
   return (
-    <Layout title="&Goliath | Writing - Cities">
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 0.8 }}
-      >
-        <div className="flex items-center justify-between mb-4 md:mb-6">
-          <Link href="/writing" className="text-primary hover:text-secondary transition-colors">
-            <FaArrowLeft className="inline-block mr-2" /> Back to Writing
-          </Link>
+    <Layout title="&Goliath | Cities" description="Cities, with personal notes and ratings.">
+      <div className={styles.page}>
+        <Link href="/writing" className={styles.back}><FaArrowLeft aria-hidden="true" /> Back to Writing</Link>
+        <header className={styles.heading}>
+          <div>
+            <h1>Cities</h1>
+            <p className={styles.subtitle}>On places</p>
+          </div>
+          <button className={styles.wander} onClick={() => {
+              const otherCities = cities.filter((city) => city !== selectedCity);
+              const city = otherCities[Math.floor(Math.random() * otherCities.length)];
+              setRegion(city.nearHome ? 'home' : city.region);
+              setZoom(1);
+              selectCity(city);
+          }}><FaRandom aria-hidden="true" /> Random city</button>
+        </header>
+
+        <div className={styles.explorer}>
+          <section className={styles.mapSection} aria-label="City atlas">
+            <div className={styles.regionBar} aria-label="Map regions">
+              {regions.map((item) => <button key={item.id} aria-pressed={region === item.id} onClick={() => changeRegion(item.id)}>{item.name}<span>{citiesInRegion(item.id).length}</span></button>)}
+            </div>
+            <CityAtlas region={region} selectedCity={selectedCity} zoom={zoom} onSelect={selectCity} onRegionChange={changeRegion} />
+            <div className={styles.mapFooter}>
+              <div className={styles.zoomControls} aria-label="Map zoom">
+                <button aria-label="Zoom out" disabled={zoom === 1} onClick={() => setZoom(Math.max(1, zoom - 0.5))}>−</button>
+                <button aria-label="Reset map zoom" disabled={zoom === 1} onClick={() => setZoom(1)}>{zoom === 1 ? 'Fit' : `${zoom}×`}</button>
+                <button aria-label="Zoom in on selected city" disabled={zoom === 3} onClick={() => setZoom(Math.min(3, zoom + 0.5))}>+</button>
+              </div>
+            </div>
+          </section>
+
+          <section className={styles.note} aria-label="Selected city note" aria-live="polite" aria-atomic="true">
+            <div key={selectedCity.id} className={styles.noteContent}>
+              <div className={styles.noteTop}><span>Note {cityNumber(selectedCity)} / {cities.length}</span><span className={styles.noteMark} aria-hidden="true">↗</span></div>
+              <p className={styles.location}>{selectedCity.location}</p>
+              <h2>{selectedCity.name}</h2>
+              <p className={styles.coordinates}>{coordinates(selectedCity)}</p>
+              <div className={styles.review}><span className={styles.quoteMark} aria-hidden="true">“</span><p>{selectedCity.review}</p></div>
+              <div className={styles.rating}>
+                <span className={styles.ratingNumber}>{selectedCity.rating.toFixed(1)}<small>/ 5</small></span>
+                <div><span className={styles.ratingLabel}>Rating</span><span className={styles.ratingTrack} aria-hidden="true"><span style={{ width: `${selectedCity.rating * 20}%` }} /></span></div>
+              </div>
+            </div>
+            <div className={styles.noteNav}>
+              <button aria-label="Previous city" onClick={() => stepCity(-1)}><FaArrowLeft aria-hidden="true" /> Previous</button>
+              <button aria-label="Next city" onClick={() => stepCity(1)}>Next <FaArrowRight aria-hidden="true" /></button>
+            </div>
+          </section>
         </div>
 
-        <h1 className="text-3xl md:text-4xl font-serif mb-2 text-foreground border-b border-current-line pb-2 mt-8">
-          Cities
-        </h1>
-        <p className="text-gray-400 mb-8">On places</p>
-
-        <div className="grid gap-4" style={{ gridTemplateColumns: 'repeat(auto-fill, minmax(100px, 1fr))' }}>
-          {cities.map((city, index) => {
-            const Icon = city.icon;
-            return (
-              <motion.button
-                key={city.name}
-                className="flex flex-col items-center gap-2 p-4 rounded-lg bg-current-line border border-current-line hover:border-comment transition-all group"
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.4, delay: index * 0.05 }}
-                whileHover={{ y: -4, scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                onClick={() => setSelectedCity(city)}
-              >
-                <Icon
-                  className="text-3xl md:text-4xl transition-colors"
-                  style={{ color: city.color }}
-                />
-                <span className="text-xs md:text-sm text-gray-400 group-hover:text-foreground transition-colors text-center leading-tight">
-                  {city.name}
-                </span>
-              </motion.button>
-            );
-          })}
-        </div>
-
-        <AnimatePresence>
-          {selectedCity && (
-            <StickyNote city={selectedCity} onClose={() => setSelectedCity(null)} />
-          )}
-        </AnimatePresence>
-      </motion.div>
+        <section className={styles.index} aria-label="All city notes">
+          <div className={styles.indexHeader}>
+            <h2>Index <span>{visibleCities.length} places</span></h2>
+            <div className={styles.sortControls} aria-label="Sort cities">
+              <button aria-pressed={!ranked} onClick={() => setRanked(false)}>Original order</button><span aria-hidden="true">/</span>
+              <button aria-pressed={ranked} onClick={() => setRanked(true)}>Highest rated</button>
+            </div>
+          </div>
+          <div className={styles.cityIndex}>
+            {indexedCities.map((city) => <button key={city.id} className={city === selectedCity ? styles.activeCity : ''} aria-pressed={city === selectedCity} aria-label={`${city.name}, ${city.rating} out of 5`} onClick={() => { selectCity(city); setZoom(1); }}>
+              <span className={styles.cityNumber}>{cityNumber(city)}</span><span className={styles.cityName}>{city.name}</span>
+              <span className={styles.cityScore}>{city.rating.toFixed(1)}<span>↗</span></span>
+            </button>)}
+          </div>
+        </section>
+      </div>
     </Layout>
   );
 };

@@ -155,10 +155,17 @@ const books: BookData[] = [
   },
   {
     title: 'The Last Samurai',
-    author: 'Helen DeWitt',
+    author: 'Helen Dewitt',
     color: '#FFB86C',
-    review: 'It reamins unclear to me why I liked this book so much. Truly unique',
+    review: 'Weird as hell',
     rating: 4.4
+  },
+  {
+    title: 'Hollywood, Ending',
+    author: 'John Green',
+    color: '#FFB86C',
+    review: 'Been a while since I devoured a book in a night with something of a desparation',
+    rating: 4.2,
   },
   {
     title: 'Bible (NRSV)',
