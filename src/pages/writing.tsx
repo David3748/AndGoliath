@@ -402,8 +402,8 @@ const Writing: NextPage<WritingPageProps> = () => {
             --orange: #ffbe8d;
             --yellow: #ffe298;
             --red: #ff7c9b;
-            --font-sans: "IBM Plex Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-            --font-serif: "Merriweather", "IBM Plex Serif", Georgia, serif;
+            --font-sans: "Crimson Text", "IBM Plex Sans", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            --font-serif: "Crimson Text", "Merriweather", "IBM Plex Serif", Georgia, serif;
             --font-mono: "IBM Plex Mono", ui-monospace, "SF Mono", Menlo, monospace;
             color: var(--fg);
             font-family: var(--font-sans);

@@ -5,8 +5,8 @@
 .back:hover { color: var(--ink); }
 .back svg { width: 10px; }
 .heading { display: flex; justify-content: space-between; align-items: flex-end; gap: 40px; padding: 45px 0 38px; }
-.heading h1 { font: 400 clamp(60px, 7vw, 88px)/1.08 'Merriweather', Georgia, serif; letter-spacing: -.055em; margin-left: -5px; }
-.subtitle { font: italic 18px/1.7 'Merriweather', Georgia, serif; color: var(--muted); margin-top: 12px; }
+.heading h1 { font: 400 clamp(60px, 7vw, 88px)/1.08 'Crimson Text', 'Merriweather', Georgia, serif; letter-spacing: -.055em; margin-left: -5px; }
+.subtitle { font: italic 18px/1.7 'Crimson Text', 'Merriweather', Georgia, serif; color: var(--muted); margin-top: 12px; }
 .wander { display: flex; align-items: center; gap: 10px; color: var(--accent); font-size: 12px; padding: 3px 0; }
 .wander:hover { color: var(--ink); }
 .wander svg { font-size: 11px; }
@@ -21,7 +21,7 @@
 .geography { position: absolute; inset: 0; width: 100%; height: 100%; }
 .land { fill: #292b3c; stroke: #67677f; stroke-width: .65; stroke-opacity: .65; }
 .graticule { stroke: #b8b2d4; stroke-width: .6; opacity: .12; stroke-dasharray: 3 6; }
-.ocean { fill: #aaa7c4; opacity: .4; font: italic 13px Georgia, serif; letter-spacing: .3em; }
+.ocean { fill: #aaa7c4; opacity: .4; font: italic 13px 'Crimson Text', Georgia, serif; letter-spacing: .3em; }
 .mapTitle { position: absolute; top: 21px; left: 22px; font: 10px/1.5 ui-monospace, monospace; text-transform: uppercase; letter-spacing: .1em; color: var(--ink); padding: 4px 6px; background: #151623bb; }
 .mapTitle span { color: var(--muted); }
 .compass { position: absolute; right: 25px; top: 22px; color: #a9a2be; display: flex; flex-direction: column; align-items: center; gap: 5px; font: 9px ui-monospace, monospace; opacity: .7; }
@@ -50,16 +50,16 @@
 .note { border-left: 1px solid var(--line); padding: 26px 28px 0; display: flex; flex-direction: column; background: radial-gradient(ellipse at 100% 0, #c5b4ec09, transparent 70%), #1d1d2b; }
 .noteContent { display: flex; flex-direction: column; flex: 1; animation: note-enter .25s ease-out; }
 .noteTop { display: flex; align-items: center; justify-content: space-between; font: 9px ui-monospace, monospace; letter-spacing: .1em; text-transform: uppercase; color: var(--muted); padding-bottom: 22px; border-bottom: 1px dashed #ffffff22; }
-.noteMark { font: 24px Georgia, serif; color: var(--accent); }
+.noteMark { font: 24px 'Crimson Text', Georgia, serif; color: var(--accent); }
 .location { font: 9px/1.6 ui-monospace, monospace; letter-spacing: .08em; text-transform: uppercase; color: var(--accent); margin-top: 27px; }
-.note h2 { font: 400 32px/1.25 'Merriweather', Georgia, serif; letter-spacing: -.035em; margin-top: 10px; }
+.note h2 { font: 400 32px/1.25 'Crimson Text', 'Merriweather', Georgia, serif; letter-spacing: -.035em; margin-top: 10px; }
 .coordinates { font: 9px/1.7 ui-monospace, monospace; color: var(--muted); margin-top: 10px; }
 .review { position: relative; padding-top: 41px; padding-bottom: 30px; flex: 1; }
-.quoteMark { position: absolute; top: 15px; left: -3px; font: 47px/1 Georgia, serif; color: var(--accent); opacity: .65; }
-.review p { font: 14px/1.95 'Merriweather', Georgia, serif; color: #e3dfea; }
+.quoteMark { position: absolute; top: 15px; left: -3px; font: 47px/1 'Crimson Text', Georgia, serif; color: var(--accent); opacity: .65; }
+.review p { font: 14px/1.95 'Crimson Text', 'Merriweather', Georgia, serif; color: #e3dfea; }
 .rating { display: flex; gap: 20px; align-items: center; padding: 17px 0 24px; border-top: 1px solid var(--line); }
-.ratingNumber { font: 400 36px/1 Georgia, serif; letter-spacing: -.04em; color: var(--accent); white-space: nowrap; }
-.ratingNumber small { color: var(--muted); font: 12px Georgia, serif; margin-left: 7px; }
+.ratingNumber { font: 400 36px/1 'Crimson Text', Georgia, serif; letter-spacing: -.04em; color: var(--accent); white-space: nowrap; }
+.ratingNumber small { color: var(--muted); font: 12px 'Crimson Text', Georgia, serif; margin-left: 7px; }
 .rating > div { flex: 1; }
 .ratingLabel { font: 9px/1.5 ui-monospace, monospace; color: var(--muted); }
 .ratingTrack { display: block; width: 100%; height: 3px; background: #ffffff10; margin-top: 8px; }
@@ -70,7 +70,7 @@
 .noteNav button svg { width: 9px; }
 .index { margin-top: 40px; }
 .indexHeader { display: flex; align-items: baseline; justify-content: space-between; gap: 16px; padding-bottom: 18px; }
-.indexHeader h2 { font: 18px 'Merriweather', Georgia, serif; }
+.indexHeader h2 { font: 18px 'Crimson Text', 'Merriweather', Georgia, serif; }
 .indexHeader h2 span { color: var(--muted); font: 10px ui-monospace, monospace; margin-left: 12px; }
 .sortControls { display: flex; align-items: center; gap: 9px; font-size: 10px; color: var(--muted); }
 .sortControls span { opacity: .5; }
@@ -79,7 +79,7 @@
 .cityIndex { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); column-gap: 28px; }
 .cityIndex button { display: flex; align-items: center; gap: 12px; text-align: left; padding: 14px 0; min-width: 0; border-top: 1px solid var(--line); }
 .cityNumber { font: 9px ui-monospace, monospace; color: var(--muted); opacity: .7; }
-.cityName { font: 12px/1.5 'Merriweather', Georgia, serif; flex: 1; }
+.cityName { font: 12px/1.5 'Crimson Text', 'Merriweather', Georgia, serif; flex: 1; }
 .cityScore { color: var(--muted); font: 10px ui-monospace, monospace; white-space: nowrap; }
 .cityScore > span { margin-left: 10px; opacity: .35; }
 .cityIndex button:hover .cityName, .activeCity .cityName, .activeCity .cityScore { color: var(--accent); }

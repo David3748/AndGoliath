@@ -362,7 +362,7 @@ const ProjectsGrid: React.FC<ProjectsGridProps> = ({ projects }) => {
         h1 {
           margin: 0;
           color: var(--pr-primary);
-          font-family: Merriweather, "IBM Plex Serif", Georgia, serif;
+          font-family: 'Crimson Text', Merriweather, "IBM Plex Serif", Georgia, serif;
           font-size: clamp(60px, 9vw, 112px);
           font-weight: 300;
           line-height: 0.95;
@@ -481,7 +481,7 @@ const ProjectsGrid: React.FC<ProjectsGridProps> = ({ projects }) => {
           align-items: center;
           justify-content: center;
           color: var(--pr-primary);
-          font-family: Merriweather, Georgia, serif;
+          font-family: 'Crimson Text', Merriweather, Georgia, serif;
           font-size: 80px;
         }
 
@@ -494,7 +494,7 @@ const ProjectsGrid: React.FC<ProjectsGridProps> = ({ projects }) => {
         h2 {
           margin: 0;
           color: var(--pr-fg);
-          font-family: Merriweather, "IBM Plex Serif", Georgia, serif;
+          font-family: 'Crimson Text', Merriweather, "IBM Plex Serif", Georgia, serif;
           font-size: clamp(26px, 3vw, 36px);
           font-weight: 400;
           line-height: 1.05;
@@ -503,7 +503,7 @@ const ProjectsGrid: React.FC<ProjectsGridProps> = ({ projects }) => {
         .dek {
           margin: 0;
           color: var(--pr-dim);
-          font-family: Merriweather, "IBM Plex Serif", Georgia, serif;
+          font-family: 'Crimson Text', Merriweather, "IBM Plex Serif", Georgia, serif;
           font-size: 15px;
           font-style: italic;
           line-height: 1.55;

@@ -31,8 +31,8 @@ module.exports = {
         }
       },
       fontFamily: {
-        sans: ['Inter', 'sans-serif'],
-        serif: ['Merriweather', 'serif'],
+        sans: ['Crimson Text', 'Inter', 'sans-serif'],
+        serif: ['Crimson Text', 'Merriweather', 'serif'],
       },
       animation: {
         'bounce-slow': 'bounce 3s infinite',
